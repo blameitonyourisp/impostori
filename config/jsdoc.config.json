@@ -1,0 +1,31 @@
+{
+    "docdash": {
+        "search": true,
+        "typedefs": true,
+        "collapse": true
+    },
+    "opts": {
+        "destination": "./jsdoc/",
+        "private": true,
+        "recurse": true,
+        "readme": "./README.md",
+        "template": "node_modules/docdash",
+        "tutorials": "./docs/tutorials/",
+        "sort": true
+    },
+    "plugins": [ "plugins/markdown" ],
+    "recurseDepth": 10,
+    "source": {
+        "include": ["src"],
+        "includePattern": ".+\\.js(doc|x)?$"
+    },
+    "sourceType": "module",
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "name": "impostori",
+    "version": "1.0.0",
+    "description": "Hex based number puzzle game inspired by sudoku and minesweeper",
+    "type": "module",
+    "main": "./src/index.js",
+    "scripts": {
+        "test": "node ./tests/index.js",
+        "docs": "jsdoc -c ./config/jsdoc.config.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/blameitonyourisp/impostori.git"
+    },
+    "keywords": [
+        "impostori",
+        "puzzle"
+    ],
+    "author": "James Reid",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/blameitonyourisp/impostori/issues"
+    },
+    "homepage": "https://github.com/blameitonyourisp/impostori#readme",
+    "devDependencies": {
+        "docdash": "^2.0.1",
+        "jsdoc": "^4.0.0"
+    }
+}
