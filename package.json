@@ -5,7 +5,7 @@
     "type": "module",
     "main": "./src/index.js",
     "scripts": {
-        "test": "node ./tests/index.js",
+        "test": "jest",
         "docs": "jsdoc -c ./config/jsdoc.config.json"
     },
     "repository": {
@@ -23,7 +23,9 @@
     },
     "homepage": "https://github.com/blameitonyourisp/impostori#readme",
     "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.21.2",
         "docdash": "^2.0.1",
+        "jest": "^29.5.0",
         "jsdoc": "^4.0.0"
     }
 }
