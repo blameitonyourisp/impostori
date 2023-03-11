@@ -72,8 +72,8 @@ const pruneGridAdjacencies = grid => {
     // }
 
     const randomDropout = grid.random.prng(
-        Math.round(grid.adjacencyIDs.optional.length * 0.1),
-        Math.round(grid.adjacencyIDs.optional.length * 0.2)
+        Math.round(grid.adjacencyIDs.optional.size * 0.1),
+        Math.round(grid.adjacencyIDs.optional.size * 0.2)
     )
 
     // change to loop over workers until they become invalid, then add a random number of adj back in

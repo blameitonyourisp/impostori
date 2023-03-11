@@ -47,14 +47,14 @@ const generateEmptyGrid = random => {
         vacant: random.shuffledIndexArray(36)
     }
 
-    const optional = []
+    const optional = new Set()
     cells.forEach(cell => {
         cell.adjacentIndexes.all.forEach(index => {
             const adjacency = getAdjacencyData(cell.index, index)
-            optional.push(adjacency.id)
+            optional.add(adjacency.id)
         })        
     })
-    const adjacencyIDs = { required: [], optional }
+    const adjacencyIDs = { required: new Set(), optional, deleted: new Set() }
 
     return { cells, typeIndexes, adjacencyIDs, random, isGenerating: true }
 }

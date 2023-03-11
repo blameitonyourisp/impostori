@@ -19,8 +19,9 @@ import { GridCell, Random } from "./_index.js"
  * @property {number[]} typeIndexes.vacant
  * 
  * @property {object} adjacencyIDs
- * @property {number[]} adjacencyIDs.required
- * @property {number[]} adjacencyIDs.optional
+ * @property {Set.<number>} adjacencyIDs.required
+ * @property {Set.<number>} adjacencyIDs.optional
+ * @property {Set.<number>} adjacencyIDs.deleted
  * 
  * @property {Random} random
  * @property {boolean} isGenerating
