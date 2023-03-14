@@ -30,13 +30,7 @@ import { Adjacency, Grid } from "../../types/_index.js"
  * @returns {Grid}
  */
 const removeGridAdjacency = (adjacency, grid) => {
-    // const index = grid.adjacencyIDs.optional.indexOf(adjacency.id)
-    // if (index === -1) { return grid }
-
-    // const optional = [...grid.adjacencyIDs.optional]
-    // optional.splice(index, 1)
-    // const deleted = [...grid.adjacencyIDs.deleted, adjacency.id]
-    // const adjacencyIDs = { ...grid.adjacencyIDs, optional, deleted }
+    if (!grid.adjacencyIDs.optional.has(adjacency.id)) { return grid }
 
     const optional = new Set(grid.adjacencyIDs.optional)
     const deleted = new Set(grid.adjacencyIDs.deleted)
@@ -67,16 +61,13 @@ const removeGridAdjacency = (adjacency, grid) => {
  * @returns {Grid}
  */
 const addGridAdjacency = (adjacency, grid) => {
-    // const index = grid.adjacencyIDs.optional.indexOf(adjacency.id)
-    // add deleted and all adjacency id fields, then when re addind adj, check on deleted list
-    // if () { return grid }
-
-    // const optional = [...grid.adjacencyIDs.optional, adjacency.id]
-    // const adjacencyIDs = { ...grid.adjacencyIDs, optional }
+    if (!grid.adjacencyIDs.deleted.has(adjacency.id)) { return grid }
 
     const optional = new Set(grid.adjacencyIDs.optional)
+    const deleted = new Set(grid.adjacencyIDs.deleted)
     optional.add(adjacency.id)
-    const adjacencyIDs = { ...grid.adjacencyIDs, optional }
+    deleted.delete(adjacency.id)
+    const adjacencyIDs = { ...grid.adjacencyIDs, optional, deleted }
 
     const cells = [...grid.cells]
     const upperCell = cells[adjacency.upperIndex]
@@ -101,14 +92,7 @@ const addGridAdjacency = (adjacency, grid) => {
  * @returns {Grid}
  */
 const requireGridAdjacency = (adjacency, grid) => {
-    // const index = grid.adjacencyIDs.optional.indexOf(adjacency.id)
-    // if (index === -1) { return grid }
-
-    // const required = [...grid.adjacencyIDs.required]
-    // required.push(adjacency.id)
-    // const optional = [...grid.adjacencyIDs.optional]
-    // optional.splice(index, 1)
-    // const adjacencyIDs = { ...grid.adjacencyIDs, required, optional }
+    if (!grid.adjacencyIDs.optional.has(adjacency.id)) { return grid }
 
     const optional = new Set(grid.adjacencyIDs.optional)
     const required = new Set(grid.adjacencyIDs.required)
