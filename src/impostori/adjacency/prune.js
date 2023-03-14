@@ -22,6 +22,17 @@ import {
 } from "./_index.js"
 // @imports-types
 import { Grid } from "../../types/_index.js"
+import { pipe } from "../../utils/pipe.js"
+
+/**
+ *  x remove all adj from imposters (require the adjacency if grid invalid)
+ *  x re add all adj unless that invalidates grid
+ *  - remove all adj from workers (require the adjacency if grid invalid)
+ *  - re add all adj (none will invalidate grid)
+ *  - all optional adjs are now "genuinely" optional
+ *  - divide all optional ids into either required or deleted  according to
+ *      random dropout variable
+ */
 
 /**
  * 
@@ -29,6 +40,20 @@ import { Grid } from "../../types/_index.js"
  * @returns {Grid}
  */
 const pruneGridAdjacencies = grid => {
+    grid = pipe(pruneImposterAdjacencies, pruneWorkerAdjacencies)(grid)
+    // caution high random dropout may cause solve that takes too long due to 
+    // number of possible solutions
+    const randomDropout = grid.random.iterate()
+    for (const adjacencyID of grid.adjacencyIDs.optional) {
+        const adjacency = getAdjacencyData(adjacencyID)
+        grid = grid.random.iterate() > randomDropout 
+            ? requireGridAdjacency(adjacency, grid)
+            : removeGridAdjacency(adjacency, grid)
+    }
+    return grid
+}
+
+const pruneImposterAdjacencies = grid => {
     const removedAdjacencies = []
     for (const index of grid.typeIndexes.imposter) {
         const cell = grid.cells[index]
@@ -43,72 +68,38 @@ const pruneGridAdjacencies = grid => {
             else { grid = requireGridAdjacency(adjacency, grid) }
         }
     }
-    for (const adjacency of removedAdjacencies) {
+    for (const adjacency of removedAdjacencies) { // shuffle removed adjacencies first?
         const extended = addGridAdjacency(adjacency, grid)
         if (validateGridTypes(extended)) { grid = extended }
     }
+    return grid
+}
 
-
-
-
-    // const imposters = [...grid.typeIndexes.imposter]
-    // while (!validateGridTypes(grid)) {
-    //     if (!imposters.length) { break }
-    //     const indexA = grid.random.shuffleArray(imposters)[0]
-    //     const cell = grid.cells[indexA]
-    //     const optional = cell.adjacentIndexes.type.imposter.filter(index => {
-    //         return cell.adjacentIndexes.optional.includes(index)
-    //     })
-    //     if (optional.length) {
-    //         const indexB = grid.random.shuffleArray(optional)[0]
-    //         const adjacency = getAdjacencyData(indexA, indexB)
-    //         const pruned = removeGridAdjacency(adjacency, grid)
-    //         if (validateGridAdjacencies(pruned)) { grid = pruned }
-    //         else { grid = requireGridAdjacency(adjacency, grid) }
-    //     }
-    //     else {
-    //         imposters.splice(imposters.indexOf(indexA), 1)
-    //     }        
-    // }
-
-    const randomDropout = grid.random.prng(
-        Math.round(grid.adjacencyIDs.optional.size * 0.1),
-        Math.round(grid.adjacencyIDs.optional.size * 0.2)
-    )
-
-    // change to loop over workers until they become invalid, then add a random number of adj back in
-    const workers = [...grid.typeIndexes.worker]
-    for (let i = 0; i < randomDropout; i ++) {
-        if (!workers.length) { break }
-        const indexA = grid.random.shuffleArray(workers)[0]
-        const cell = grid.cells[indexA]
+/**
+ * 
+ * @param {Grid} grid 
+ * @returns 
+ */
+const pruneWorkerAdjacencies = grid => {
+    const removedAdjacencies = []
+    for (const index of grid.typeIndexes.worker) {
+        const cell = grid.cells[index]
         const optional = cell.adjacentIndexes.type.worker.filter(index => {
             return cell.adjacentIndexes.optional.includes(index)
         })
-        if (optional.length) {
-            const indexB = grid.random.shuffleArray(optional)[0]
-            const adjacency = getAdjacencyData(indexA, indexB)
+        for (const adjacentIndex of optional) {
+            const adjacency = getAdjacencyData(index, adjacentIndex)
             const pruned = removeGridAdjacency(adjacency, grid)
-            if (validateGridTypes(pruned)) { grid = pruned }
+            if (validateGridAdjacencies(pruned)) { 
+                grid = pruned 
+                removedAdjacencies.push(adjacency)
+            }
             else { grid = requireGridAdjacency(adjacency, grid) }
         }
-        else {
-            workers.splice(workers.indexOf(indexA), 1)
-        }        
     }
-    // console.log(grid.adjacencyIDs.optional.length)
-
-    // const randomDropout = grid.random.prng(
-    //     Math.round(grid.adjacencyIDs.optional.length * 0.1),
-    //     Math.round(grid.adjacencyIDs.optional.length * 0.2)
-    // )
-    // for (let i = 0; i < randomDropout; i ++) {
-    //     const id = grid.random.shuffleArray(grid.adjacencyIDs.optional)[0]
-    //     const adjacency = getAdjacencyData(id)
-    //     const pruned = removeGridAdjacency(adjacency, grid)
-    //     if (validateGridAdjacencies(pruned) && validateGridTypes(pruned)) { grid = pruned }
-    //     else { grid = requireGridAdjacency(adjacency, grid) }
-    // }
+    for (const adjacency of removedAdjacencies) { // shuffle removed adjacencies first?
+        grid = addGridAdjacency(adjacency, grid)
+    }
     return grid
 }
 
