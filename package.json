@@ -3,10 +3,16 @@
     "version": "1.0.0",
     "description": "Hex based number puzzle game inspired by sudoku and minesweeper",
     "type": "module",
-    "main": "./src/index.js",
+    "main": "./dist/bundle.min.js",
     "scripts": {
         "test": "jest",
-        "docs": "jsdoc -c ./config/jsdoc.config.json"
+        "docs": "jsdoc -c ./config/jsdoc.config.json",
+        "build": "npm run build-pkg && npm run build-cli",
+        "build-pkg": "rollup --config ./config/rollup.config.pkg.js",
+        "build-cli": "rollup --config ./config/rollup.config.cli.js"
+    },
+    "bin": {
+        "impostori": "./bin/bundle.min.js"
     },
     "repository": {
         "type": "git",
@@ -23,9 +29,16 @@
     },
     "homepage": "https://github.com/blameitonyourisp/impostori#readme",
     "devDependencies": {
+        "@babel/cli": "^7.21.0",
+        "@babel/core": "^7.21.0",
         "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+        "@babel/preset-env": "^7.20.2",
+        "@rollup/plugin-babel": "^6.0.3",
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "@rollup/plugin-terser": "^0.4.0",
         "docdash": "^2.0.1",
         "jest": "^29.5.0",
-        "jsdoc": "^4.0.0"
+        "jsdoc": "^4.0.0",
+        "rollup": "^3.18.0"
     }
 }
