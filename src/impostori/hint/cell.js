@@ -61,8 +61,8 @@ const fillCellHints = (grid, index) => {
     hints.splice(hintIndex, 0, cell.value)
 
     const detective = hints.splice(0, 1)
-    const worker = hints.splice(0, 2)
-    const imposter = hints.splice(0, 3)
+    const worker = hints.splice(0, 2).sort()
+    const imposter = hints.splice(0, 3).sort()
     cell = { ...cell, hints: { detective, worker, imposter } } 
 
     return cell
