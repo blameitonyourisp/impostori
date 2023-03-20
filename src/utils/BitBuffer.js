@@ -2,22 +2,14 @@ class BitBuffer {
     constructor({ size = 4, buffer = new ArrayBuffer(size) } = {}) {
         this.buffer = buffer
     }
-
-    read(size = 32, offset = 0) {
-        if (size > 32) { return }
-        const { view, byteLength, subBit } = this.#getView(size, offset)
-        let uint32 = 0
-        for (let i = 0; i < byteLength; i ++) {
-            const offset = 24 + subBit - i * 8
-            uint32 = offset >= 0 
-                ? (uint32 | view.getUint8(i) << offset) >>> 0
-                : (uint32 | view.getUint8(i) >>> - offset) >>> 0
+    
+    write(int, size, offset, strict = false) {
+        offset = strict ? offset : this.#clampOffset(offset)
+        size = strict ? size : this.#clampSize(size, offset)
+        int = strict ? int : this.#clampInt(int, offset)
+        if (int > 2 ** size - 1 || size > 32) { 
+            throw new BitBuffer.#SizeError(size, "READ") 
         }
-        return uint32 >>> 32 - size
-    }
-
-    write(int, size = 32, offset = 0) {
-        if (Math.log2(int) > 32 || size > 32) { return }
         const { view, byteLength, subBit } = this.#getView(size, offset)
         for (let i = 0; i < byteLength; i ++) {
             const byte = view.getUint8(i)
@@ -34,13 +26,32 @@ class BitBuffer {
         return int
     }
 
-    #getView(size, offset) {
-        const startByte = Math.floor(offset / 8)
-        const subBit = offset - 8 * startByte
-        const byteLength = Math.ceil((subBit + size) / 8)
-        if (startByte + byteLength > this.byteLength) { return }
-        const view = new DataView(this.buffer, startByte, byteLength)
-        return { view, byteLength, subBit }
+    sequentialWrite(int, size, strict = false) {
+        this.writePointer ??= 0
+        const uint32 = this.write(int, size, this.writePointer, strict)
+        this.writePointer = (this.writePointer + size) % this.bitLength
+        return uint32
+    }
+
+    read(size, offset, strict = false) {
+        offset = strict ? offset : this.#clampOffset(offset)
+        size = strict ? size : this.#clampSize(size, offset)
+        if (size > 32) { throw new BitBuffer.#SizeError(size, "READ") }
+        const { view, byteLength, subBit } = this.#getView(size, offset)
+        let uint32 = 0
+        for (let i = 0; i < byteLength; i ++) {
+            const offset = 24 + subBit - i * 8
+            uint32 = offset >= 0 ? (uint32 | view.getUint8(i) << offset) >>> 0
+                : (uint32 | view.getUint8(i) >>> - offset) >>> 0
+        }
+        return uint32 >>> 32 - size
+    }
+
+    sequentialRead(size, strict = false) {
+        this.readPointer ??= 0
+        const uint32 = this.read(size, this.readPointer, strict)
+        this.readPointer = (this.readPointer + size) % this.bitLength
+        return uint32
     }
     
     toString() {
@@ -53,11 +64,37 @@ class BitBuffer {
             uint24 = (uint24 | (byte << 16 - pointer * 8)) >>> 0
             pointer = ++ pointer % 3
             if (!pointer) {
-                string += BitBuffer.uint24ToB64(uint24)
+                string += BitBuffer.#uint24ToB64(uint24)
                 uint24 = 0
             }
         }
         return string
+    }
+
+    #clampInt(int, offset) {
+        const bitsRemaining = this.bitLength - offset
+        const maxInt = bitsRemaining < 32 ? (2 << bitsRemaining) - 1 >>> 0
+            : BitBuffer.#MAX_INT
+        return Math.min(int, maxInt)
+    }
+
+    #clampSize(size, offset) {
+        return Math.min(size, this.bitLength - offset, 32)
+    }
+
+    #clampOffset(offset) {
+        return Math.min(offset, this.bitLength - 1)
+    }
+
+    #getView(size, offset) {
+        const startByte = Math.floor(offset / 8)
+        const subBit = offset - 8 * startByte
+        const byteLength = Math.ceil((subBit + size) / 8)
+        if (startByte + byteLength > this.byteLength) { 
+            throw new BitBuffer.#RangeError(size, offset)
+        }
+        const view = new DataView(this.buffer, startByte, byteLength)
+        return { view, byteLength, subBit }
     }
 
     get bitLength() { 
@@ -68,51 +105,79 @@ class BitBuffer {
         return this.buffer.byteLength 
     }
 
+    /**
+     * 
+     * @param {string} string 
+     */
     static from(string) {
-        if (!string.match(/^[A-Za-z0-9\-_]*$/)) { return }
+        if (!string.match(/^[A-Za-z0-9\-_]*$/)) { 
+            throw new BitBuffer.#StringError(size, "READ") 
+        }
         const buffer = new BitBuffer({ size: Math.ceil(string.length * 3 / 4) })
         const regex = /[A-Za-z0-9\-_]{1,4}/g
         for (const match of string.match(regex)) {
-            const uint24 = BitBuffer.b64ToUint24(match.padEnd(4, "A"))
+            const uint24 = BitBuffer.#b64ToUint24(match.padEnd(4, "A"))
             buffer.sequentialWrite(uint24, 24)
         }
         return buffer
     }
 
-    static b64ToUint24(string) {
-        if (!string.match(/^[A-Za-z0-9\-_]{4}$/)) { return }
+    // errors not required for internal
+    static #b64ToUint24(string) {
         let uint24 = 0
         for (const [index, char] of string.split("").entries()) {
-            const uint6 = BitBuffer.b64ToInt(char)
+            const uint6 = BitBuffer.#dict.indexOf(char)
             uint24 = (uint24 | (uint6 << 18 - index * 6)) >>> 0
         }
         return uint24
     }
 
-    static uint24ToB64(uint24) {
-        if (uint24 > 2 ** 24) { return } 
+    static #uint24ToB64(uint24) {
         let string = ""
         for (let i = 0; i < 4; i ++) {
             const uint6 = uint24 >>> 18 - i * 6 << 26 >>> 26
-            string += BitBuffer.intToB64(uint6)
+            string += BitBuffer.#dict[uint6]
         }
         return string
     }
 
-    static b64ToInt(char) {
-        return BitBuffer.dict.indexOf(char)
-    } 
-
-    static intToB64(int) {
-        return BitBuffer.dict[int]
+    static get #MAX_INT() {
+        return 4294967295 // 2 ** 32 - 1 
     }
 
-    static get dict() {
+    static get #dict() {
         return "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + // ALPHA UPPER
             "abcdefghijklmnopqrstuvwxyz" + // alpha lower
             "0123456789" + // numbers
             "-_" // misc
     }
+
+    static get #SizeError() {
+        return class BitBufferSizeError extends Error {
+            constructor(size, operation) {
+                super("An integer size of ${} bits was requ")
+            }
+        }
+    }
+
+    static get #StringError() {
+        return class BitBufferStringError extends Error {
+            constructor() {
+                super("An integer size of ${} bits was requ")
+            }
+        }
+    }
+
+    static get #RangeError() {
+        return class BitBufferRangeError extends Error {
+            constructor(size, offset) {
+                super("An integer size of ${} bits was requ")
+            }
+        }
+    }
 }
+
+// to get another pointer window, just make new instance of bit buffer class
+// but pass the original buffer into the constructor
 
 export { BitBuffer }
