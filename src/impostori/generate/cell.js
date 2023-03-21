@@ -30,8 +30,6 @@ const generateEmptyCell = (index, random) => {
     // pre-calculate adjacent indexes in order to not call unnecessarily 
     const adjacentIndexes = random.shuffleArray(getAdjacentIndexes(index))
 
-    const hints = random.shuffleArray(Array.from({ length: 6 }, (_, i) => ++ i))
-
     return {
         index,
         // initialize row and columns based on index
@@ -45,16 +43,12 @@ const generateEmptyCell = (index, random) => {
         }),
         // initialize rest of cell to null state or starting base state 
         value: 0,
-        type: "VACANT",
-        // hints: { 
-        //     detective: hints.splice(0, 1),
-        //     worker: hints.splice(0, 2), 
-        //     imposter: hints.splice(0, 3) 
-        // },   
+        type: "VACANT", 
         hints: { 
             detective: [],
             worker: [], 
-            imposter: []
+            imposter: [],
+            eliminated: []
         },     
         adjacentIndexes: {
             all: adjacentIndexes,
@@ -100,26 +94,6 @@ const getAdjacentIndexes = index => {
             : [adjacentIndex]
     })
 }
-
-// const getBox = index => {
-//     // const boxIndexes = [
-//     //     0, 1, 2, 6, 7, 12,
-//     //     3, 4, 8, 9, 13, 18,
-//     //     5, 10, 11, 15, 16, 21,
-//     //     14, 19, 20, 24, 25, 30,
-//     //     17, 22, 26, 27, 31, 32,
-//     //     23, 28, 29, 33, 34, 35
-//     // ]
-//     const boxIndexes = [
-//         0, 1, 2, 6, 7, 8,
-//         3, 4, 5, 9, 10, 11,
-//         12, 13, 14, 18, 19, 20,
-//         15, 16, 17, 21, 22, 23,
-//         24, 25, 26, 30, 31, 32,
-//         27, 28, 29, 33, 34, 35
-//     ]
-//     return Math.floor(boxIndexes.indexOf(index) / 6)
-// }
 
 const getRow = index => {
     return Math.floor(index / 6)
