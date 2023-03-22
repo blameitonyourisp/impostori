@@ -26,8 +26,9 @@ class BitBuffer {
         return int
     }
 
-    sequentialWrite(int, size, strict = false) {
+    writeSequential(int, size, strict = false) {
         this.writePointer ??= 0
+        size ??= this.writeSequential(Math.ceil(Math.log2(int)), 5, strict)
         const uint32 = this.write(int, size, this.writePointer, strict)
         this.writePointer = (this.writePointer + size) % this.bitLength
         return uint32
@@ -55,8 +56,9 @@ class BitBuffer {
         return uint32 >>> 32 - size
     }
 
-    sequentialRead(size, strict = false) {
+    readSequential(size, strict = false) {
         this.readPointer ??= 0
+        size ??= this.readSequential(5, strict)
         const uint32 = this.read(size, this.readPointer, strict)
         this.readPointer = (this.readPointer + size) % this.bitLength
         return uint32
