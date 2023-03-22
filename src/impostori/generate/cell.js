@@ -47,8 +47,7 @@ const generateEmptyCell = (index, random) => {
         hints: { 
             detective: [],
             worker: [], 
-            imposter: [],
-            eliminated: []
+            imposter: []
         },     
         adjacentIndexes: {
             all: adjacentIndexes,

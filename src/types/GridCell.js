@@ -36,9 +36,6 @@ import { CellCandidate, CellType } from "./_index.js";
  * @property {number[]} hints.detective - Hint array length 1
  * @property {number[]} hints.worker - Hint array length 2
  * @property {number[]} hints.imposter - Hint array length 3
- * @property {number[]} hints.eliminated - Hint array of variable length
- *      containing the hints/candidates that the player has discounted as valid
- *      answers for that cell
  * 
  * @property {object} adjacentIndexes - Object describing the existing adjacent
  *      indexes of a cell. All possible adjacent cell indexes are included on a
