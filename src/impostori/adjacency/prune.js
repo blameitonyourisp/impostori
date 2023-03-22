@@ -25,8 +25,8 @@ import { Grid } from "../../types/_index.js"
 import { pipe } from "../../utils/pipe.js"
 
 /**
- *  x remove all adj from imposters (require the adjacency if grid invalid)
- *  x re add all adj unless that invalidates grid
+ *  - remove all adj from imposters (require the adjacency if grid invalid)
+ *  - re add all adj unless that invalidates grid
  *  - remove all adj from workers (require the adjacency if grid invalid)
  *  - re add all adj (none will invalidate grid)
  *  - all optional adjs are now "genuinely" optional
