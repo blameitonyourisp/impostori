@@ -12,9 +12,9 @@
 // @ts-check
 
 // @imports-local
-import { Random } from "../../utils/math/_index.js"
+import { Random } from "../../utils/math/index.js"
 // @imports-types
-import { Impostori } from "../../types/_index.js"
+import { Impostori } from "../../types/index.js"
 import { generateGrid } from "./grid.js"
 
 // #body

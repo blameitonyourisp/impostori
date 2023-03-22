@@ -11,7 +11,7 @@
 // @ts-check
 
 // @imports-types
-import { TypedArrayConstructor } from "../../types/_index.js"
+import { TypedArrayConstructor } from "../../types/index.js"
 
 // @body
 /**

@@ -12,15 +12,15 @@
 // @ts-check
 
 // @imports-local
-import { generateEmptyCell } from "./_index.js"
-import { getAdjacencyData, pruneGridAdjacencies, removeTwins, validateGridAdjacencies } from "../adjacency/_index.js"
-import { validateGridTypes, completedGridTypes, fillGridTypes } from "../type/_index.js"
-import { fillGridValues } from "../value/_index.js"
-import { pipe } from "../../utils/_index.js"
-import { fillGridHints } from "../hint/_index.js"
-import { softResetGrid, hardResetGrid } from "../reset/_index.js"
+import { generateEmptyCell } from "./index.js"
+import { getAdjacencyData, pruneGridAdjacencies, removeTwins, validateGridAdjacencies } from "../adjacency/index.js"
+import { validateGridTypes, completedGridTypes, fillGridTypes } from "../type/index.js"
+import { fillGridValues } from "../value/index.js"
+import { pipe } from "../../utils/index.js"
+import { fillGridHints } from "../hint/index.js"
+import { softResetGrid, hardResetGrid } from "../reset/index.js"
 // @imports-types
-import { Grid, Random } from "../../types/_index.js"
+import { Grid, Random } from "../../types/index.js"
 import { solveGrid } from "../solve/grid.js"
 
 // @body

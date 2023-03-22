@@ -12,7 +12,7 @@
 // @ts-check
 
 // @imports-types
-import { CellType, GridCell } from "../../types/_index.js"
+import { CellType, GridCell } from "../../types/index.js"
 
 // @body
 /**

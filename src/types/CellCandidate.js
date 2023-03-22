@@ -1,6 +1,6 @@
 // @ts-check
 
-import { CellType } from "./_index.js";
+import { CellType } from "./index.js";
 
 // @body
 /**

@@ -12,9 +12,9 @@
 // @ts-check
 
 // @imports-local
-import { resetCell } from "./_index.js"
+import { resetCell } from "./index.js"
 // @imports-types
-import { Grid } from "../../types/_index.js"
+import { Grid } from "../../types/index.js"
 
 // @body
 /**

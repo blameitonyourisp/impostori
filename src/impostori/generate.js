@@ -13,13 +13,13 @@
 
 // @imports-local
 import { Random } from "../utils/math/Random.js"
-import { removeTwins } from "./adjacency/_index.js"
-import { generateEmptyGrid } from "./generate/_index.js"
-import { fillGridHints } from "./hint/_index.js"
-import { fillGridTypes, validateGridTypes } from "./type/_index.js"
-import { resetGrid } from "./reset/_index.js"
-import { solveGrid } from "./solve/_index.js"
-import { fillGridValues } from "./value/_index.js"
+import { removeTwins } from "./adjacency/index.js"
+import { generateEmptyGrid } from "./generate/index.js"
+import { fillGridHints } from "./hint/index.js"
+import { fillGridTypes, validateGridTypes } from "./type/index.js"
+import { resetGrid } from "./reset/index.js"
+import { solveGrid } from "./solve/index.js"
+import { fillGridValues } from "./value/index.js"
 // @imports-types
 import { Impostori } from "../types/_index.js"
 

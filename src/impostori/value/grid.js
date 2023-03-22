@@ -16,7 +16,7 @@ import {
     fillCellValue, 
     propagateCellValue, 
     validateGridValues 
-} from "./_index.js"
+} from "./index.js"
 // @imports-types
 import { Grid } from "../../types/Grid.js"
 

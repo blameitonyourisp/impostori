@@ -70,8 +70,12 @@ class ProgressWidget extends CLIWidget {
         return true
     }
 
+    /**
+     * 
+     * @returns {number}
+     */
     next() {
-        if (this.completeQueue) { return null }
+        if (this.completeQueue) { return - 1 }
         return this.nextOp ++
     }
 

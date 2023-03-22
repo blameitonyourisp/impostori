@@ -12,16 +12,16 @@
 // @ts-check
 
 // @imports-local
-import { validateGridTypes, completedGridTypes } from "../type/_index.js"
+import { validateGridTypes, completedGridTypes } from "../type/index.js"
 import { 
     validateGridAdjacencies, 
     removeGridAdjacency, 
     addGridAdjacency,
     getAdjacencyData, 
     requireGridAdjacency
-} from "./_index.js"
+} from "./index.js"
 // @imports-types
-import { Grid } from "../../types/_index.js"
+import { Grid } from "../../types/index.js"
 import { pipe } from "../../utils/pipe.js"
 
 /**

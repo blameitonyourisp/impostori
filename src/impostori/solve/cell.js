@@ -16,10 +16,10 @@ import {
     forkCellValue, 
     propagateCellValue, 
     validateGridValues 
-} from "../value/_index.js"
-import { propagateCellType, validateGridTypes } from "../type/_index.js"
+} from "../value/index.js"
+import { propagateCellType, validateGridTypes } from "../type/index.js"
 // @imports-types
-import { Grid } from "../../types/_index.js"
+import { Grid } from "../../types/index.js"
 
 // @body
 /**

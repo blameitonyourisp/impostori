@@ -1,7 +1,7 @@
 // @ts-check
 
 // @imports-types
-import { GridCell, Random } from "./_index.js"
+import { GridCell, Random } from "./index.js"
 
 // @body
 /**

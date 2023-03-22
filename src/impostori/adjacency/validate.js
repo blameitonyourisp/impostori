@@ -12,9 +12,9 @@
 // @ts-check
 
 // @imports-local
-import { validateGridTypes } from "../type/_index.js"
+import { validateGridTypes } from "../type/index.js"
 
-import { Grid } from "../../types/_index.js"
+import { Grid } from "../../types/index.js"
 import { continuosTypeIndexes } from "./continuos.js"
 
 // not to be used during solve stage - change to only validate imposterAdj
