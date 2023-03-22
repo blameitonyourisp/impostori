@@ -20,7 +20,7 @@ import { CellType, GridCell } from "../../types/_index.js"
  * @param {GridCell} cell 
  * @returns {GridCell}
  */
-const resetCell = cell => {
+const resetCell = (cell, hard = false) => {
     const candidates = Array.from({ length: 6 }, (_, i) => {
         const value = i + 1
         /** @type {CellType} */
@@ -41,7 +41,9 @@ const resetCell = cell => {
     }
     const adjacentIndexes = { ...cell.adjacentIndexes, type: typeIndexes }
 
-    return { ...cell, candidates, value, type, adjacentIndexes }
+    return hard
+        ? { ...cell, candidates, value, type, adjacentIndexes }
+        : { ...cell, candidates }
 }
 
 // @exports
