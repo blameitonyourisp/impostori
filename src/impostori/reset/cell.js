@@ -29,19 +29,7 @@ const resetCell = cell => {
             : "IMPOSTER"
         return { value, type }
     })
-
-    const value = 0
-    const type = "VACANT"
-
-    const typeIndexes = {
-        detective: [],
-        worker: [],
-        imposter: [],
-        vacant: [...cell.adjacentIndexes.all]
-    }
-    const adjacentIndexes = { ...cell.adjacentIndexes, type: typeIndexes }
-
-    return { ...cell, candidates, value, type, adjacentIndexes }
+    return { ...cell, candidates }
 }
 
 // @exports
