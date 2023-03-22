@@ -18,7 +18,7 @@ import { validateGridTypes, completedGridTypes, fillGridTypes } from "../type/_i
 import { fillGridValues } from "../value/_index.js"
 import { pipe } from "../../utils/_index.js"
 import { fillGridHints } from "../hint/_index.js"
-import { resetGrid } from "../reset/_index.js"
+import { softResetGrid, hardResetGrid } from "../reset/_index.js"
 // @imports-types
 import { Grid, Random } from "../../types/_index.js"
 import { solveGrid } from "../solve/grid.js"
@@ -73,12 +73,13 @@ const generateGrid = random => {
     } while (!validateGridTypes(grid))
 
 
-    const solved = pipe(resetGrid, solveGrid)(grid)
+    const solved = pipe(hardResetGrid, solveGrid)(grid)
     const { rawEntropy } = solved
     if (solved.grids.length != 1 || !gridsEqual(grid, solved.grids[0])) { 
         return generateGrid(random)
     }
 
+    grid = softResetGrid(grid)
     
     return { grid, rawEntropy } 
 }

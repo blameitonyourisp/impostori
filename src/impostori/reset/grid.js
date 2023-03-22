@@ -39,7 +39,8 @@ const resetGrid = (grid, hard = false) => {
     return grid
 }
 
+const softResetGrid = grid => resetGrid(grid, false)
 const hardResetGrid = grid => resetGrid(grid, true)
 
 // @exports
-export { resetGrid, hardResetGrid }
+export { resetGrid, hardResetGrid, softResetGrid }

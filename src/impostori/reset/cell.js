@@ -46,5 +46,8 @@ const resetCell = (cell, hard = false) => {
         : { ...cell, candidates }
 }
 
+const softResetCell = grid => resetCell(grid, false)
+const hardResetCell = grid => resetCell(grid, true)
+
 // @exports
-export { resetCell }
+export { resetCell, softResetCell, hardResetCell }
