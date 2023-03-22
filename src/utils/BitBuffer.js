@@ -33,6 +33,14 @@ class BitBuffer {
         return uint32
     }
 
+    writeString(string, offset, strict = false) {
+        for (const char of string) {
+            this.write(char.charCodeAt(0), 8, offset, strict)
+            offset += 8
+        }
+        return string
+    }
+
     read(size, offset, strict = false) {
         offset = strict ? offset : this.#clampOffset(offset)
         size = strict ? size : this.#clampSize(size, offset)
@@ -53,10 +61,19 @@ class BitBuffer {
         this.readPointer = (this.readPointer + size) % this.bitLength
         return uint32
     }
+
+    readString(size, offset, strict = false) {
+        let string = ""
+        for (let i = 0; i < size; i ++) {
+            string += String.fromCharCode(this.read(8, offset + i * 8, strict))
+        }
+        return string
+    }
+
     copy({
         target = null,
-        targetStart = 0, 
-        sourceStart = 0, 
+        targetStart = 0,
+        sourceStart = 0,
         sourceEnd = this.bitLength,
         strict = false
     } = {}) {
