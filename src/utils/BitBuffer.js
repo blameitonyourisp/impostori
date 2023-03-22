@@ -53,6 +53,29 @@ class BitBuffer {
         this.readPointer = (this.readPointer + size) % this.bitLength
         return uint32
     }
+    copy({
+        target = null,
+        targetStart = 0, 
+        sourceStart = 0, 
+        sourceEnd = this.bitLength,
+        strict = false
+    } = {}) {
+        const sourceBits = sourceEnd - sourceStart
+        const targetBits = target ? target.bitLength - targetStart : Infinity
+        if (strict && (sourceStart < 0 || sourceEnd > this.bitLength)) {
+            const index = sourceStart < 0 ? sourceStart : sourceEnd
+            throw new BitBuffer.#RangeError(index, this.buffer)
+        }
+        if (strict && sourceBits > targetBits) {
+            const index = target.bitLength + 1
+            throw new BitBuffer.#RangeError(index, target.buffer)
+        }
+        target ??= new BitBuffer({ size: Math.ceil(sourceBits / 8) })
+        for (let i = 0; i < sourceBits; i ++) {
+            target.write(this.read(1, sourceStart + i), 1, targetStart + i)
+        }
+        return target
+    }
     
     toString() {
         let string = ""
