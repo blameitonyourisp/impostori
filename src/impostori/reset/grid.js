@@ -24,7 +24,13 @@ import { Grid } from "../../types/_index.js"
  * @returns {Grid}
  */
 const resetGrid = grid => {
-    grid = { ...grid, isGenerating: false, cells: [...grid.cells]}
+    const typeIndexes = {
+        detective: [],
+        worker: [],
+        imposter: [],
+        vacant: Array.from({ length: 36 }, (_, index) => index)
+    }
+    grid = { ...grid, typeIndexes, isGenerating: false, cells: [...grid.cells]}
     for (let cell of grid.cells) { grid.cells[cell.index] = resetCell(cell) }
     return grid
 }
