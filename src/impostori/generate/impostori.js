@@ -11,11 +11,12 @@
 
 // @ts-check
 
-// @imports-local
-import { Random } from "../../utils/math/index.js"
+// @imports-module
+import { generateGrid } from "./grid.js"
 // @imports-types
 import { Impostori } from "../../types/index.js"
-import { generateGrid } from "./grid.js"
+// @imports-utils
+import { Random } from "../../utils/math/index.js"
 
 // #body
 /**

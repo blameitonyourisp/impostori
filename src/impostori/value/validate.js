@@ -11,12 +11,10 @@
 
 // @ts-check
 
-// #imports-packages
-// #imports-local
-// #imports-types
+// @imports-types
 import { Grid } from "../../types/Grid.js"
 
-// #body
+// @body
 
 const validateGridValues = grid => {
     const valueIDSet = new Set()
@@ -37,5 +35,5 @@ const validateGridValues = grid => {
     // return valueIDSet.size === 72
 }
 
-// #exports
+// @exports
 export { validateGridValues }

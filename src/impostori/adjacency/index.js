@@ -13,8 +13,4 @@
 
 // @exports
 export * from "./cell.js"
-export * from "./continuos.js"
 export * from "./grid.js"
-export * from "./prune.js"
-export * from "./twins.js"
-export * from "./validate.js"

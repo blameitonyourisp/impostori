@@ -11,7 +11,7 @@
 // @ts-check
 
 // @imports-local
-import { Data } from "./index.js"
+import { Data } from "./Data.js"
 
 // @body
 /**

@@ -1,7 +1,8 @@
 // @ts-check
 
 // @imports-types
-import { CellCandidate, CellType } from "./index.js";
+import { CellCandidate } from "./CellCandidate.js"
+import { CellType } from "./CellType.js"
 
 // @body
 /**

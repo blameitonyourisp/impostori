@@ -11,8 +11,12 @@
 
 // @ts-check
 
-// @imports-local
-import { removeCellAdjacency, addCellAdjacency, requireCellAdjacency } from "./index.js"
+// @imports-module
+import { 
+    addCellAdjacency, 
+    removeCellAdjacency, 
+    requireCellAdjacency 
+} from "./cell.js"
 // @imports-types
 import { Adjacency, Grid } from "../../types/index.js"
 

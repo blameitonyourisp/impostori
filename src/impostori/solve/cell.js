@@ -12,12 +12,12 @@
 // @ts-check
 
 // @imports-local
+import { propagateCellType, validateGridTypes } from "../type/index.js"
 import { 
     forkCellValue, 
     propagateCellValue, 
     validateGridValues 
 } from "../value/index.js"
-import { propagateCellType, validateGridTypes } from "../type/index.js"
 // @imports-types
 import { Grid } from "../../types/index.js"
 

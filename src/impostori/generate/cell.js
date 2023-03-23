@@ -11,14 +11,15 @@
 
 // @ts-check
 
-// @imports-types
-import { GridCell, Random } from "../../types/index.js"
+// @imports-local
 import { 
     getAdjacentIndexes, 
     getRow, 
     getColumn, 
     getBox 
 } from "../adjacency/index.js"
+// @imports-types
+import { GridCell, Random } from "../../types/index.js"
 
 // @body
 /**

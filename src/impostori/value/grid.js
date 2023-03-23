@@ -11,12 +11,10 @@
 
 // @ts-check
 
-// @imports-local
-import { 
-    fillCellValue, 
-    propagateCellValue, 
-    validateGridValues 
-} from "./index.js"
+// @imports-module
+import { fillCellValue } from "./cell.js"
+import { propagateCellValue } from "./propagate.js"
+import { validateGridValues } from "./validate.js"
 // @imports-types
 import { Grid } from "../../types/Grid.js"
 

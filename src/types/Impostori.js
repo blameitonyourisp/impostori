@@ -1,7 +1,7 @@
 // @ts-check
 
 // @imports-types
-import { Grid } from "./index.js"
+import { Grid } from "./Grid.js"
 
 // @body
 /**

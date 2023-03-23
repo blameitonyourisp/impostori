@@ -11,17 +11,12 @@
 
 // @ts-check
 
-// #imports-packages
-// #imports-local
-import { allContinuosTypeIndexes } from "../adjacency/continuos.js"
-// #imports-types
+// @imports-module
+import { allContinuosTypeIndexes } from "./continuos.js"
+// @imports-types
 import { Grid } from "../../types/Grid.js"
 
-// #body
-
-
-
-
+// @body
 
 // 18 or fewer imposters - min 18 total imposter and possible imposter cells (Y)
 // 12 or fewer workers - "" (Y)

@@ -12,15 +12,15 @@
 // @ts-check
 
 // @imports-local
-import { fillCellType, propagateCellType } from "./index.js"
-import { 
-    continuosTypeIndexes, 
-    getAdjacencyData, 
-    requireGridAdjacency 
-} from "../adjacency/index.js"
-import { pipe } from "../../utils/index.js"
+import { getAdjacencyData, requireGridAdjacency } from "../adjacency/grid.js"
+// @imports-module
+import { fillCellType } from "./cell.js"
+import { continuosTypeIndexes } from "./continuos.js"
+import { propagateCellType } from "./propagate.js"
 // @imports-types
 import { Grid, GridCell } from "../../types/index.js"
+// @imports-utils
+import { pipe } from "../../utils/index.js"
 
 // @body
 /**

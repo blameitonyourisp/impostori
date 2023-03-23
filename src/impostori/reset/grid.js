@@ -11,8 +11,8 @@
 
 // @ts-check
 
-// @imports-local
-import { resetCell } from "./index.js"
+// @imports-module
+import { resetCell } from "./cell.js"
 // @imports-types
 import { Grid } from "../../types/index.js"
 

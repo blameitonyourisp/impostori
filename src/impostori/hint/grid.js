@@ -12,10 +12,11 @@
 // @ts-check
 
 // @imports-local
-import { fillCellHints } from "./index.js"
+import { getAdjacencyData, requireGridAdjacency } from "../adjacency/index.js"
+// @imports-module
+import { fillCellHints } from "./cell.js"
 // @imports-types
 import { Grid } from "../../types/index.js"
-import { getAdjacencyData, requireGridAdjacency } from "../adjacency/index.js"
 
 // @body
 /**

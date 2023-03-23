@@ -12,16 +12,16 @@
 // @ts-check
 
 // @imports-local
-import { validateGridTypes, completedGridTypes } from "../type/index.js"
 import { 
-    validateGridAdjacencies, 
     removeGridAdjacency, 
     addGridAdjacency,
     getAdjacencyData, 
     requireGridAdjacency
-} from "./index.js"
+} from "../adjacency/index.js"
+import { validateGridTypes, continuosTypeIndexes } from "../type/index.js"
 // @imports-types
 import { Grid } from "../../types/index.js"
+// @imports-utils
 import { pipe } from "../../utils/pipe.js"
 
 /**
@@ -61,7 +61,7 @@ const pruneImposterAdjacencies = grid => {
         for (const adjacentIndex of cell.adjacentIndexes.optional) {
             const adjacency = getAdjacencyData(index, adjacentIndex)
             const pruned = removeGridAdjacency(adjacency, grid)
-            if (validateGridAdjacencies(pruned)) { 
+            if (validatePrunedAdjacencies(pruned)) { 
                 grid = pruned 
                 removedAdjacencies.push(adjacency)
             }
@@ -90,7 +90,7 @@ const pruneWorkerAdjacencies = grid => {
         for (const adjacentIndex of optional) {
             const adjacency = getAdjacencyData(index, adjacentIndex)
             const pruned = removeGridAdjacency(adjacency, grid)
-            if (validateGridAdjacencies(pruned)) { 
+            if (validatePrunedAdjacencies(pruned)) { 
                 grid = pruned 
                 removedAdjacencies.push(adjacency)
             }
@@ -101,6 +101,29 @@ const pruneWorkerAdjacencies = grid => {
         grid = addGridAdjacency(adjacency, grid)
     }
     return grid
+}
+
+/**
+ * 
+ * 
+ * @param {Grid} grid 
+ * @returns {boolean}
+ *   
+ */
+const validatePrunedAdjacencies = grid => {
+    for (const cell of grid.cells) {
+        if (cell.type === "IMPOSTER") {
+            const values = new Set(cell.adjacentIndexes.all.map(index => {
+                return grid.cells[index].value
+            }))
+            if (values.size < 2) { return false }
+        }
+        // else if (cell.adjacentIndexes.all.length < 2) { return false }
+    }
+    if (continuosTypeIndexes(grid, "VACANT", 0, true).length != 36) { 
+        return false 
+    }
+    return true
 }
 
 export { pruneGridAdjacencies }

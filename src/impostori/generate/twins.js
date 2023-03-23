@@ -12,7 +12,7 @@
 // @ts-check
 
 // @imports-local
-import { getAdjacencyData, removeGridAdjacency } from "./index.js"
+import { getAdjacencyData, removeGridAdjacency } from "../adjacency/index.js"
 // @imports-types
 import { Grid } from "../../types/index.js"
 

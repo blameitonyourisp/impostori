@@ -11,8 +11,8 @@
 
 // @ts-check
 
-// @imports-local
-import { solveCell } from "./index.js"
+// @imports-module
+import { solveCell } from "./cell.js"
 // @imports-types
 import { Grid } from "../../types/index.js"
 
