@@ -9,6 +9,21 @@
 //      * <https://choosealicense.com/licenses/mit>
 //      * <https://spdx.org/licenses/MIT>
 
+/**
+ * @file Exports functions to manage cell adjacencies, functions to get row,
+ *      column, or box of a given cell index, and function returning adjacent
+ *      indexes of a given cell index.
+ * @author James Reid
+ */
+
+/**
+ * @namespace impostori.adjacency.cell
+ */
+
+/**
+ * @module impostori/adjacency/cell
+ */
+
 // @ts-check
 
 // @imports-types
@@ -21,6 +36,8 @@ import { GridCell } from "../../types/index.js"
  * @summary x
  * 
  * @function
+ * @memberof module:impostori/adjacency
+ * @package
  * @static
  * 
  * @param {GridCell} cell
@@ -55,6 +72,8 @@ const removeCellAdjacency = (cell, targetCell) => {
  * @summary x
  * 
  * @function
+ * @memberof module:impostori/adjacency
+ * @package
  * @static
  * 
  * @param {GridCell} cell
@@ -82,6 +101,8 @@ const addCellAdjacency = (cell, targetCell) => {
  * @summary x
  * 
  * @function
+ * @memberof module:impostori/adjacency
+ * @package
  * @static
  * 
  * @param {GridCell} cell
@@ -117,6 +138,8 @@ const requireCellAdjacency = (cell, targetCell) => {
  * @summary Get all possible adjacent indexes given the index of a center cell 
  * 
  * @function
+ * @memberof module:impostori/adjacency
+ * @package
  * @inner
  * 
  * @param {number} index - Index 
@@ -135,14 +158,44 @@ const getAdjacentIndexes = index => {
     })
 }
 
+/**
+ * 
+ * @function
+ * @memberof module:impostori/adjacency
+ * @public
+ * @static
+ * 
+ * @param {*} index 
+ * @returns {number}
+ */
 const getRow = index => {
     return Math.floor(index / 6)
 }
 
+/**
+ * 
+ * @function
+ * @memberof module:impostori/adjacency
+ * @public
+ * @static
+ * 
+ * @param {*} index 
+ * @returns {number}
+ */
 const getColumn = index => {
     return index % 6
 }
 
+/**
+ * 
+ * @function
+ * @memberof module:impostori/adjacency
+ * @public
+ * @static
+ * 
+ * @param {*} index 
+ * @returns {number}
+ */
 const getBox = index => {
     const row = getRow(index)
     const column = getColumn(index)

@@ -9,11 +9,20 @@
 //      * <https://choosealicense.com/licenses/mit>
 //      * <https://spdx.org/licenses/MIT>
 
+/**
+ * @file Exports functions to manage grid adjacencies, and function to produce
+ *      an adjacency object given id or both cell indexes of the adjacency.
+ * @module impostori/adjacency/grid
+ * @author James Reid
+ */
+
 // @ts-check
 
 // @imports-module
 import { 
     addCellAdjacency, 
+    getColumn, 
+    getRow, 
     removeCellAdjacency, 
     requireCellAdjacency 
 } from "./cell.js"
@@ -139,23 +148,35 @@ const getAdjacencyData = (...args) => {
     // if one argument is passed treat it as an adjacency id
     if (args.length > 1) {
         // sort provided cell indexes by value
-        upperIndex = Math.max(...args)
         lowerIndex = Math.min(...args)
+        upperIndex = Math.max(...args)
         // concatenate cell indexes into an id of the form "xxyy" where "xx" and
         // "yy" are separate two digit numbers representing the upper and lower
         // cell indexes
-        id = upperIndex * 100 + lowerIndex
+        const R1 = getRow(lowerIndex)
+        const [C1, C2] = [getColumn(lowerIndex), getColumn(upperIndex)]
+        id = 16 * R1 + 6 * C1 - 5 * C2 + 5
     }
     else {
         id = args[0]
-        // split adjacency id (in form "xxyy") into constituent cell indexes
-        // "xx" and "yy"
-        upperIndex = Math.floor(id / 100)
-        lowerIndex = id % 100
+        const rowID = id % 16
+        const R1 = Math.floor(id / 16)        
+        const C1 = rowID % 5 + 5 * (rowID % 5 ? 0 : 1) * Math.floor(rowID / 10)
+        const C2 = 1 + (16 * R1 + 6 * C1 - id) / 5
+        lowerIndex = R1 * 6 + C1
+        upperIndex = lowerIndex + [1, 6, 5][1 + C1 - C2]
     }
 
-    return { upperIndex, lowerIndex, id }
+    const string = lowerIndex.toString().padStart(2, "0") 
+        + upperIndex.toString().padStart(2, "0")
+
+    return { upperIndex, lowerIndex, id, string }
 }
 
 // @exports
-export { removeGridAdjacency, addGridAdjacency, requireGridAdjacency, getAdjacencyData }
+export { 
+    removeGridAdjacency, 
+    addGridAdjacency, 
+    requireGridAdjacency, 
+    getAdjacencyData 
+}

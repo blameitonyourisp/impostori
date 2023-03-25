@@ -9,6 +9,17 @@
 //      * <https://choosealicense.com/licenses/mit>
 //      * <https://spdx.org/licenses/MIT>
 
+/**
+ * My namespace
+ * @module impostori/adjacency
+ * @author James Reid
+ */
+
+/**
+ * @namespace impostori.adjacency
+ * @property {module:impostori/adjacency/cell} cell - none
+ */
+
 // @ts-check
 
 // @exports
