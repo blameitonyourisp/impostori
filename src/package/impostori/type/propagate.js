@@ -1,33 +1,36 @@
-/** @license MIT */
-// Copyright (c) 2022 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
-// of which may be found in the LICENSE.md file in the root of this repository.  
-// 
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
 // For a template copy of the license see one of the following 3rd party sites:
-//      * <https://opensource.org/licenses/MIT>
-//      * <https://choosealicense.com/licenses/mit>
-//      * <https://spdx.org/licenses/MIT>
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
+
+/**
+ * @file Propagate cell type across a grid by removing invalid cell candidates.
+ * @author James Reid
+ */
 
 // @ts-check
 
-// @imports-local
+// @@imports-package
 import { getAdjacencyData, removeGridAdjacency } from "../adjacency/grid.js"
-// @imports-module
-import { fillCellType } from "./cell.js"
-// @imports-types
-import { CellType, Grid, GridCell } from "../../types/index.js"
 
-// @body
+// @@imports-module
+import { CELL_TYPES, fillCellType } from "./cell.js"
+
+// @@imports-types
+/* eslint-disable no-unused-vars -- Types only used in comments. */
+import { CellType, Grid, GridCell } from "../../types/index.js"
+/* eslint-enable no-unused-vars -- Close disable-enable pair. */
+
+// @@body
 /**
- * 
- * 
- * @summary x
- * 
- * @function
- * @static
- * @param {GridCell} updatedCell 
- * @param {Grid} grid 
+ *
+ * @param {GridCell} updatedCell
+ * @param {Grid} grid
  * @returns {Grid}
  */
 const propagateCellType = (updatedCell, grid) => {
@@ -41,31 +44,31 @@ const propagateCellType = (updatedCell, grid) => {
         // must come before cell re-assign
         if (
             grid.isGenerating &&
-            cell.type === "DETECTIVE" && 
-            updatedCell.type === "IMPOSTER" &&
+            cell.type === CELL_TYPES.detective &&
+            updatedCell.type === CELL_TYPES.imposter &&
             !cell.adjacentIndexes.type.imposter.includes(updatedCell.index)
         ) {
             tempArray.push(cell.index)
-        }         
+        }
         cell = updateCellTypeIndexes(updatedCell, cell)
-        grid.cells[index] = cell   
+        grid.cells[index] = cell
     }
 
     for (const index of tempArray) {
-        let cell = grid.cells[index]
+        const cell = grid.cells[index]
         // resolve for when imposter has only 2 adj
         const adjacency = getAdjacencyData(updatedCell.index, cell.index)
         grid = removeGridAdjacency(adjacency, grid)
-        updatedCell = grid.cells[updatedCell.index]        
+        updatedCell = grid.cells[updatedCell.index]
     }
 
-    if (grid.isGenerating && updatedCell.type === "DETECTIVE") {
+    if (grid.isGenerating && updatedCell.type === CELL_TYPES.detective) {
         let imposters = [...updatedCell.adjacentIndexes.type.imposter]
         for (const index of imposters) {
             const cell = grid.cells[index]
-            if (cell.type === "VACANT") {
+            if (cell.type === CELL_TYPES.vacant) {
                 // ids required after all types are filled
-                const updatedImposter = fillCellType(cell, "IMPOSTER")
+                const updatedImposter = fillCellType(cell, CELL_TYPES.imposter)
                 grid = propagateCellType(updatedImposter, grid)
             }
         }
@@ -76,7 +79,7 @@ const propagateCellType = (updatedCell, grid) => {
             const adjacenciesB = grid.cells[indexB].adjacentIndexes.all.length
             if (adjacenciesA > adjacenciesB) { return 1 }
             else if (adjacenciesA < adjacenciesB) { return - 1 }
-            else { return grid.random.shuffleArray([1, - 1])[0] }
+            return grid.random.shuffleArray([1, - 1])[0]
         })
         while (updatedCell.value < imposters.length) {
             const index = imposters[0]
@@ -90,7 +93,7 @@ const propagateCellType = (updatedCell, grid) => {
 
     // no significant performance gain noted
     if (!grid.isGenerating) {
-        if (updatedCell.type === "DETECTIVE") {
+        if (updatedCell.type === CELL_TYPES.detective) {
             const linkedIndexes = [
                 ...updatedCell.adjacentIndexes.all,
                 // ...getBoxIndexes(updatedCell.box)
@@ -98,21 +101,21 @@ const propagateCellType = (updatedCell, grid) => {
             for (const index of linkedIndexes) {
                 let cell = grid.cells[index]
                 const candidates = cell.candidates.filter(candidate => {
-                    return candidate.type != "DETECTIVE"
+                    return candidate.type !== CELL_TYPES.detective
                 })
-                cell = { ...cell,  candidates }
+                cell = { ...cell, candidates }
                 grid.cells[index] = cell
             }
         }
         // multiple cases will come true at same time hence else
         if (grid.typeIndexes.detective.length === 6) {
-            grid = stripType(grid, "DETECTIVE")
+            grid = stripType(grid, CELL_TYPES.detective)
         }
         else if (grid.typeIndexes.worker.length === 12) {
-            grid = stripType(grid, "WORKER")
+            grid = stripType(grid, CELL_TYPES.worker)
         }
         else if (grid.typeIndexes.imposter.length === 18) {
-            grid = stripType(grid, "IMPOSTER")
+            grid = stripType(grid, CELL_TYPES.imposter)
         }
     }
 
@@ -120,27 +123,28 @@ const propagateCellType = (updatedCell, grid) => {
 }
 
 /**
- * 
- * @param {Grid} grid 
- * @param {CellType} type 
+ *
+ * @param {Grid} grid
+ * @param {CellType} type
+ * @returns {Grid}
  */
 const stripType = (grid, type) => {
     grid = { ...grid, cells: [...grid.cells] }
     for (let cell of grid.cells) {
         const candidates = cell.candidates.filter(candidate => {
-            return candidate.type != type
+            return candidate.type !== type
         })
-        cell = { ...cell,  candidates }
+        cell = { ...cell, candidates }
         grid.cells[cell.index] = cell
     }
     return grid
 }
 
 /**
- * 
- * @param {*} updatedCell 
- * @param {*} targetCell 
- * @returns {object}
+ *
+ * @param {*} updatedCell
+ * @param {*} targetCell
+ * @returns {GridCell}
  */
 const updateCellTypeIndexes = (updatedCell, targetCell) => {
     const adjacentIndexes = {
@@ -151,10 +155,10 @@ const updateCellTypeIndexes = (updatedCell, targetCell) => {
 }
 
 /**
- * 
- * @param {*} updatedCell 
- * @param {*} grid 
- * @returns {object}
+ *
+ * @param {*} updatedCell
+ * @param {*} grid
+ * @returns {Grid}
  */
 const updateGridTypeIndexes = (updatedCell, grid) => {
     return {
@@ -164,14 +168,14 @@ const updateGridTypeIndexes = (updatedCell, grid) => {
 }
 
 /**
- * 
- * @param {*} cell 
- * @param {*} target 
- * @returns {object}
+ *
+ * @param {GridCell} cell
+ * @param {*} target
  */
 const updateTypeIndexes = (cell, target) => {
     target = target.typeIndexes || target.adjacentIndexes.type
 
+    /** @type {Object.<keyof CELL_TYPES, number[]>} */
     const indexes = {
         detective: [...target.detective],
         worker: [...target.worker],
@@ -180,7 +184,7 @@ const updateTypeIndexes = (cell, target) => {
     }
 
     const index = indexes.vacant.indexOf(cell.index)
-    if (index != -1) {
+    if (index !== - 1) {
         indexes.vacant.splice(index, 1)
         indexes[cell.type.toLowerCase()].push(cell.index)
     }
@@ -188,5 +192,5 @@ const updateTypeIndexes = (cell, target) => {
     return indexes
 }
 
-// @exports
+// @@exports
 export { propagateCellType }
