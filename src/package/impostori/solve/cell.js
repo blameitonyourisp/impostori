@@ -1,31 +1,38 @@
-/** @license MIT */
-// Copyright (c) 2022 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
-// of which may be found in the LICENSE.md file in the root of this repository.  
-// 
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
 // For a template copy of the license see one of the following 3rd party sites:
-//      * <https://opensource.org/licenses/MIT>
-//      * <https://choosealicense.com/licenses/mit>
-//      * <https://spdx.org/licenses/MIT>
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
+
+/**
+ * @file Step-solve single cell of grid.
+ * @author James Reid
+ */
 
 // @ts-check
 
-// @imports-local
+// @@imports-package
 import { propagateCellType, validateGridTypes } from "../type/index.js"
-import { 
-    forkCellValue, 
-    propagateCellValue, 
-    validateGridValues 
+import {
+    forkCellValue,
+    propagateCellValue,
+    validateGridValues
 } from "../value/index.js"
-// @imports-types
-import { Grid } from "../../types/index.js"
 
-// @body
+// @imports-types
+/* eslint-disable no-unused-vars -- Types only used in comments. */
+import { Grid } from "../../types/index.js"
+/* eslint-enable no-unused-vars -- Close disable-enable pair. */
+
+// @@body
 /**
- * 
- * @param {Grid} grid 
- * @param {number} index 
+ *
+ * @param {Grid} grid
+ * @param {number} index
  * @returns {Grid[]}
  */
 const solveCell = (grid, index) => {
@@ -44,5 +51,5 @@ const solveCell = (grid, index) => {
     return updatedGrids
 }
 
-// @exports
+// @@exports
 export { solveCell }
