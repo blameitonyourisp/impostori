@@ -1,55 +1,53 @@
-/** @license MIT */
-// Copyright (c) 2022 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
-// of which may be found in the LICENSE.md file in the root of this repository.  
-// 
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
 // For a template copy of the license see one of the following 3rd party sites:
-//      * <https://opensource.org/licenses/MIT>
-//      * <https://choosealicense.com/licenses/mit>
-//      * <https://spdx.org/licenses/MIT>
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
 
 /**
- * 
- * @leafmodule
+ * @file Generate filled grid.
+ * @author James Reid
  */
 
 // @ts-check
 
-// @imports-local
+// @@imports-package
 import { getAdjacencyData } from "../adjacency/index.js"
 import { fillGridHints } from "../hint/index.js"
 import { softResetGrid, hardResetGrid } from "../reset/index.js"
 import { solveGrid } from "../solve/index.js"
-import { 
-    validateGridTypes, 
-    completedGridTypes, 
-    fillGridTypes 
+import {
+    validateGridTypes,
+    completedGridTypes,
+    fillGridTypes
 } from "../type/index.js"
 import { fillGridValues } from "../value/index.js"
-// @imports-module
+
+// @@imports-module
 import { generateEmptyCell } from "./cell.js"
 import { pruneGridAdjacencies } from "./prune.js"
 import { removeTwins } from "./twins.js"
-// @imports-types
-import { Grid, Random } from "../../types/index.js"
-// @imports-utils
+
+// @@imports-utils
 import { pipe } from "../../utils/index.js"
 
-// @body
+// @@imports-types
+/* eslint-disable no-unused-vars -- Types only used in comments. */
+import { Grid, Random } from "../../types/index.js"
+/* eslint-enable no-unused-vars -- Close disable-enable pair. */
+
+// @@body
 /**
- * 
- * 
- * @summary Generate a random empty grid
- * 
- * @function
- * @static
- * 
- * @param {Random} random 
+ *
+ * @param {Random} random
  * @returns {Grid}
  */
 const generateEmptyGrid = random => {
-    const cells =  Array.from({ length: 36 }, (_, index) => {
+    const cells = Array.from({ length: 36 }, (_, index) => {
         return generateEmptyCell(index, random)
     })
 
@@ -65,7 +63,7 @@ const generateEmptyGrid = random => {
         cell.adjacentIndexes.all.forEach(index => {
             const adjacency = getAdjacencyData(cell.index, index)
             optional.add(adjacency.id)
-        })        
+        })
     })
     const adjacencyIDs = { required: new Set(), optional, deleted: new Set() }
 
@@ -73,9 +71,9 @@ const generateEmptyGrid = random => {
 }
 
 /**
- * 
- * @param {Random} random 
- * @returns {Grid}
+ *
+ * @param {Random} random
+ * @returns {{grid:Grid, rawEntropy:number}}
  */
 const generateGrid = random => {
     let grid, typed
@@ -85,22 +83,30 @@ const generateGrid = random => {
         grid = pipe(pruneGridAdjacencies, fillGridHints)(typed)
     } while (!validateGridTypes(grid))
 
-
     const solved = pipe(hardResetGrid, solveGrid)(grid)
     const { rawEntropy } = solved
-    if (solved.grids.length != 1 || !gridsEqual(grid, solved.grids[0])) { 
+    if (solved.grids.length !== 1 || !gridsEqual(grid, solved.grids[0])) {
         return generateGrid(random)
     }
 
     grid = softResetGrid(grid)
-    
-    return { grid, rawEntropy } 
+
+    return { grid, rawEntropy }
 }
 
+/**
+ *
+ * @param {Grid} gridA
+ * @param {Grid} gridB
+ * @returns {boolean}
+ */
 const gridsEqual = (gridA, gridB) => {
-    // $
+    gridA
+    gridB
+
+    // Implement grid comparison or remove function.
     return true
 }
 
-// @exports
+// @@exports
 export { generateEmptyGrid, generateGrid }
