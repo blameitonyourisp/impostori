@@ -1,38 +1,34 @@
-/** @license MIT */
-// Copyright (c) 2022 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
-// of which may be found in the LICENSE.md file in the root of this repository.  
-// 
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
 // For a template copy of the license see one of the following 3rd party sites:
-//      * <https://opensource.org/licenses/MIT>
-//      * <https://choosealicense.com/licenses/mit>
-//      * <https://spdx.org/licenses/MIT>
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
+
+/**
+ * @file Propagate cell values by removing invalid candidates.
+ * @author James Reid
+ */
 
 // @ts-check
 
-// @imports-types
+// @@imports-types
+/* eslint-disable no-unused-vars -- Types only used in comments. */
 import { Grid, GridCell } from "../../types/index.js"
+/* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
+// @@body
 /**
- * @module value
- */
-
-// @body
-/**
- * 
- * 
- * @summary x
- * 
- * @function
- * @static
- * 
- * @param {GridCell} updatedCell 
- * @param {Grid} grid 
+ *
+ * @param {GridCell} updatedCell
+ * @param {Grid} grid
  * @returns {Grid}
  */
 const propagateCellValue = (updatedCell, grid) => {
-    const { row, column, box, value } = updatedCell    
+    const { row, column, box, value } = updatedCell
     grid = { ...grid, cells: [...grid.cells] }
     grid.cells[updatedCell.index] = updatedCell
     const linkedIndexes = [
@@ -43,9 +39,9 @@ const propagateCellValue = (updatedCell, grid) => {
     for (const index of linkedIndexes) {
         let cell = grid.cells[index]
         const candidates = cell.candidates.filter(candidate => {
-            return candidate.value != value
+            return candidate.value !== value
         })
-        cell = { ...cell,  candidates }
+        cell = { ...cell, candidates }
         grid.cells[index] = cell
     }
 
@@ -53,27 +49,37 @@ const propagateCellValue = (updatedCell, grid) => {
         for (const index of updatedCell.adjacentIndexes.all) {
             let cell = grid.cells[index]
             const candidates = cell.candidates.filter(candidate => {
-                return candidate.value != value
+                return candidate.value !== value
             })
-            cell = { ...cell,  candidates }
+            cell = { ...cell, candidates }
             grid.cells[index] = cell
         }
-    }    
+    }
 
     return grid
 }
 
+/**
+ *
+ * @param {number} row
+ * @returns {number[]}
+ */
 const getRowIndexes = row => {
     const result = Array(6)
-    for (let i = 0; i < 6; i ++) {
+    for (let i = 0; i < 6; i++) {
         result[i] = row * 6 + i
     }
     return result
 }
 
+/**
+ *
+ * @param {number} column
+ * @returns {number[]}
+ */
 const getColumnIndexes = column => {
     const result = Array(6)
-    for (let i = 0; i < 6; i ++) {
+    for (let i = 0; i < 6; i++) {
         result[i] = i * 6 + column
     }
     return result
@@ -97,9 +103,14 @@ const getColumnIndexes = column => {
 //         : []
 // }
 
+/**
+ *
+ * @param {number} box
+ * @returns {number[]}
+ */
 const getBoxIndexes = box => {
     const result = Array(6)
-    for (let i = 0; i < 6; i ++) {
+    for (let i = 0; i < 6; i++) {
         const boxRow = (box % 2)
         const boxColumn = Math.floor(box / 2)
         const innerRow = i % 3
@@ -109,5 +120,5 @@ const getBoxIndexes = box => {
     return result
 }
 
-// @exports
+// @@exports
 export { propagateCellValue }
