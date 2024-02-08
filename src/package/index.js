@@ -1,4 +1,4 @@
-// Copyright (c) 2023 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
 // of which may be found in the LICENSE.md file in the root of this repository.
@@ -27,11 +27,16 @@
  * @todo iteratively increase random dropout to target dropout, solving each
  *      time to prevent an impossible solve (?)
  * @todo refactor grid cell to cell
- * @todo move cell and grid adj files to anoth dir - name ?
+ * @todo move cell and grid adj files to another dir - name ?
  * @todo refactor print to generate module and update to display clearer
  * @todo refactor getAdjacencyData to just getAdjacency
  * @todo update adjacency function to return id 0 to 84
  * @todo replace "WORKER", "IMPOSTER" etc. with an object ref
+ * @todo resolve gridEqual function in ./impostori/generate/grid
+ * @todo move print function out of ./impostori/grid dir
+ * @todo update types of all functions etc. to ensure no any type, and return
+ *      types are set where required.
  */
 
-// @@no-exports
+// @@exports
+export * from "./impostori/index.js"
