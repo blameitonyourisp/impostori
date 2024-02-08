@@ -1,3 +1,5 @@
+<img src="/home/james/Documents/programming/13ms/impostori/assets/icons/circle/1k/icon.png" style="zoom:50%;" />
+
 # Impostori
 
 Description of project
