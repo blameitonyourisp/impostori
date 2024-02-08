@@ -1,0 +1,101 @@
+{
+    "frames": {
+        "tile_horizontal_1": {
+            "frame": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_horizontal_2": {
+            "frame": { "x": 80, "y": 0, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_horizontal_3": {
+            "frame": { "x": 160, "y": 0, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_horizontal_4": {
+            "frame": { "x": 240, "y": 0, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_horizontal_5": {
+            "frame": { "x": 320, "y": 0, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_horizontal_6": {
+            "frame": { "x": 400, "y": 0, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_vertical_1": {
+            "frame": { "x": 0, "y": 146, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_vertical_2": {
+            "frame": { "x": 80, "y": 146, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_vertical_3": {
+            "frame": { "x": 160, "y": 146, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_vertical_4": {
+            "frame": { "x": 240, "y": 146, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_vertical_5": {
+            "frame": { "x": 320, "y": 146, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "tile_vertical_6": {
+            "frame": { "x": 400, "y": 146, "w": 80, "h": 73 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 73 },
+            "sourceSize": { "w": 80, "h": 73 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "connection_1": {
+            "frame": { "x": 160, "y": 294, "w": 20, "h": 21 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 21 },
+            "sourceSize": { "w": 20, "h": 21 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "connection_2": {
+            "frame": { "x": 182, "y": 294, "w": 25, "h": 26 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 26 },
+            "sourceSize": { "w": 25, "h": 26 },
+            "anchor": { "x": 0, "y": 0 }
+        },
+        "connection_3": {
+            "frame": { "x": 209, "y": 294, "w": 25, "h": 26 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 25, "h": 26 },
+            "sourceSize": { "w": 25, "h": 26 },
+            "anchor": { "x": 0, "y": 0 }
+        }        
+    },
+
+    "meta": {
+        "image": "spritesheet.png",
+        "format": "RGBA8888",
+        "size": { "w": 480, "h": 365 },
+        "scale": 1
+    }
+}
