@@ -1,47 +1,40 @@
-/** @license MIT */
-// Copyright (c) 2022 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
-// of which may be found in the LICENSE.md file in the root of this repository.  
-// 
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
 // For a template copy of the license see one of the following 3rd party sites:
-//      * <https://opensource.org/licenses/MIT>
-//      * <https://choosealicense.com/licenses/mit>
-//      * <https://spdx.org/licenses/MIT>
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
 
 /**
  * @file Exports functions to manage cell adjacencies, functions to get row,
  *      column, or box of a given cell index, and function returning adjacent
  *      indexes of a given cell index.
- * @submodule
  * @author James Reid
  */
 
 // @ts-check
 
-// @imports-types
-import { GridCell } from "../../types/index.js"
+// @@imports-types
+/* eslint-disable no-unused-vars -- Types only used in comments. */
+import { GridCell, CellType } from "../../types/index.js"
+/* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
-// @body
+// @@body
 /**
- * 
- * 
- * @summary x
- * 
- * @function
- * @package
- * @static
- * 
+ *
  * @param {GridCell} cell
- * @param {GridCell} targetCell 
+ * @param {GridCell} targetCell
  * @returns {GridCell}
  */
 const removeCellAdjacency = (cell, targetCell) => {
     const targetIndex = targetCell.index
-    
+
     const optionalIndex = cell.adjacentIndexes.optional.indexOf(targetIndex)
     const allIndex = cell.adjacentIndexes.all.indexOf(targetIndex)
-    if (optionalIndex === -1 || allIndex === -1) { return cell }
+    if (optionalIndex === - 1 || allIndex === - 1) { return cell }
 
     const all = [...cell.adjacentIndexes.all]
     all.splice(allIndex, 1)
@@ -50,7 +43,7 @@ const removeCellAdjacency = (cell, targetCell) => {
     optional.splice(optionalIndex, 1)
 
     const type = { ...cell.adjacentIndexes.type }
-    const key = targetCell.type.toLowerCase()
+    const key = /** @type {CellType} */ (targetCell.type.toLowerCase())
     type[key] = [...type[key]]
     type[key].splice(type[key].indexOf(targetIndex), 1)
 
@@ -59,16 +52,9 @@ const removeCellAdjacency = (cell, targetCell) => {
 }
 
 /**
- * 
- * 
- * @summary x
- * 
- * @function
- * @package
- * @static
- * 
+ *
  * @param {GridCell} cell
- * @param {GridCell} targetCell 
+ * @param {GridCell} targetCell
  * @returns {GridCell}
  */
 const addCellAdjacency = (cell, targetCell) => {
@@ -79,7 +65,7 @@ const addCellAdjacency = (cell, targetCell) => {
     const optional = [...cell.adjacentIndexes.optional, targetIndex]
 
     const type = { ...cell.adjacentIndexes.type }
-    const key = targetCell.type.toLowerCase()
+    const key = /** @type {CellType} */ (targetCell.type.toLowerCase())
     type[key] = [...type[key], targetIndex]
 
     const adjacentIndexes = { ...cell.adjacentIndexes, all, optional, type }
@@ -87,23 +73,16 @@ const addCellAdjacency = (cell, targetCell) => {
 }
 
 /**
- * 
- * 
- * @summary x
- * 
- * @function
- * @package
- * @static
- * 
+ *
  * @param {GridCell} cell
- * @param {GridCell} targetCell 
+ * @param {GridCell} targetCell
  * @returns {GridCell}
  */
 const requireCellAdjacency = (cell, targetCell) => {
     const targetIndex = targetCell.index
-    
+
     const optionalIndex = cell.adjacentIndexes.optional.indexOf(targetIndex)
-    if (optionalIndex === -1) { return cell }
+    if (optionalIndex === - 1) { return cell }
 
     const required = [...cell.adjacentIndexes.required]
     required.push(targetIndex)
@@ -118,22 +97,20 @@ const requireCellAdjacency = (cell, targetCell) => {
 /**
  * Calculates indexes of all possible orthogonally adjacent hex cells given the
  * index of a center hex cell. Each cell may have up to 6 orthogonally adjacent
- * cells - all indexes out of range (0 to 35) for the grid are omitted, and 
+ * cells - all indexes out of range (0 to 35) for the grid are omitted, and
  * wrap around indexes are obviously also omitted, as these cells are not
  * adjacent to each other on the grid.
- * 
+ *
  * Wrap around indexes indexes on the opposite side of the grid when the
  * provided central index is in the leftmost or rightmost column.
- * 
- * @summary Get all possible adjacent indexes given the index of a center cell 
- * @funky {package|inner}
- * @param {number} index - Index 
+ *
+ * @param {number} index
  * @returns {number[]}
  */
 const getAdjacentIndexes = index => {
     // offset array representing the index offsets from a central hex cell to
     // each of the 6 orthogonally adjacent hex cells
-    return [-6, -5, -1, 1, 5, 6].flatMap(offset => {
+    return [- 6, - 5, - 1, 1, 5, 6].flatMap(offset => {
         const adjacentIndex = index + offset
         const columnOffset = Math.abs(adjacentIndex % 6 - index % 6)
         // omit index if it is out of range for the grid, or if it is a
@@ -144,12 +121,8 @@ const getAdjacentIndexes = index => {
 }
 
 /**
- * 
- * @function
- * @public
- * @static
- * 
- * @param {*} index 
+ *
+ * @param {*} index
  * @returns {number}
  */
 const getRow = index => {
@@ -157,12 +130,8 @@ const getRow = index => {
 }
 
 /**
- * 
- * @function
- * @public
- * @static
- * 
- * @param {*} index 
+ *
+ * @param {*} index
  * @returns {number}
  */
 const getColumn = index => {
@@ -170,12 +139,8 @@ const getColumn = index => {
 }
 
 /**
- * 
- * @function
- * @public
- * @static
- * 
- * @param {*} index 
+ *
+ * @param {*} index
  * @returns {number}
  */
 const getBox = index => {
@@ -184,10 +149,10 @@ const getBox = index => {
     return Math.floor(row / 2) * 2 + Math.floor(column / 3)
 }
 
-// @exports
-export { 
-    removeCellAdjacency, 
-    addCellAdjacency, 
+// @@exports
+export {
+    removeCellAdjacency,
+    addCellAdjacency,
     requireCellAdjacency,
     getAdjacentIndexes,
     getRow,
