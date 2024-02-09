@@ -1,7 +1,29 @@
+// Copyright (c) 2024 James Reid. All rights reserved.
+//
+// This source code file is licensed under the terms of the MIT license, a copy
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
+// For a template copy of the license see one of the following 3rd party sites:
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
+
+/**
+ * @file Cli widget class.
+ * @author James Reid
+ */
+
+// @ts-check
+
+// @@imports-module
 import { CLIManager } from "./Manager.js"
 
+// @@body
 class CLIWidget {
-    #lines; #order; #nonce; #registered
+    /** @type {Object.<string,string>}*/ #lines
+    /** @type {string[]} */ #order
+    /** @type {number} */ #nonce
+    /** @type {boolean} */ #registered
 
     constructor({
         manager = new CLIManager(),
@@ -10,10 +32,9 @@ class CLIWidget {
         /** @protected */
         this.manager = manager
         /** @protected */
-        this.id = null
-        /** @protected */
         this.tabSize = tabSize
 
+        this.id = ""
         this.previousLineCount = 0
 
         this.#lines = {}
@@ -22,6 +43,11 @@ class CLIWidget {
         this.#registered = false
     }
 
+    /**
+     *
+     * @param {number} [index]
+     * @returns {boolean}
+     */
     register(index) {
         this.#registered = this.manager.createWidget(this, index)
         return this.#registered
@@ -31,13 +57,13 @@ class CLIWidget {
         const unregistered = this.manager.deleteWidget(this)
         if (!unregistered) { return false }
         this.#registered = false
-        this.previousLineCount = 0 
+        this.previousLineCount = 0
         return true
     }
 
-    createLine({ 
-        id = `string-${this.#nonce ++}`, 
-        string = "", 
+    createLine({
+        id = `string-${this.#nonce++}`,
+        string = "",
         tabs = 0,
         deferRender = false,
         index = this.lineCount
@@ -49,25 +75,45 @@ class CLIWidget {
         return deferRender ? true : this.render()
     }
 
+    /**
+     *
+     * @param {string|number} id
+     * @returns {string}
+     */
     readLine(id) {
         id = typeof id === "string" ? id : this.#order[id]
         return this.#lines[id] || ""
     }
 
+    /**
+     *
+     * @param {object} obj
+     * @param {string} obj.id
+     * @param {string} [obj.string]
+     * @param {number} [obj.tabs]
+     * @param {boolean} [obj.deferRender]
+     * @returns {boolean}
+     */
     updateLine({
-        id, 
-        string = "", 
+        id,
+        string = "",
         tabs = 0,
-        deferRender = false 
-    } = {}) {
+        deferRender = false
+    }) {
         id = typeof id === "string" ? id : this.#order[id]
         if (!this.#lines[id]) { return false }
         string = this.#formatLineString(string, tabs)
         this.#lines[id] = string
         return deferRender ? true : this.render()
     }
-    
-    deleteLine(id, deferRender = "false") {
+
+    /**
+     *
+     * @param {string} id
+     * @param {boolean} deferRender
+     * @returns {boolean}
+     */
+    deleteLine(id, deferRender = false) {
         id = typeof id === "string" ? id : this.#order[id]
         if (!this.#lines[id]) { return false }
         const index = this.#order.indexOf(id)
@@ -84,6 +130,12 @@ class CLIWidget {
         return true
     }
 
+    /**
+     *
+     * @param {string} string
+     * @param {number} tabs
+     * @returns {string}
+     */
     #formatLineString(string, tabs = 0) {
         return `${this.tab.repeat(tabs)}${string}`
     }
@@ -93,11 +145,10 @@ class CLIWidget {
     }
 
     get lines() {
-        return (function* () {
+        return (/** @this {CLIWidget} */ function* () {
             for (const id of this.#order) {
                 yield this.#lines[id]
             }
-            return
         }).call(this)
     }
 
@@ -109,6 +160,12 @@ class CLIWidget {
         return this.#registered
     }
 
+    /**
+     *
+     * @param {string} string
+     * @param  {string[]} modifiers
+     * @returns {{raw:string, string:string}}
+     */
     static decorate(string, ...modifiers) {
         let compoundModifier = ""
         for (const modifier of modifiers) {
@@ -130,7 +187,7 @@ class CLIWidget {
  * @const {object} modifiers
  * @property {Object.<string,string>}
  */
-const modifiers = {    
+const modifiers = {
     fgColors: {
         black: "\x1b[30m",
         red: "\x1b[31m",
@@ -166,4 +223,5 @@ const modifiers = {
     }
 }
 
+// @@exports
 export { CLIWidget }

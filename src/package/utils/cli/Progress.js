@@ -1,23 +1,29 @@
-// Copyright (c) 2022 James Reid. All rights reserved.
+// Copyright (c) 2024 James Reid. All rights reserved.
 //
 // This source code file is licensed under the terms of the MIT license, a copy
-// of which may be found in the LICENSE.md file in the root of this repository.  
-// 
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
 // For a template copy of the license see one of the following 3rd party sites:
-//      * <https://opensource.org/licenses/MIT>
-//      * <https://choosealicense.com/licenses/mit>
-//      * <https://spdx.org/licenses/MIT>
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
+
+/**
+ * @file Progress bar cli widget.
+ * @author James Reid
+ */
 
 // @ts-check
 
+// @@imports-module
 import { CLIManager } from "./Manager.js"
 import { CLIWidget } from "./Widget.js"
 
-/**
- * 
- */
+// @@body
 class ProgressWidget extends CLIWidget {
-    #startTime; #lastUpdate; #progress
+    // /** @type {number} */ #startTime
+    /** @type {number} */ #lastUpdate
+    // /** @type {number} */ #progress
 
     constructor({
         manager = new CLIManager(),
@@ -30,9 +36,10 @@ class ProgressWidget extends CLIWidget {
         super({ manager })
 
         // turn current ops into a proxy which updates progress etc when updated
-        // maintain startops for better time calcs
+        // maintain startOps for better time calcs
         // add pause and resume functionality
-        // add ability to start an op and end an op in order to calculate ops better ie nextOp options
+        // add ability to start an op and end an op in order to calculate ops
+        // better ie nextOp options
         this.currentOps = startOps
         this.endOps = endOps
         this.nextOp = startOps
@@ -50,13 +57,8 @@ class ProgressWidget extends CLIWidget {
     }
 
     /**
-     * Description
-     * 
-     * @summary c
-     * 
-     * @method
-     * 
-     * @param {number} ops 
+     *
+     * @param {number} ops
      * @returns {boolean}
      */
     increment(ops = 1) {
@@ -65,21 +67,21 @@ class ProgressWidget extends CLIWidget {
         const now = Date.now()
         if (now - this.#lastUpdate >= this.updateInterval || this.complete) {
             this.#lastUpdate = now
-            return this.#update(this.updateLine)
+            return this.#update()
         }
         return true
     }
 
     /**
-     * 
+     *
      * @returns {number}
      */
     next() {
         if (this.completeQueue) { return - 1 }
-        return this.nextOp ++
+        return this.nextOp++
     }
 
-    #update(method) {
+    #update() {
         this.updateLine(this.#statusLine())
         this.updateLine(this.#percentageLine())
         this.updateLine(this.#barLine())
@@ -89,7 +91,8 @@ class ProgressWidget extends CLIWidget {
     #statusLine() {
         const counter = this.#counterString()
 
-        const length = this.manager.lineLength - 1 - this.tabSize - counter.length
+        const length = this.manager.lineLength -
+            1 - this.tabSize - counter.length
         const isShort = this.description.length <= length
         const description = isShort ? `${this.description}:`.padEnd(length + 1)
             : `${this.description.slice(length - 3)}...:`
@@ -105,7 +108,9 @@ class ProgressWidget extends CLIWidget {
 
         const averageTime = this.#timeStringAverage()
         // cannot use whitespace escape since color escapes
-        const regex = new RegExp(`${" ".repeat(averageTime.raw.length)}(?= [^ ])`)
+        const regex = new RegExp(
+            `${" ".repeat(averageTime.raw.length)}(?= [^ ])`
+        )
 
         const length = this.manager.lineLength - this.tabSize * 2 - 22
         const progress = Math.floor(length * this.progress)
@@ -123,19 +128,20 @@ class ProgressWidget extends CLIWidget {
         const elapsedTime = this.#timeStringElapsed().string
         const remainingTime = this.#timeStringRemaining().string
 
-        const length = this.manager.lineLength - this.tabSize * 2 - 22  
+        const length = this.manager.lineLength - this.tabSize * 2 - 22
         const progress = Math.floor(length * this.progress)
         const barCompleted = CLIWidget.decorate(
-            "█".repeat(progress), 
+            "█".repeat(progress),
             CLIWidget.modifiers.fgColors.green
         ).string
         const barRemaining = CLIWidget.decorate(
-            "░".repeat(length - progress), 
+            "░".repeat(length - progress),
             CLIWidget.modifiers.fgColors.gray
         ).string
         const bar = `${barCompleted}${barRemaining}`
 
-        const string = `${this.tab}${elapsedTime} ${bar} ${remainingTime}${this.tab}`
+        const string =
+            `${this.tab}${elapsedTime} ${bar} ${remainingTime}${this.tab}`
         return { id: "bar", string, deferRender: false }
     }
 
@@ -180,12 +186,23 @@ class ProgressWidget extends CLIWidget {
         return CLIWidget.decorate(string, ...modifiers)
     }
 
+    /**
+     *
+     * @param {Date} date
+     * @returns
+     */
     #dateTimeString(date) {
         const string = `[${ProgressWidget.formatDate(date)}]`
         const modifiers = [CLIWidget.modifiers.fgColors.gray]
         return CLIWidget.decorate(string, ...modifiers)
     }
 
+    /**
+     *
+     * @param {number} ms
+     * @param {string} leadChar
+     * @returns
+     */
     #msTimeString(ms, leadChar) {
         const string = `${leadChar} ${ProgressWidget.formatMs(ms)}`
         const modifiers = [
@@ -195,20 +212,20 @@ class ProgressWidget extends CLIWidget {
         return CLIWidget.decorate(string, ...modifiers)
     }
 
-    #msStart() {
+    // #msStart() {
 
-    }
+    // }
 
-    #msEnd() {
+    // #msEnd() {
 
-    }
+    // }
 
     get elapsedMs() {
         return Date.now() - this.startTime
     }
 
     get remainingMs() {
-        let ms = Math.round(this.elapsedMs / this.progress - this.elapsedMs)
+        const ms = Math.round(this.elapsedMs / this.progress - this.elapsedMs)
         if (Number.isFinite(ms)) { return ms }
         return 0
     }
@@ -219,10 +236,12 @@ class ProgressWidget extends CLIWidget {
 
     get ms() {
         // add start ms and end ms
-        const elapsed = () => this.elapsedMs
+        // const elapsed = () => this.elapsedMs
         return {
             // get elapsed() {},
-            get remaining() { return }
+            // get remaining() {
+            //     // return
+            // }
         }
     }
 
@@ -250,6 +269,11 @@ class ProgressWidget extends CLIWidget {
 
     // }
 
+    /**
+     *
+     * @param {number} ms
+     * @returns {string}
+     */
     static formatMs(ms) {
         const [MS_HOUR, MS_MIN, MS_SEC] = [1000 * 60 * 60, 1000 * 60, 1000]
         const hours = `${Math.floor(ms / MS_HOUR) % 60}`.padStart(2, "0")
@@ -258,11 +282,21 @@ class ProgressWidget extends CLIWidget {
         return `${hours}:${minutes}:${seconds}`
     }
 
+    /**
+     *
+     * @param {Date} date
+     * @returns {string}
+     */
     static formatDate(date) {
-        const locale = []
-        const format = { hour: "2-digit", minute: "2-digit", second: "2-digit" }
+        const locale = /** @type {Intl.LocalesArgument} */ ("en-GB")
+        const format = /** @type {Intl.DateTimeFormatOptions} */ ({
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        })
         return date.toLocaleTimeString(locale, format)
     }
 }
 
+// @@exports
 export { ProgressWidget }
