@@ -36,6 +36,11 @@
  * @todo move print function out of ./impostori/grid dir
  * @todo update types of all functions etc. to ensure no any type, and return
  *      types are set where required.
+ * @todo refactor cli manager and widget methods to return void rather than bool
+ * @todo refactor "create" and "delete" widget to "register" and "unregister" in
+ *      cli widget manager
+ * @todo re-add hash to BitBuffer, or alternatively add version check to
+ *      deserializing process
  */
 
 // @@exports

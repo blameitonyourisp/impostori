@@ -1,28 +1,27 @@
+// Copyright (c) 2024 James Reid. All rights reserved.
+//
+// This source code file is licensed under the terms of the MIT license, a copy
+// of which may be found in the LICENSE.md file in the root of this repository.
+//
+// For a template copy of the license see one of the following 3rd party sites:
+//      - <https://opensource.org/licenses/MIT>
+//      - <https://choosealicense.com/licenses/mit>
+//      - <https://spdx.org/licenses/MIT>
+
+/**
+ * @file Integration test file.
+ * @author James Reid
+ */
+
 // @ts-check
 
-// @imports-local
+// @@imports-package
 import { generateImpostori } from "./impostori/generate/index.js"
-import { printGrid } from "./impostori/grid/print.js"
-// import { serializeCell } from "./impostori/serialization/cold.js"
-import { serializeGrid } from "./impostori/serialization/grid.js"
-import { CLIManager } from "./utils/cli/Manager.js"
-import { ProgressWidget } from "./utils/cli/Progress.js"
-import { Resource } from "./utils/Resource.js"
-import { Impostori } from "./types/Impostori.js"
 import { serializeImpostori } from "./impostori/serialization/impostori.js"
 
-// @body
-
+// @@body
 const seed = 3163700000 + 1
 const impostori = generateImpostori(seed)
-
-
-// console.log(serializeGrid(impostori.grid).toString("base64url"))
-// console.log(serializeGrid(impostori.grid).toString())
-// console.log(impostori.grid.adjacencyIDs)
-// printGrid(impostori.grid)
-// console.log(impostori.rawEntropy)
-
 console.log(serializeImpostori(impostori))
 
 /**
@@ -33,7 +32,7 @@ console.log(serializeImpostori(impostori))
  *  - rating (as above)
  *  - grade (as above)
  *  - serialized grid string
- * 
+ *
  * required --> seed, version, entropy, serialized grid string
  */
 
@@ -44,7 +43,7 @@ console.log(serializeImpostori(impostori))
  *  - adj (all assumed optional, then added to required list from adj bitmap)
  *  - random (state of random number generator)
  *  - isGenerating (false)
- * 
+ *
  * required --> adj bitmap, prng state
  */
 
@@ -56,6 +55,8 @@ console.log(serializeImpostori(impostori))
  *  - type (derived from value and hints)
  *  - hints (only worker and detective required; imposter hints inferred)
  *  - adjacent indexes & types (derived from adj bitmap)
- * 
+ *
  * required --> value, detective hint, worker hints
  */
+
+// @@no-exports
