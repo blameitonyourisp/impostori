@@ -45,6 +45,7 @@ import { CellType } from "./CellType.js"
  * @property {number} value - Completed grid cell value ranged 1 to 6 - value
  *      is initiated to 0 during grid creation and when brute force solving an
  *      incomplete grid
+ * @property {number} clientValue - Value of cell chosen by client.
  * @property {CellType} type - Completed grid
  *      cell type - initiated to "VACANT" during grid creation and when brute
  *      force solving an incomplete grid
