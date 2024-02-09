@@ -96,7 +96,7 @@ class BitBuffer {
      */
     writeAbsolute(int, { offset = this.#writePointer, signed = false } = {}) {
         // Size declaration data with the size of buffer segment it will occupy.
-        const resize = { value: BitBuffer.#bitLength(int), size: 5 }
+        const resize = { value: BitBuffer.#bitLength(int) - 1, size: 5 }
 
         // If all values are not writeable due to insufficient bits remaining
         // etc., then return no number.
@@ -230,7 +230,7 @@ class BitBuffer {
         const readable = this.#readable().append(5, { offset })
         let size = 0
         if (readable.isReadable) {
-            size = this.#read(5, { offset })
+            size = this.#read(5, { offset }) + 1
             readable.append(size, { signed })
         }
 
