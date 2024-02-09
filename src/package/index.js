@@ -41,6 +41,11 @@
  *      cli widget manager
  * @todo re-add hash to BitBuffer, or alternatively add version check to
  *      deserializing process
+ * @todo fix circular dependency in cli manager
+ * @todo refactor Resource to not use __ prefix
+ * @todo add types for GridTypeIndexes
+ * @todo add types for GridAdjacencyIds
+ * @todo refactor IDs to Ids
  */
 
 // @@exports

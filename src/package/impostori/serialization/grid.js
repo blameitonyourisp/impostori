@@ -16,11 +16,11 @@
 // @ts-check
 
 // @@imports-module
-import { serializeAdjacencies } from "./adjacency.js"
-import { serializeCell } from "./cell.js"
+import { serializeAdjacencies, deserializeAdjacencies } from "./adjacency.js"
+import { serializeCell, deserializeCell } from "./cell.js"
 
 // @@imports-utils
-import { BitBuffer } from "../../utils/index.js"
+import { BitBuffer, Random } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
@@ -35,20 +35,53 @@ import { Grid } from "../../types/index.js"
  */
 const serializeGrid = grid => {
     let buffer = new BitBuffer({ size: 128 })
+    console.log("GRID: ", buffer.writePointer)
     for (const cell of grid.cells) {
         const cellBuffer = serializeCell(cell)
         cellBuffer.copy({ target: buffer, sourceEnd: cellBuffer.writePointer })
     }
+    console.log("GRID: ", buffer.writePointer)
+
     const adjacencies = serializeAdjacencies(grid)
     adjacencies.copy({ target: buffer, sourceEnd: adjacencies.writePointer })
+    console.log("GRID: ", buffer.writePointer)
 
     const size = Math.ceil(buffer.writePointer / 8)
-    buffer = buffer.copy({ target: new BitBuffer({ size }) }) // add source end
+    buffer = buffer.copy({
+        target: new BitBuffer({ size }),
+        sourceEnd: buffer.writePointer
+    }) // add source end
     return buffer
 }
 
-const deserializeGrid = () => {
+/**
+ *
+ * @param {BitBuffer} buffer
+ * @param {number} seed
+ * @returns {Grid}
+ */
+const deserializeGrid = (buffer, seed) => {
+    const typeIndexes = {
+        detective: [],
+        worker: [],
+        imposter: [],
+        vacant: []
+    }
 
+    const cells = []
+    for (let i = 0; i < 36; i++) {
+        const cell = deserializeCell(buffer, i)
+        typeIndexes[cell.type].push(i)
+        cells.push(cell)
+    }
+
+    return {
+        cells,
+        typeIndexes,
+        adjacencyIDs: deserializeAdjacencies(buffer),
+        random: new Random(seed),
+        isGenerating: false
+    }
 }
 
 // @@exports

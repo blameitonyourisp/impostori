@@ -40,13 +40,15 @@ import { GridCell } from "../../types/index.js"
  */
 const serializeCell = cell => {
     let buffer = new BitBuffer({ size: 3 }) // max size 19 bits or 3 bytes
+
     const { value, hints } = cell
     const uint3Array = [value, ...hints.detective, ...hints.worker]
     for (const uint3 of uint3Array) {
-        buffer.write(uint3)
+        buffer.write(uint3, { size: 3 })
     }
+
     if (cell.candidates.length !== 6) {
-        buffer.write(1)
+        buffer.write(1, { size: 1 })
         const candidates = resetCell(cell).candidates
         let uint6 = 0
         for (let i = 0; i < 6; i++) {
@@ -54,42 +56,39 @@ const serializeCell = cell => {
                 uint6 = uint6 | 1 << 5 - i
             }
         }
+        buffer.write(uint6, { size: 6 })
     }
-    else { buffer.write(0) }
+    else { buffer.write(0, { size: 1 }) }
+
     const size = Math.ceil(buffer.writePointer / 8)
     buffer = buffer.copy({
         target: new BitBuffer({ size }),
         sourceEnd: buffer.writePointer
     })
+
     return buffer
 }
 
 /**
  *
- * @param {number} index
  * @param {BitBuffer} buffer
+ * @param {number} index
  * @returns {GridCell}
  */
-const deserializeCell = (index, buffer) => {
+const deserializeCell = (buffer, index) => {
     const adjacentIndexes = getAdjacentIndexes(index)
-    buffer
-    // Deserialize cell from buffer fragment.
-
-    return {
+    const cell = /** @type {GridCell} */ ({
         index,
-        // initialize row and columns based on index
         row: getRow(index),
         column: getColumn(index),
         box: getBox(index),
-        // initialize candidates with a random permuted array in order to
-        // generate different puzzles
         candidates: [],
-        // initialize rest of cell to null state or starting base state
-        value: 0,
+        value: buffer.read(3),
+        clientValue: 0,
         type: CELL_TYPES.vacant,
         hints: {
-            detective: [],
-            worker: [],
+            detective: [buffer.read(3)],
+            worker: [buffer.read(3), buffer.read(3)],
             imposter: []
         },
         adjacentIndexes: {
@@ -103,7 +102,30 @@ const deserializeCell = (index, buffer) => {
                 vacant: adjacentIndexes
             }
         }
+    })
+
+    cell.type = cell.hints.detective.includes(cell.value) ? CELL_TYPES.detective
+        : cell.hints.worker.includes(cell.value) ? CELL_TYPES.worker
+        : CELL_TYPES.imposter
+    cell.hints.imposter = [1, 2, 3, 4, 5, 6].filter(hint => {
+        return !cell.hints.detective.includes(hint) &&
+            !cell.hints.worker.includes(hint)
+    })
+
+    if (buffer.read(1)) {
+        const uint6 = buffer.read(6)
+        for (let i = 0; i < 6; i++) {
+            if (uint6 << 31 - i >>> 31) {
+                const type =
+                    cell.hints.detective.includes(6 - i) ? CELL_TYPES.detective
+                        : cell.hints.worker.includes(6 - i) ? CELL_TYPES.worker
+                        : CELL_TYPES.imposter
+                cell.candidates.push({ value: 6 - i, type })
+            }
+        }
     }
+
+    return { ...cell }
 }
 
 // @@exports

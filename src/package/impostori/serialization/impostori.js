@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-module
-import { serializeGrid } from "./grid.js"
+import { serializeGrid, deserializeGrid } from "./grid.js"
 
 // @@imports-utils
 import { BitBuffer } from "../../utils/index.js"
@@ -31,32 +31,50 @@ import { Impostori } from "../../types/Impostori.js"
  *
  * @param {Impostori} impostori
  */
-const serializeImpostori = async impostori => {
+const serializeImpostori = impostori => {
     let buffer = new BitBuffer({ size: 128 })
-    buffer.write(impostori.seed)
-    buffer.write(impostori.rawEntropy)
+    // buffer.writeString(impostori.version)
+    // buffer.writeAbsolute(impostori.seed)
 
+    console.log(buffer.writePointer)
     const grid = serializeGrid(impostori.grid)
-    grid.copy({ target: buffer, targetStart: buffer.writePointer })
-    // buffer.writePointer = buffer.writePointer
-    // console.log(grid)
+    grid.copy({ target: buffer, sourceEnd: grid.writePointer })
+    console.log(buffer.writePointer)
 
-    // console.log(buffer.writePointer)
+    buffer.writeAbsolute(impostori.rawEntropy)
+    buffer.write(impostori.correctedEntropy, { size: 10 })
+    buffer.write(impostori.rating, { size: 10 })
+
     const size = Math.ceil(buffer.writePointer / 8)
-    buffer = buffer.copy({ target: new BitBuffer({ size }) })
+    buffer = buffer.copy({
+        target: new BitBuffer({ size }),
+        sourceEnd: buffer.writePointer
+    })
 
-    console.log(impostori)
-    console.log(await buffer.toString())
+    return buffer.toString()
 }
 
 /**
  *
- * @param {string} string
+ * @param {string} serializedImpostori
+ * @returns {Impostori}
  */
-const deserializeImpostori = string => {
-    const buffer = BitBuffer.from(string)
-    buffer
-    // Implement deserializing of impostori.
+const deserializeImpostori = (serializedImpostori) => {
+    const buffer = BitBuffer.from(serializedImpostori)
+
+    const version = buffer.readString() // compare to expected version in param
+    const seed = buffer.readAbsolute()
+
+    return {
+        version,
+        seed,
+        grid: deserializeGrid(buffer, seed),
+        rawEntropy: buffer.readAbsolute(),
+        correctedEntropy: buffer.read(10),
+        rating: buffer.read(10),
+        grade: "",
+        serializedString: serializedImpostori
+    }
 }
 
 // @@exports

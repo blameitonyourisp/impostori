@@ -30,12 +30,32 @@ import { Grid } from "../../types/index.js"
  */
 const serializeAdjacencies = grid => {
     const buffer = new BitBuffer({ size: 11 }) // 85 bits or 11 bytes
-    for (let i = 0; i < 84; i++) {
+    for (let i = 0; i < 85; i++) {
         const bit = grid.adjacencyIDs.required.has(i)
         buffer.write(bit ? 1 : 0)
     }
     return buffer
 }
 
+/**
+ *
+ * @param {BitBuffer} buffer
+ */
+const deserializeAdjacencies = buffer => {
+    const adjacencyIds = {
+        required: new Set(),
+        optional: new Set(),
+        deleted: new Set()
+    }
+    for (let i = 0; i < 85; i++) {
+        if (buffer.read(1)) { adjacencyIds.required.add(i) }
+        else { adjacencyIds.deleted.add(i) }
+    }
+
+    console.log(buffer.readPointer)
+
+    return adjacencyIds
+}
+
 // @@exports
-export { serializeAdjacencies }
+export { serializeAdjacencies, deserializeAdjacencies }

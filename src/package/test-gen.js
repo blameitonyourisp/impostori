@@ -17,12 +17,16 @@
 
 // @@imports-package
 import { generateImpostori } from "./impostori/generate/index.js"
-import { serializeImpostori } from "./impostori/serialization/impostori.js"
+import { deserializeImpostori, serializeImpostori } from "./impostori/serialization/impostori.js"
+import { printGrid } from "./index.js"
 
 // @@body
-const seed = 3163700000 + 1
+const seed = 3163700000
 const impostori = generateImpostori(seed)
-console.log(serializeImpostori(impostori))
+console.log(impostori.grid.cells)
+// printGrid(impostori.grid)
+// console.log(process.env.npm_package_version)
+console.log(deserializeImpostori(impostori.serializedString).grid.cells)
 
 /**
  * recreation of impostori:
