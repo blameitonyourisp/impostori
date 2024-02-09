@@ -5,5 +5,5 @@
  * @returns {GridCell}
  */
 export function generateEmptyCell(index: number, random: Random): GridCell;
-import { Random } from "../../types/index.js";
+import { Random } from "../../utils/index.js";
 import { GridCell } from "../../types/index.js";

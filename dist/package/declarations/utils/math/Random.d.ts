@@ -1,5 +1,6 @@
 /**
- *
+ * @file Seeded random number generator.
+ * @author James Reid
  */
 export class Random {
     /**

@@ -6,6 +6,10 @@
  */
 export type CellType = "detective" | "worker" | "imposter" | "vacant";
 /**
+ * @file CellType type declaration.
+ * @author James Reid
+ */
+/**
  * Object containing all data for a cell required to generate a grid,
  * solve a puzzle and to display a puzzle. This includes mainly data identifying
  * the position of the cell in the grid, data identifying the contents of the

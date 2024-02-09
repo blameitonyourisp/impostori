@@ -1,6 +1,12 @@
 export class CLIWidget {
-    static decorate(string: any, ...modifiers: any[]): {
-        raw: any;
+    /**
+     *
+     * @param {string} string
+     * @param  {string[]} modifiers
+     * @returns {{raw:string, string:string}}
+     */
+    static decorate(string: string, ...modifiers: string[]): {
+        raw: string;
         string: string;
     };
     static get modifiers(): {
@@ -43,11 +49,15 @@ export class CLIWidget {
     /** @protected */
     protected manager: CLIManager;
     /** @protected */
-    protected id: any;
-    /** @protected */
     protected tabSize: number;
+    id: string;
     previousLineCount: number;
-    register(index: any): boolean;
+    /**
+     *
+     * @param {number} [index]
+     * @returns {boolean}
+     */
+    register(index?: number | undefined): boolean;
     unregister(): boolean;
     createLine({ id, string, tabs, deferRender, index }?: {
         id?: string | undefined;
@@ -56,17 +66,37 @@ export class CLIWidget {
         deferRender?: boolean | undefined;
         index?: number | undefined;
     }): boolean;
-    readLine(id: any): any;
-    updateLine({ id, string, tabs, deferRender }?: {
-        id: any;
+    /**
+     *
+     * @param {string|number} id
+     * @returns {string}
+     */
+    readLine(id: string | number): string;
+    /**
+     *
+     * @param {object} obj
+     * @param {string} obj.id
+     * @param {string} [obj.string]
+     * @param {number} [obj.tabs]
+     * @param {boolean} [obj.deferRender]
+     * @returns {boolean}
+     */
+    updateLine({ id, string, tabs, deferRender }: {
+        id: string;
         string?: string | undefined;
         tabs?: number | undefined;
         deferRender?: boolean | undefined;
     }): boolean;
-    deleteLine(id: any, deferRender?: string): boolean;
+    /**
+     *
+     * @param {string} id
+     * @param {boolean} deferRender
+     * @returns {boolean}
+     */
+    deleteLine(id: string, deferRender?: boolean): boolean;
     render(): boolean;
     get lineCount(): number;
-    get lines(): Generator<any, void, unknown>;
+    get lines(): Generator<string, void, unknown>;
     get tab(): string;
     get registered(): boolean;
     #private;

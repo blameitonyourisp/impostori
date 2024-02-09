@@ -13,5 +13,5 @@ export function generateGrid(random: Random): {
     grid: Grid;
     rawEntropy: number;
 };
-import { Random } from "../../types/index.js";
+import { Random } from "../../utils/index.js";
 import { Grid } from "../../types/index.js";

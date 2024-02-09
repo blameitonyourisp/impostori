@@ -1,4 +1,8 @@
 /**
+ * @file Basic pipe implementation.
+ * @author James Reid
+ */
+/**
  *
  * @param  {...any} functions
  * @returns {any}

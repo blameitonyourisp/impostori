@@ -11,4 +11,4 @@ export function serializeCell(cell: GridCell): BitBuffer;
  */
 export function deserializeCell(index: number, buffer: BitBuffer): GridCell;
 import { GridCell } from "../../types/index.js";
-import { BitBuffer } from "../../utils/BitBuffer.js";
+import { BitBuffer } from "../../utils/index.js";

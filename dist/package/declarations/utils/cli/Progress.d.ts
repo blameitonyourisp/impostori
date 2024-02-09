@@ -1,9 +1,16 @@
-/**
- *
- */
 export class ProgressWidget extends CLIWidget {
-    static formatMs(ms: any): string;
-    static formatDate(date: any): any;
+    /**
+     *
+     * @param {number} ms
+     * @returns {string}
+     */
+    static formatMs(ms: number): string;
+    /**
+     *
+     * @param {Date} date
+     * @returns {string}
+     */
+    static formatDate(date: Date): string;
     constructor({ manager, startOps, endOps, description, startTime, updateInterval }?: {
         manager?: CLIManager | undefined;
         startOps?: number | undefined;
@@ -19,11 +26,6 @@ export class ProgressWidget extends CLIWidget {
     startTime: number;
     updateInterval: number;
     /**
-     * Description
-     *
-     * @summary c
-     *
-     * @method
      *
      * @param {number} ops
      * @returns {boolean}
@@ -37,9 +39,7 @@ export class ProgressWidget extends CLIWidget {
     get elapsedMs(): number;
     get remainingMs(): number;
     get averageMs(): number;
-    get ms(): {
-        readonly remaining: void;
-    };
+    get ms(): {};
     get progress(): number;
     get complete(): boolean;
     get completeQueue(): boolean;

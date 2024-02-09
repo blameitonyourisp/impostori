@@ -6,4 +6,4 @@
 export function serializeGrid(grid: Grid): BitBuffer;
 export function deserializeGrid(): void;
 import { Grid } from "../../types/index.js";
-import { BitBuffer } from "../../utils/BitBuffer.js";
+import { BitBuffer } from "../../utils/index.js";

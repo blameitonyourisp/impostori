@@ -1,6 +1,3 @@
-/**
- * This is a test
- */
 export type Impostori = {
     grid: Grid;
     seed: number;
@@ -12,9 +9,6 @@ export type Impostori = {
     serializedString: string;
 };
 /**
- *  This is a test
- *
- * @summary test
  *
  * @typedef {object} Impostori
  * @property {Grid} grid

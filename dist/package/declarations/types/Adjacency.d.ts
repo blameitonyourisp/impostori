@@ -7,10 +7,8 @@
  * multiple identifiers).
  *
  * ---
- *
  * **WARNING** The adjacency type should not be confused with the raw adjacent
  * indexes of an individual {@link GridCell }
- *
  * ---
  */
 export type Adjacency = {
@@ -30,6 +28,10 @@ export type Adjacency = {
     string: string;
 };
 /**
+ * @file Adjacency type declaration.
+ * @author James Reid
+ */
+/**
  * Object containing upper and lower cell indexes (sorted by size not position
  * on grid), and a unique identifier which identifies the adjacency from the
  * frame of the grid rather than the frame of the cell (i.e. for every unique
@@ -38,14 +40,11 @@ export type Adjacency = {
  * multiple identifiers).
  *
  * ---
- *
  * **WARNING** The adjacency type should not be confused with the raw adjacent
  * indexes of an individual {@link GridCell}
- *
  * ---
  *
  * @summary Object containing 2 adjacent cell indexes and a unique identifier
- *
  * @typedef {object} Adjacency
  * @property {number} upperIndex - Higher of the two adjacency cell indexes
  * @property {number} lowerIndex - Lower of the two adjacency cell indexes

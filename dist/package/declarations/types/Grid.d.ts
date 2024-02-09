@@ -1,6 +1,3 @@
-/**
- * This is a test
- */
 export type Grid = {
     cells: GridCell[];
     typeIndexes: {
@@ -18,9 +15,6 @@ export type Grid = {
     isGenerating: boolean;
 };
 /**
- * This is a test
- *
- * @summary test
  *
  * @typedef {object} Grid
  * @property {GridCell[]} cells
@@ -46,4 +40,4 @@ export type Grid = {
  */
 export let Grid: Grid;
 import { GridCell } from "./GridCell.js";
-import { Random } from "./Random.js";
+import { Random } from "../utils/index.js";

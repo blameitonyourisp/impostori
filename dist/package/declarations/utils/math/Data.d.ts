@@ -1,6 +1,3 @@
-/**
- * univariate
- */
 export class Data {
     /**
      *
@@ -15,20 +12,24 @@ export class Data {
         viewConstructor?: TypedArrayConstructor | undefined;
         model?: number | undefined;
     });
+    /** @type {number} */ viewLength: number;
+    /** @type {TypedArrayConstructor} */ ViewConstructor: TypedArrayConstructor;
+    view: Uint8Array | Int8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
     model: number;
-    viewLength: any;
-    viewConstructor: any;
     buffer: ArrayBuffer | undefined;
-    view: any;
     resize({ viewLength, viewConstructor }?: {
-        viewLength?: any;
-        viewConstructor?: any;
+        viewLength?: number | undefined;
+        viewConstructor?: TypedArrayConstructor | undefined;
     }): void;
-    extend(additionalElements: any): void;
+    /**
+     *
+     * @param {number} additionalElements
+     */
+    extend(additionalElements: number): void;
     get singleByteLength(): number;
     get byteLength(): number;
-    get array(): any[];
-    get size(): any;
+    get array(): number[];
+    get size(): number;
     get sum(): number;
     get mean(): number;
     get SSE(): number;
