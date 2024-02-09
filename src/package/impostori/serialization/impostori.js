@@ -33,8 +33,8 @@ import { Impostori } from "../../types/Impostori.js"
  */
 const serializeImpostori = async impostori => {
     let buffer = new BitBuffer({ size: 128 })
-    buffer.writeSequential(impostori.seed, 32)
-    buffer.writeSequential(impostori.rawEntropy)
+    buffer.write(impostori.seed)
+    buffer.write(impostori.rawEntropy)
 
     const grid = serializeGrid(impostori.grid)
     grid.copy({ target: buffer, targetStart: buffer.writePointer })
@@ -46,7 +46,7 @@ const serializeImpostori = async impostori => {
     buffer = buffer.copy({ target: new BitBuffer({ size }) })
 
     console.log(impostori)
-    console.log(await buffer.toString(impostori.version))
+    console.log(await buffer.toString())
 }
 
 /**

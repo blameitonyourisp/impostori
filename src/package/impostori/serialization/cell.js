@@ -43,10 +43,10 @@ const serializeCell = cell => {
     const { value, hints } = cell
     const uint3Array = [value, ...hints.detective, ...hints.worker]
     for (const uint3 of uint3Array) {
-        buffer.writeSequential(uint3, 3)
+        buffer.write(uint3)
     }
     if (cell.candidates.length !== 6) {
-        buffer.writeSequential(1, 1)
+        buffer.write(1)
         const candidates = resetCell(cell).candidates
         let uint6 = 0
         for (let i = 0; i < 6; i++) {
@@ -55,7 +55,7 @@ const serializeCell = cell => {
             }
         }
     }
-    else { buffer.writeSequential(0, 1) }
+    else { buffer.write(0) }
     const size = Math.ceil(buffer.writePointer / 8)
     buffer = buffer.copy({
         target: new BitBuffer({ size }),
