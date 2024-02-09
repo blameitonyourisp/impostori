@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-package
-import { getAdjacencyData, removeGridAdjacency } from "../adjacency/grid.js"
+import { getAdjacencyData, removeGridAdjacency } from "../adjacency/index.js"
 
 // @@imports-module
 import { CELL_TYPES, fillCellType } from "./cell.js"

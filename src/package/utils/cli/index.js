@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Export utils.
+ * @file Export cli utils.
  * @author James Reid
  */
 
@@ -20,8 +20,7 @@
 // @@no-body
 
 // @@exports
-export * from "./cli/index.js"
-export * from "./math/index.js"
-export * from "./BitBuffer.js"
-export * from "./pipe.js"
-export * from "./Resource.js"
+export * from "./decorate-cli.js"
+export * from "./Manager.js"
+export * from "./Progress.js"
+export * from "./Widget.js"

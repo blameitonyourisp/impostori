@@ -26,11 +26,11 @@ import { resetCell } from "../reset/index.js"
 import { CELL_TYPES } from "../type/index.js"
 
 // @@imports-utils
-import { BitBuffer } from "../../utils/BitBuffer.js"
+import { BitBuffer } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GridCell, CellType } from "../../types/index.js"
+import { GridCell } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body

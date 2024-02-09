@@ -19,7 +19,7 @@
 import { serializeGrid } from "./grid.js"
 
 // @@imports-utils
-import { BitBuffer } from "../../utils/BitBuffer.js"
+import { BitBuffer } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */

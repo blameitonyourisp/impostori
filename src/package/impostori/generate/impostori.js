@@ -19,7 +19,7 @@
 import { generateGrid } from "./grid.js"
 
 // @@imports-utils
-import { Random } from "../../utils/math/index.js"
+import { Random } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */

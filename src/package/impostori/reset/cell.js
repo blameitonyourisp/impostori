@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-package
-import { CELL_TYPES } from "../type/cell.js"
+import { CELL_TYPES } from "../type/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */

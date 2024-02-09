@@ -37,7 +37,10 @@ import { pipe } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { Grid, Random } from "../../types/index.js"
+import { Grid } from "../../types/index.js"
+/* eslint-disable-next-line no-duplicate-imports -- Duplicate import required
+for type import */
+import { Random } from "../../utils/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body

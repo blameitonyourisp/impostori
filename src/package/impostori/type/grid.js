@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-package
-import { getAdjacencyData, requireGridAdjacency } from "../adjacency/grid.js"
+import { getAdjacencyData, requireGridAdjacency } from "../adjacency/index.js"
 
 // @@imports-module
 import { CELL_TYPES, fillCellType } from "./cell.js"

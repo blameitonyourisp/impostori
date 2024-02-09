@@ -29,7 +29,7 @@ import {
 } from "../type/index.js"
 
 // @@imports-utils
-import { pipe } from "../../utils/pipe.js"
+import { pipe } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */

@@ -26,7 +26,8 @@ import { CELL_TYPES } from "../type/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GridCell, Random } from "../../types/index.js"
+import { GridCell } from "../../types/index.js"
+import { Random } from "../../utils/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body

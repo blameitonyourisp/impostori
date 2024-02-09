@@ -15,8 +15,8 @@
 
 // @ts-check
 
-// @@imports-module
-import { DecoratedError } from "./decorate-cli.js"
+// @@imports-submodule
+import { DecoratedError } from "./cli/index.js"
 
 // @@body
 /**
