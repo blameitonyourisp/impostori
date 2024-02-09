@@ -54,6 +54,7 @@ const generateEmptyCell = (index, random) => {
         }),
         // initialize rest of cell to null state or starting base state
         value: 0,
+        clientValue: 0,
         type: CELL_TYPES.vacant,
         hints: {
             detective: [],

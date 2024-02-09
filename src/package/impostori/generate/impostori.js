@@ -19,11 +19,12 @@
 import { generateGrid } from "./grid.js"
 
 // @@imports-utils
-import { Random } from "../../utils/index.js"
+import { Random, Resource, parsePackage } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
 import { Impostori } from "../../types/index.js"
+import { serializeImpostori } from "../index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -35,17 +36,41 @@ import { Impostori } from "../../types/index.js"
 const generateImpostori = seed => {
     const random = new Random(seed)
     const { grid, rawEntropy } = generateGrid(random)
-
-    return {
-        grid,
+    const impostori = {
+        version: getVersion(),
         seed: random.config.seed,
-        version: "1.0.0",
+        grid,
         rawEntropy,
         correctedEntropy: 0,
         rating: 0,
         grade: "",
         serializedString: ""
     }
+
+    return { ...impostori, serializedString: serializeImpostori(impostori) }
+}
+
+/**
+ * Fetch version string from package repository.
+ *
+ * @returns {string} Version string package.json repository object.
+ */
+const getVersion = () => {
+    // Fetch parsed package file.
+    const pathname = new Resource(import.meta.url)
+        .absolutePath("../../../../package.json")
+    const { packageObject, packageError } = parsePackage(pathname)
+
+    // Get package version.
+    const { version } = packageObject
+
+    // If format not recognised, call error handler form parsePackage.
+    if (!version) {
+        const msg = "Version unset or unrecognized, no package version found"
+        packageError(new Error(msg))
+    }
+
+    return version
 }
 
 // @@exports
