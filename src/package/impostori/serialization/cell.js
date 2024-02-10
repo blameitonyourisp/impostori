@@ -22,7 +22,6 @@ import {
     getColumn,
     getBox
 } from "../adjacency/index.js"
-import { resetCell } from "../reset/index.js"
 import { CELL_TYPES } from "../type/index.js"
 
 // @@imports-utils
@@ -30,7 +29,7 @@ import { BitBuffer } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GridCell } from "../../types/index.js"
+import { CellCandidate, GridCell } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -49,10 +48,10 @@ const serializeCell = cell => {
 
     if (cell.candidates.length !== 6) {
         buffer.write(1, { size: 1 })
-        const candidates = resetCell(cell).candidates
+        const candidateValues = cell.candidates.map(({ value }) => value)
         let uint6 = 0
         for (let i = 0; i < 6; i++) {
-            if (cell.candidates.includes(candidates[i])) {
+            if (candidateValues.includes(i + 1)) {
                 uint6 = uint6 | 1 << 5 - i
             }
         }
@@ -116,16 +115,31 @@ const deserializeCell = (buffer, index) => {
         const uint6 = buffer.read(6)
         for (let i = 0; i < 6; i++) {
             if (uint6 << 31 - i >>> 31) {
-                const type =
-                    cell.hints.detective.includes(6 - i) ? CELL_TYPES.detective
-                        : cell.hints.worker.includes(6 - i) ? CELL_TYPES.worker
-                        : CELL_TYPES.imposter
-                cell.candidates.push({ value: 6 - i, type })
+                cell.candidates.push(getCandidate(cell, 6 - i))
             }
+        }
+    }
+    else {
+        for (let i = 0; i < 6; i++) {
+            cell.candidates.push(getCandidate(cell, 6 - i))
         }
     }
 
     return { ...cell }
+}
+
+/**
+ *
+ * @param {GridCell} cell
+ * @param {number} value
+ * @returns {CellCandidate}
+ */
+const getCandidate = (cell, value) => {
+    const type = cell.hints.detective.includes(value) ? CELL_TYPES.detective
+        : cell.hints.worker.includes(value) ? CELL_TYPES.worker
+        : CELL_TYPES.imposter
+
+    return { value, type }
 }
 
 // @@exports

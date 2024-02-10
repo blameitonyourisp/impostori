@@ -33,13 +33,11 @@ import { Impostori } from "../../types/Impostori.js"
  */
 const serializeImpostori = impostori => {
     let buffer = new BitBuffer({ size: 128 })
-    // buffer.writeString(impostori.version)
-    // buffer.writeAbsolute(impostori.seed)
+    buffer.writeString(impostori.version)
+    buffer.writeAbsolute(impostori.seed)
 
-    console.log(buffer.writePointer)
     const grid = serializeGrid(impostori.grid)
     grid.copy({ target: buffer, sourceEnd: grid.writePointer })
-    console.log(buffer.writePointer)
 
     buffer.writeAbsolute(impostori.rawEntropy)
     buffer.write(impostori.correctedEntropy, { size: 10 })

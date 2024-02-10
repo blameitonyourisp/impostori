@@ -52,8 +52,6 @@ const deserializeAdjacencies = buffer => {
         else { adjacencyIds.deleted.add(i) }
     }
 
-    console.log(buffer.readPointer)
-
     return adjacencyIds
 }
 

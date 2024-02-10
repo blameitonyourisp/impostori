@@ -35,16 +35,13 @@ import { Grid } from "../../types/index.js"
  */
 const serializeGrid = grid => {
     let buffer = new BitBuffer({ size: 128 })
-    console.log("GRID: ", buffer.writePointer)
     for (const cell of grid.cells) {
         const cellBuffer = serializeCell(cell)
         cellBuffer.copy({ target: buffer, sourceEnd: cellBuffer.writePointer })
     }
-    console.log("GRID: ", buffer.writePointer)
 
     const adjacencies = serializeAdjacencies(grid)
     adjacencies.copy({ target: buffer, sourceEnd: adjacencies.writePointer })
-    console.log("GRID: ", buffer.writePointer)
 
     const size = Math.ceil(buffer.writePointer / 8)
     buffer = buffer.copy({
