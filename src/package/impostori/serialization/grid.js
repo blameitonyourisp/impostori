@@ -21,6 +21,7 @@ import {
     removeGridAdjacency,
     getAdjacencyData
 } from "../adjacency/index.js"
+import { sortGrid } from "../reset/index.js"
 
 // @@imports-module
 import { serializeAdjacencies, deserializeAdjacencies } from "./adjacency.js"
@@ -107,6 +108,8 @@ const deserializeGrid = (buffer, seed) => {
             grid = removeGridAdjacency(getAdjacencyData(adjacencyId), grid)
         }
     }
+
+    grid = sortGrid(grid)
 
     return grid
 }

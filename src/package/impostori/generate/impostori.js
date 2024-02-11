@@ -46,6 +46,7 @@ const generateImpostori = seed => {
         grade: "",
         serializedString: ""
     }
+    impostori.grid.random = new Random(impostori.seed)
 
     return { ...impostori, serializedString: serializeImpostori(impostori) }
 }

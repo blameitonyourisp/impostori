@@ -16,17 +16,16 @@
 // @ts-check
 
 // @@imports-module
-import { resetCell } from "./cell.js"
+import { resetCell, sortCell } from "./cell.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { Grid } from "../../types/index.js"
+import { Grid, CellType } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
  *
- * @memberof module:reset
  * @param {Grid} grid
  * @returns {Grid}
  */
@@ -38,8 +37,8 @@ const resetGrid = (grid, hard = false) => {
         vacant: Array.from({ length: 36 }, (_, index) => index)
     }
     grid = hard
-        ? { ...grid, typeIndexes, isGenerating: false, cells: [...grid.cells] }
-        : { ...grid, isGenerating: false, cells: [...grid.cells] }
+        ? { ...grid, typeIndexes, cells: [...grid.cells], isGenerating: false }
+        : { ...grid, cells: [...grid.cells], isGenerating: false }
     for (const cell of grid.cells) {
         grid.cells[cell.index] = resetCell(cell, hard)
     }
@@ -49,5 +48,41 @@ const resetGrid = (grid, hard = false) => {
 const softResetGrid = (/** @type {Grid} */ grid) => resetGrid(grid, false)
 const hardResetGrid = (/** @type {Grid} */ grid) => resetGrid(grid, true)
 
+/**
+ *
+ * @param {Grid} grid
+ * @returns {Grid}
+ */
+const sortGrid = grid => {
+    // const typeIndexes = {
+    //     detective: [...grid.typeIndexes.detective.sort((a, b) => a - b)],
+    //     worker: [...grid.typeIndexes.worker.sort((a, b) => a - b)],
+    //     imposter: [...grid.typeIndexes.imposter.sort((a, b) => a - b)],
+    //     vacant: [...grid.typeIndexes.vacant.sort((a, b) => a - b)]
+    // }
+    const typeIndexes = {}
+    /** @type {CellType} */ 
+    for (const key in grid.typeIndexes) {
+        console.log(key, value)
+        typeIndexes[key] = [...grid.typeIndexes[key].sort((a, b) => a - b)]
+    }
+
+    const adjacencyIDs = {
+        required: new Set(),
+        optional: new Set(),
+        deleted: new Set()
+    }
+    for (let i = 0; i < 85; i++) {
+        grid.adjacencyIDs.required.has(i) ? adjacencyIDs.required.add(i)
+            : grid.adjacencyIDs.optional.has(i) ? adjacencyIDs.optional.add(i)
+            : adjacencyIDs.deleted.add(i)
+    }
+
+    grid = { ...grid, cells: [...grid.cells], typeIndexes, adjacencyIDs }
+    for (const cell of grid.cells) { grid.cells[cell.index] = sortCell(cell) }
+
+    return grid
+}
+
 // @@exports
-export { resetGrid, hardResetGrid, softResetGrid }
+export { resetGrid, hardResetGrid, softResetGrid, sortGrid }

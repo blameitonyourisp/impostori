@@ -29,14 +29,29 @@ const deserializedImpostori = deserializeImpostori(impostori.serializedString)
 
 // for (let i = 0; i < 35; i++) {
 //     console.log("ORIGINAL:")
-//     console.log(impostori.grid.cells[i].candidates)
+//     console.log(impostori.grid.cells[i])
 //     console.log("DESERIALIZED:")
-//     console.log(deserializedImpostori.grid.cells[i].candidates)
+//     console.log(deserializedImpostori.grid.cells[i])
 // }
 
-impostori.grid.random = new Random(impostori.seed)
+// impostori.grid.random = new Random(impostori.seed)
+console.log(impostori.grid.typeIndexes)
 
-// console.log(JSON.stringify(impostori) === JSON.stringify(deserializedImpostori))
+console.log(JSON.stringify(impostori) === JSON.stringify(deserializedImpostori))
+// console.log(
+//     // JSON.stringify(impostori).length,
+//     JSON.stringify(impostori).slice(4100, 4175) ===
+//     JSON.stringify(deserializedImpostori).slice(4100, 4175)
+// )
+
+// // console.log(
+// //     JSON.stringify(impostori).length,
+// //     JSON.stringify(impostori).slice(2750) ===
+// //     JSON.stringify(deserializedImpostori).slice(2750)
+// // )
+
+// console.log(JSON.stringify(impostori).slice(4150, 4175))
+// console.log(JSON.stringify(deserializedImpostori).slice(4150, 4175))
 
 /**
  * recreation of impostori:

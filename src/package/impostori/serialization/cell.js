@@ -116,19 +116,6 @@ const deserializeCell = (buffer, index) => {
             cell.candidates.push(getCandidate(cell, i + 1))
         }
     }
-    // if (buffer.read(1)) {
-    //     const uint6 = buffer.read(6)
-    //     for (let i = 0; i < 6; i++) {
-    //         if (uint6 << 31 - i >>> 31) {
-    //             cell.candidates.push(getCandidate(cell, i + 1))
-    //         }
-    //     }
-    // }
-    // else {
-    //     for (let i = 0; i < 6; i++) {
-    //         cell.candidates.push(getCandidate(cell, i + 1))
-    //     }
-    // }
 
     return { ...cell }
 }

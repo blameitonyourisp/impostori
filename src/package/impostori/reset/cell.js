@@ -58,5 +58,34 @@ const resetCell = (cell, hard = false) => {
 const softResetCell = (/** @type {GridCell} */ cell) => resetCell(cell, false)
 const hardResetCell = (/** @type {GridCell} */ cell) => resetCell(cell, true)
 
+/**
+ *
+ * @param {GridCell} cell
+ * @returns {GridCell}
+ */
+const sortCell = cell => {
+    const numSort = (a, b) => a - b
+    // candidate and hint sort not strictly required, but use for utility value
+    const candidates = [...cell.candidates.sort((a, b) => a.value - b.value)]
+    const hints = {
+        detective: [...cell.hints.detective.sort(numSort)],
+        worker: [...cell.hints.worker.sort(numSort)],
+        imposter: [...cell.hints.imposter.sort(numSort)]
+    }
+    const adjacentIndexes = {
+        all: [...cell.adjacentIndexes.all.sort(numSort)],
+        required: [...cell.adjacentIndexes.required.sort(numSort)],
+        optional: [...cell.adjacentIndexes.optional.sort(numSort)],
+        type: {
+            detective: [...cell.adjacentIndexes.type.detective.sort(numSort)],
+            worker: [...cell.adjacentIndexes.type.worker.sort(numSort)],
+            imposter: [...cell.adjacentIndexes.type.imposter.sort(numSort)],
+            vacant: [...cell.adjacentIndexes.type.vacant.sort(numSort)]
+        }
+    }
+
+    return { ...cell, candidates, hints, adjacentIndexes }
+}
+
 // @@exports
-export { resetCell, softResetCell, hardResetCell }
+export { resetCell, softResetCell, hardResetCell, sortCell }

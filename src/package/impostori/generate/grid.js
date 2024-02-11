@@ -18,7 +18,7 @@
 // @@imports-package
 import { getAdjacencyData } from "../adjacency/index.js"
 import { fillGridHints } from "../hint/index.js"
-import { softResetGrid, hardResetGrid } from "../reset/index.js"
+import { softResetGrid, hardResetGrid, sortGrid } from "../reset/index.js"
 import { solveGrid } from "../solve/index.js"
 import {
     validateGridTypes,
@@ -92,7 +92,8 @@ const generateGrid = random => {
         return generateGrid(random)
     }
 
-    grid = softResetGrid(grid)
+    // grid = softResetGrid(grid)
+    grid = pipe(softResetGrid, sortGrid)(grid)
 
     return { grid, rawEntropy }
 }
