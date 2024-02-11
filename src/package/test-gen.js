@@ -18,6 +18,8 @@
 // @@imports-package
 import { generateImpostori } from "./impostori/generate/index.js"
 import { deserializeImpostori } from "./impostori/serialization/impostori.js"
+import { getAdjacencyData } from "./index.js"
+import { Random } from "./utils/index.js"
 // import { printGrid } from "./index.js"
 
 // @@body
@@ -25,12 +27,16 @@ const seed = 3163700000
 const impostori = generateImpostori(seed)
 const deserializedImpostori = deserializeImpostori(impostori.serializedString)
 
-for (let i = 35; i < 36; i++) {
-    console.log("ORIGINAL:")
-    console.log(impostori.grid.cells[i])
-    console.log("DESERIALIZED:")
-    console.log(deserializedImpostori.grid.cells[i])
-}
+// for (let i = 0; i < 35; i++) {
+//     console.log("ORIGINAL:")
+//     console.log(impostori.grid.cells[i].candidates)
+//     console.log("DESERIALIZED:")
+//     console.log(deserializedImpostori.grid.cells[i].candidates)
+// }
+
+impostori.grid.random = new Random(impostori.seed)
+
+// console.log(JSON.stringify(impostori) === JSON.stringify(deserializedImpostori))
 
 /**
  * recreation of impostori:

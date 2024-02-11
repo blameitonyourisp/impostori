@@ -114,7 +114,7 @@ const requireGridAdjacency = (adjacency, grid) => {
  *
  * @see Adjacency
  * @param {...number} args - Takes either 2 adjacency cell indexes (ranged from
- *      0 to 35), or 1 adjacency id value (range 0001 to 3435)
+ *      0 to 35), or 1 adjacency id value (range 0 to 84)
  * @returns {Adjacency}
  */
 const getAdjacencyData = (...args) => {

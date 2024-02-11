@@ -15,6 +15,13 @@
 
 // @ts-check
 
+// @@imports-package
+import {
+    requireGridAdjacency,
+    removeGridAdjacency,
+    getAdjacencyData
+} from "../adjacency/index.js"
+
 // @@imports-module
 import { serializeAdjacencies, deserializeAdjacencies } from "./adjacency.js"
 import { serializeCell, deserializeCell } from "./cell.js"
@@ -24,7 +31,7 @@ import { BitBuffer, Random } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { Grid } from "../../types/index.js"
+import { Grid, GridCell } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -65,20 +72,43 @@ const deserializeGrid = (buffer, seed) => {
         vacant: []
     }
 
-    const cells = []
+    const cells = /** @type {GridCell[]} */ ([])
     for (let i = 0; i < 36; i++) {
         const cell = deserializeCell(buffer, i)
         typeIndexes[cell.type].push(i)
         cells.push(cell)
     }
 
-    return {
+    cells.forEach(cell => {
+        cell.adjacentIndexes.all.forEach(adjacentIndex => {
+            const { type } = cells[adjacentIndex]
+            cell.adjacentIndexes.type[type].push(adjacentIndex)
+        })
+    })
+
+    const adjacencyIds = deserializeAdjacencies(buffer)
+    let grid = /** @type {Grid} */ ({
         cells,
         typeIndexes,
-        adjacencyIDs: deserializeAdjacencies(buffer),
+        adjacencyIDs: {
+            required: new Set(),
+            optional: new Set(Array.from({ length: 85 }, (_, i) => i)),
+            deleted: new Set()
+        },
         random: new Random(seed),
         isGenerating: false
+    })
+
+    for (const adjacencyId of grid.adjacencyIDs.optional) {
+        if (adjacencyIds.required.has(adjacencyId)) {
+            grid = requireGridAdjacency(getAdjacencyData(adjacencyId), grid)
+        }
+        else {
+            grid = removeGridAdjacency(getAdjacencyData(adjacencyId), grid)
+        }
     }
+
+    return grid
 }
 
 // @@exports

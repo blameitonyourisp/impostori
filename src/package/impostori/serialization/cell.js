@@ -40,8 +40,8 @@ import { CellCandidate, GridCell } from "../../types/index.js"
 const serializeCell = cell => {
     let buffer = new BitBuffer({ size: 3 }) // max size 19 bits or 3 bytes
 
-    const { value, hints } = cell
-    const uint3Array = [value, ...hints.detective, ...hints.worker]
+    const { value, clientValue, hints } = cell
+    const uint3Array = [value, clientValue, ...hints.detective, ...hints.worker]
     for (const uint3 of uint3Array) {
         buffer.write(uint3, { size: 3 })
     }
@@ -51,9 +51,7 @@ const serializeCell = cell => {
         const candidateValues = cell.candidates.map(({ value }) => value)
         let uint6 = 0
         for (let i = 0; i < 6; i++) {
-            if (candidateValues.includes(i + 1)) {
-                uint6 = uint6 | 1 << 5 - i
-            }
+            if (candidateValues.includes(i + 1)) { uint6 = uint6 | 1 << i }
         }
         buffer.write(uint6, { size: 6 })
     }
@@ -83,7 +81,7 @@ const deserializeCell = (buffer, index) => {
         box: getBox(index),
         candidates: [],
         value: buffer.read(3),
-        clientValue: 0,
+        clientValue: buffer.read(3),
         type: CELL_TYPES.vacant,
         hints: {
             detective: [buffer.read(3)],
@@ -98,7 +96,7 @@ const deserializeCell = (buffer, index) => {
                 detective: [],
                 worker: [],
                 imposter: [],
-                vacant: adjacentIndexes
+                vacant: []
             }
         }
     })
@@ -111,19 +109,26 @@ const deserializeCell = (buffer, index) => {
             !cell.hints.worker.includes(hint)
     })
 
-    if (buffer.read(1)) {
-        const uint6 = buffer.read(6)
-        for (let i = 0; i < 6; i++) {
-            if (uint6 << 31 - i >>> 31) {
-                cell.candidates.push(getCandidate(cell, 6 - i))
-            }
+    let uint6 = parseInt("111111", 2)
+    if (buffer.read(1)) { uint6 = buffer.read(6) }
+    for (let i = 0; i < 6; i++) {
+        if (uint6 << 31 - i >>> 31) {
+            cell.candidates.push(getCandidate(cell, i + 1))
         }
     }
-    else {
-        for (let i = 0; i < 6; i++) {
-            cell.candidates.push(getCandidate(cell, 6 - i))
-        }
-    }
+    // if (buffer.read(1)) {
+    //     const uint6 = buffer.read(6)
+    //     for (let i = 0; i < 6; i++) {
+    //         if (uint6 << 31 - i >>> 31) {
+    //             cell.candidates.push(getCandidate(cell, i + 1))
+    //         }
+    //     }
+    // }
+    // else {
+    //     for (let i = 0; i < 6; i++) {
+    //         cell.candidates.push(getCandidate(cell, i + 1))
+    //     }
+    // }
 
     return { ...cell }
 }
