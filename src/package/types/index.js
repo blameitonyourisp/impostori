@@ -21,7 +21,10 @@
 
 // @@exports
 export * from "./Adjacency.js"
+export * from "./AdjacentIndexTypeFilter.js"
+export * from "./CellAdjacentIndexes.js"
 export * from "./CellCandidate.js"
+export * from "./CellHints.js"
 export * from "./CellType.js"
 export * from "./Grid.js"
 export * from "./GridCell.js"

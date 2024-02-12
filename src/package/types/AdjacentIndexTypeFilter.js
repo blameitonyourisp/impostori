@@ -9,25 +9,28 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file CellType type declaration.
+ * @file AdjacentIndexTypeFilter type declaration.
  * @author James Reid
  */
 
 // @ts-check
 
-// @@no-imports
+// @@imports-types
 
 // @@body
 /**
- * Completed grid cell type, initiated to "VACANT" during grid creation and when
- * brute force solving an incomplete grid.
+ * Adjacent indexes of a cell filtered by type of adjacent cell.
  *
- * @typedef {"detective"|"worker"|"imposter"|"vacant"} CellType
+ * @typedef {object} AdjacentIndexTypeFilter
+ * @property {number[]} detective - Adjacent indexes of detective cells.
+ * @property {number[]} worker - Adjacent indexes of imposter cells.
+ * @property {number[]} imposter - Adjacent indexes of worker cells.
+ * @property {number[]} vacant - Adjacent indexes of cells without a type.
  */
 
 // @@exports
 /**
  * @ignore
- * @type {CellType}
+ * @type {AdjacentIndexTypeFilter}
  */
-export let CellType
+export let AdjacentIndexTypeFilter

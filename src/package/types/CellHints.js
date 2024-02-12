@@ -9,25 +9,28 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file CellType type declaration.
+ * @file CellHints type declaration.
  * @author James Reid
  */
 
 // @ts-check
 
-// @@no-imports
+// @@imports-types
 
 // @@body
 /**
- * Completed grid cell type, initiated to "VACANT" during grid creation and when
- * brute force solving an incomplete grid.
+ * Cell hints as will appear in the final puzzle, each member array contains a
+ * subset of values from 1 to 6.
  *
- * @typedef {"detective"|"worker"|"imposter"|"vacant"} CellType
+ * @typedef {object} CellHints
+ * @property {number[]} detective - Array length 1 containing detective hints.
+ * @property {number[]} worker - Array length 2 containing worker hints.
+ * @property {number[]} imposter - Array length 3 containing imposter hints.
  */
 
 // @@exports
 /**
  * @ignore
- * @type {CellType}
+ * @type {CellHints}
  */
-export let CellType
+export let CellHints

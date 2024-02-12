@@ -19,6 +19,7 @@
 /* eslint-disable no-unused-vars -- Types only used in comments. */
 import { GridCell } from "./GridCell.js"
 import { Random } from "../utils/index.js"
+import { CellType } from "./CellType.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
