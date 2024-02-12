@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Export type declarations.
+ * @file GridTypeIndexes type declaration.
  * @author James Reid
  */
 
@@ -17,18 +17,20 @@
 
 // @@no-imports
 
-// @@no-body
+// @@body
+/**
+ *
+ * @typedef {object} GridTypeIndexes
+ * @property {number[]} detective
+ * @property {number[]} worker
+ * @property {number[]} imposter
+ * @property {number[]} vacant
+ */
 
 // @@exports
-export * from "./Adjacency.js"
-export * from "./AdjacentIndexTypeFilter.js"
-export * from "./CellAdjacentIndexes.js"
-export * from "./CellCandidate.js"
-export * from "./CellHints.js"
-export * from "./CellType.js"
-export * from "./Grid.js"
-export * from "./GridAdjacencyIds.js"
-export * from "./GridCell.js"
-export * from "./GridTypeIndexes.js"
-export * from "./Impostori.js"
-export * from "./TypedArrayConstructor.js"
+/**
+ *
+ * @ignore
+ * @type {GridTypeIndexes}
+ */
+export let GridTypeIndexes

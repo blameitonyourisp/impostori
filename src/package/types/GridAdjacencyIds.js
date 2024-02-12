@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Export type declarations.
+ * @file GridAdjacencyIds type declaration.
  * @author James Reid
  */
 
@@ -17,18 +17,19 @@
 
 // @@no-imports
 
-// @@no-body
+// @@body
+/**
+ *
+ * @typedef {object} GridAdjacencyIds
+ * @property {Set.<number>} required
+ * @property {Set.<number>} optional
+ * @property {Set.<number>} deleted
+ */
 
 // @@exports
-export * from "./Adjacency.js"
-export * from "./AdjacentIndexTypeFilter.js"
-export * from "./CellAdjacentIndexes.js"
-export * from "./CellCandidate.js"
-export * from "./CellHints.js"
-export * from "./CellType.js"
-export * from "./Grid.js"
-export * from "./GridAdjacencyIds.js"
-export * from "./GridCell.js"
-export * from "./GridTypeIndexes.js"
-export * from "./Impostori.js"
-export * from "./TypedArrayConstructor.js"
+/**
+ *
+ * @ignore
+ * @type {GridAdjacencyIds}
+ */
+export let GridAdjacencyIds

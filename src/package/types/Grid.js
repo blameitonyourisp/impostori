@@ -17,9 +17,10 @@
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
+import { GridAdjacencyIds } from "./GridAdjacencyIds.js"
 import { GridCell } from "./GridCell.js"
+import { GridTypeIndexes } from "./GridTypeIndexes.js"
 import { Random } from "../utils/index.js"
-import { CellType } from "./CellType.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -27,18 +28,8 @@ import { CellType } from "./CellType.js"
  *
  * @typedef {object} Grid
  * @property {GridCell[]} cells
- *
- * @property {object} typeIndexes
- * @property {number[]} typeIndexes.detective
- * @property {number[]} typeIndexes.worker
- * @property {number[]} typeIndexes.imposter
- * @property {number[]} typeIndexes.vacant
- *
- * @property {object} adjacencyIDs
- * @property {Set.<number>} adjacencyIDs.required
- * @property {Set.<number>} adjacencyIDs.optional
- * @property {Set.<number>} adjacencyIDs.deleted
- *
+ * @property {GridTypeIndexes} typeIndexes
+ * @property {GridAdjacencyIds} adjacencyIDs
  * @property {Random} random
  * @property {boolean} isGenerating
  */
