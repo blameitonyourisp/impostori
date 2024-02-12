@@ -20,7 +20,13 @@ import { CELL_TYPES } from "../type/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { CellType, GridCell } from "../../types/index.js"
+import {
+    AdjacentIndexTypeFilter,
+    CellAdjacentIndexes,
+    CellHints,
+    CellType,
+    GridCell
+} from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -64,24 +70,33 @@ const hardResetCell = (/** @type {GridCell} */ cell) => resetCell(cell, true)
  * @returns {GridCell}
  */
 const sortCell = cell => {
-    const numSort = (a, b) => a - b
+    /**
+     * @ignore
+     * @typedef {Array.<keyof typeof cell.hints>} HintKeys
+     * @typedef {Array.<keyof typeof cell.adjacentIndexes>} AdjacentIndexKeys
+     * @typedef {Array.<keyof typeof cell.adjacentIndexes.type>} TypeFilterKeys
+     */
+
     // candidate and hint sort not strictly required, but use for utility value
     const candidates = [...cell.candidates.sort((a, b) => a.value - b.value)]
-    const hints = {
-        detective: [...cell.hints.detective.sort(numSort)],
-        worker: [...cell.hints.worker.sort(numSort)],
-        imposter: [...cell.hints.imposter.sort(numSort)]
+    const hints = /** @type {CellHints} */ ({})
+    for (const key of /** @type {HintKeys}*/ (Object.keys(cell.hints))) {
+        hints[key] = [...cell.hints[key].sort((a, b) => a - b)]
     }
-    const adjacentIndexes = {
-        all: [...cell.adjacentIndexes.all.sort(numSort)],
-        required: [...cell.adjacentIndexes.required.sort(numSort)],
-        optional: [...cell.adjacentIndexes.optional.sort(numSort)],
-        type: {
-            detective: [...cell.adjacentIndexes.type.detective.sort(numSort)],
-            worker: [...cell.adjacentIndexes.type.worker.sort(numSort)],
-            imposter: [...cell.adjacentIndexes.type.imposter.sort(numSort)],
-            vacant: [...cell.adjacentIndexes.type.vacant.sort(numSort)]
+    const adjacentIndexes = /** @type {CellAdjacentIndexes} */ ({})
+    for (const key of /** @type {AdjacentIndexKeys}*/
+    (Object.keys(cell.adjacentIndexes))) {
+        if (key === "type") {
+            adjacentIndexes.type = /** @type {AdjacentIndexTypeFilter} */ ({})
+            for (const key of /** @type {TypeFilterKeys} */
+            (Object.keys(cell.adjacentIndexes.type))) {
+                adjacentIndexes.type[key] =
+                    [...cell.adjacentIndexes.type[key].sort((a, b) => a - b)]
+            }
+            continue
         }
+        adjacentIndexes[key] =
+            [...cell.adjacentIndexes[key].sort((a, b) => a - b)]
     }
 
     return { ...cell, candidates, hints, adjacentIndexes }

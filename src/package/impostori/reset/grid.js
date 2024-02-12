@@ -20,7 +20,7 @@ import { resetCell, sortCell } from "./cell.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { Grid, CellType } from "../../types/index.js"
+import { Grid, GridTypeIndexes } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -54,16 +54,14 @@ const hardResetGrid = (/** @type {Grid} */ grid) => resetGrid(grid, true)
  * @returns {Grid}
  */
 const sortGrid = grid => {
-    // const typeIndexes = {
-    //     detective: [...grid.typeIndexes.detective.sort((a, b) => a - b)],
-    //     worker: [...grid.typeIndexes.worker.sort((a, b) => a - b)],
-    //     imposter: [...grid.typeIndexes.imposter.sort((a, b) => a - b)],
-    //     vacant: [...grid.typeIndexes.vacant.sort((a, b) => a - b)]
-    // }
-    const typeIndexes = {}
-    /** @type {CellType} */ 
-    for (const key in grid.typeIndexes) {
-        console.log(key, value)
+    /**
+     * @ignore
+     * @typedef {Array.<keyof typeof Grid.typeIndexes>} TypeIndexKeys
+     */
+
+    const typeIndexes = /** @type {GridTypeIndexes} */ ({})
+    for (const key of /** @type {TypeIndexKeys} */
+    (Object.keys(grid.typeIndexes))) {
         typeIndexes[key] = [...grid.typeIndexes[key].sort((a, b) => a - b)]
     }
 

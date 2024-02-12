@@ -35,7 +35,7 @@ const deserializedImpostori = deserializeImpostori(impostori.serializedString)
 // }
 
 // impostori.grid.random = new Random(impostori.seed)
-console.log(impostori.grid.typeIndexes)
+console.log(impostori)
 
 console.log(JSON.stringify(impostori) === JSON.stringify(deserializedImpostori))
 // console.log(
