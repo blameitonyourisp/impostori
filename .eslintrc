@@ -225,6 +225,7 @@
             "capIsNew": true,
             "capIsNewExceptions": ["Array"]
         }],
+        "no-case-declarations": "off",
         "no-else-return": "error",
         "no-extra-label": "error",
         "no-label-var": "error",
