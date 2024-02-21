@@ -19,6 +19,8 @@
 
 // @@body
 /**
+ * Please find general todo tasks for repository in the comment block below:
+ *
  * @todo include max retries to prevent hanging
  * @todo resolve progress queue to prevent the -1 case from causing generate
  * @todo change random "shuffle" to "permute"
@@ -41,11 +43,16 @@
  *      cli widget manager
  * @todo re-add hash to BitBuffer, or alternatively add version check to
  *      deserializing process
- * @todo fix circular dependency in cli manager
+ * @todo fix circular dependency warnings when building
  * @todo refactor Resource to not use __ prefix
  * @todo add types for GridTypeIndexes
  * @todo add types for GridAdjacencyIds
  * @todo refactor IDs to Ids
+ * @todo implement QR code generation with this api
+ *      (https://www.qrcode-monkey.com/qr-code-api-with-logo/), or use an
+ *      equivalent npm package
+ * @todo move twin and prune into adjacency folder
+ * @todo add chi-squared math util
  */
 
 // @@exports
