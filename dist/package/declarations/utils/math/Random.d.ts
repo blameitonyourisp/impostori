@@ -2,6 +2,10 @@
  * @file Seeded random number generator.
  * @author James Reid
  */
+/**
+ * Seeded prng implemented using BBS algorithm. For more information on this
+ * algorithm, see here (https://en.wikipedia.org/wiki/Blum_Blum_Shub).
+ */
 export class Random {
     /**
      *

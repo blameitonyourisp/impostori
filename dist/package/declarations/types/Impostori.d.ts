@@ -1,11 +1,15 @@
 export type Impostori = {
     grid: Grid;
     seed: number;
-    version: string;
+    version: {
+        puzzle: string;
+        repository: string;
+    };
     rawEntropy: number;
-    correctedEntropy: number;
+    normalizedEntropy: number;
+    uniformEntropy: number;
     rating: number;
-    grade: string;
+    grade: ImpostoriGrade;
     serializedString: string;
 };
 /**
@@ -13,11 +17,14 @@ export type Impostori = {
  * @typedef {object} Impostori
  * @property {Grid} grid
  * @property {number} seed
- * @property {string} version
+ * @property {object} version
+ * @property {string} version.puzzle
+ * @property {string} version.repository
  * @property {number} rawEntropy
- * @property {number} correctedEntropy
+ * @property {number} normalizedEntropy
+ * @property {number} uniformEntropy
  * @property {number} rating
- * @property {string} grade
+ * @property {ImpostoriGrade} grade
  * @property {string} serializedString
  */
 /**
@@ -26,3 +33,4 @@ export type Impostori = {
  */
 export let Impostori: Impostori;
 import { Grid } from "./Grid.js";
+import { ImpostoriGrade } from "./ImpostoriGrade.js";

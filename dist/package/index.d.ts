@@ -59,10 +59,102 @@ type Adjacency = {
 declare let Adjacency: Adjacency;
 
 /**
- * Object containing all data for a cell required to generate a grid,
- * solve a puzzle and to display a puzzle. This includes mainly data identifying
- * the position of the cell in the grid, data identifying the contents of the
- * cell, and data identifying adjacency relationships with neighboring cells.
+ * Adjacent indexes of a cell filtered by type of adjacent cell.
+ */
+type AdjacentIndexTypeFilter = {
+    /**
+     * - Adjacent indexes of detective cells.
+     */
+    detective: number[];
+    /**
+     * - Adjacent indexes of imposter cells.
+     */
+    worker: number[];
+    /**
+     * - Adjacent indexes of worker cells.
+     */
+    imposter: number[];
+    /**
+     * - Adjacent indexes of cells without a type.
+     */
+    vacant: number[];
+};
+/**
+ * @file AdjacentIndexTypeFilter type declaration.
+ * @author James Reid
+ */
+/**
+ * Adjacent indexes of a cell filtered by type of adjacent cell.
+ *
+ * @typedef {object} AdjacentIndexTypeFilter
+ * @property {number[]} detective - Adjacent indexes of detective cells.
+ * @property {number[]} worker - Adjacent indexes of imposter cells.
+ * @property {number[]} imposter - Adjacent indexes of worker cells.
+ * @property {number[]} vacant - Adjacent indexes of cells without a type.
+ */
+/**
+ * @ignore
+ * @type {AdjacentIndexTypeFilter}
+ */
+declare let AdjacentIndexTypeFilter: AdjacentIndexTypeFilter;
+
+/**
+ * Object describing the existing adjacent indexes of a cell. All possible
+ * adjacent cell indexes are included on a cell object in its initial state.
+ * During grid creation, when {@link Adjacency Adjacencies} are removed, these
+ * changes are reflected on this object by removing the relevant raw adjacent
+ * indexes. Note that these are only cell indexes which directly point to other
+ * cells in the grid, and should not be confused with {@link Adjacency }.
+ */
+type CellAdjacentIndexes = {
+    /**
+     * - All adjacent cell indexes.
+     */
+    all: number[];
+    /**
+     * - Adjacent cell indexes flagged as required for
+     * example between an imposter and a detective cell.
+     */
+    required: number[];
+    /**
+     * - Adjacent cell indexes flagged as optional.
+     * These may be randomly pruned during grid creation in order to produce a
+     * unique grid with fewer adjacencies. Initially all adjacent indexes are
+     * considered to be optional.
+     */
+    optional: number[];
+    /**
+     * - Adjacent indexes filtered by type.
+     */
+    type: AdjacentIndexTypeFilter;
+};
+/**
+ * Object describing the existing adjacent indexes of a cell. All possible
+ * adjacent cell indexes are included on a cell object in its initial state.
+ * During grid creation, when {@link Adjacency Adjacencies} are removed, these
+ * changes are reflected on this object by removing the relevant raw adjacent
+ * indexes. Note that these are only cell indexes which directly point to other
+ * cells in the grid, and should not be confused with {@link Adjacency}.
+ *
+ * @typedef {object} CellAdjacentIndexes
+ * @property {number[]} all - All adjacent cell indexes.
+ * @property {number[]} required - Adjacent cell indexes flagged as required for
+ *      example between an imposter and a detective cell.
+ * @property {number[]} optional - Adjacent cell indexes flagged as optional.
+ *      These may be randomly pruned during grid creation in order to produce a
+ *      unique grid with fewer adjacencies. Initially all adjacent indexes are
+ *      considered to be optional.
+ * @property {AdjacentIndexTypeFilter} type - Adjacent indexes filtered by type.
+ */
+/**
+ * @ignore
+ * @type {CellAdjacentIndexes}
+ */
+declare let CellAdjacentIndexes: CellAdjacentIndexes;
+
+/**
+ * Completed grid cell type, initiated to "VACANT" during grid creation and when
+ * brute force solving an incomplete grid.
  */
 type CellType = "detective" | "worker" | "imposter" | "vacant";
 /**
@@ -70,10 +162,8 @@ type CellType = "detective" | "worker" | "imposter" | "vacant";
  * @author James Reid
  */
 /**
- * Object containing all data for a cell required to generate a grid,
- * solve a puzzle and to display a puzzle. This includes mainly data identifying
- * the position of the cell in the grid, data identifying the contents of the
- * cell, and data identifying adjacency relationships with neighboring cells.
+ * Completed grid cell type, initiated to "VACANT" during grid creation and when
+ * brute force solving an incomplete grid.
  *
  * @typedef {"detective"|"worker"|"imposter"|"vacant"} CellType
  */
@@ -100,6 +190,43 @@ type CellCandidate = {
 declare let CellCandidate: CellCandidate;
 
 /**
+ * Cell hints as will appear in the final puzzle, each member array contains a
+ * subset of values from 1 to 6.
+ */
+type CellHints = {
+    /**
+     * - Array length 1 containing detective hints.
+     */
+    detective: number[];
+    /**
+     * - Array length 2 containing worker hints.
+     */
+    worker: number[];
+    /**
+     * - Array length 3 containing imposter hints.
+     */
+    imposter: number[];
+};
+/**
+ * @file CellHints type declaration.
+ * @author James Reid
+ */
+/**
+ * Cell hints as will appear in the final puzzle, each member array contains a
+ * subset of values from 1 to 6.
+ *
+ * @typedef {object} CellHints
+ * @property {number[]} detective - Array length 1 containing detective hints.
+ * @property {number[]} worker - Array length 2 containing worker hints.
+ * @property {number[]} imposter - Array length 3 containing imposter hints.
+ */
+/**
+ * @ignore
+ * @type {CellHints}
+ */
+declare let CellHints: CellHints;
+
+/**
  * Object containing all data for a cell required to generate a grid,
  * solve a puzzle and to display a puzzle. This includes mainly data identifying
  * the position of the cell in the grid, data identifying the contents of the
@@ -111,68 +238,50 @@ declare let CellCandidate: CellCandidate;
  */
 type GridCell = {
     /**
-     * - Cell index in grid ranged 0 to 35
+     * - Cell index in grid ranged 0 to 35.
      */
     index: number;
     /**
-     * - Row index of cell ranged 0 to 5
+     * - Row index of cell ranged 0 to 5.
      */
     row: number;
     /**
-     * - Column index of cell ranged 0 to 5
+     * - Column index of cell ranged 0 to 5.
      */
     column: number;
     /**
-     * - Box index of cell ranged 0 to 5
+     * - Box index of cell ranged 0 to 5.
      */
     box: number;
     /**
      * - Shuffled array of all possible cell
      * values from 1 to 6, when generating grid, cell will be filled randomly
-     * with values from this array
+     * with values from this array.
      */
     candidates: CellCandidate[];
     /**
-     * - Completed grid cell value ranged 1 to 6 - value
+     * - Completed grid cell value ranged 1 to 6. Value
      * is initiated to 0 during grid creation and when brute force solving an
-     * incomplete grid
+     * incomplete grid.
      */
     value: number;
     /**
-     * - Completed grid
-     * cell type - initiated to "VACANT" during grid creation and when brute
-     * force solving an incomplete grid
+     * - Value of cell chosen by client.
+     */
+    clientValue: number;
+    /**
+     * - Completed grid cell type.
      */
     type: CellType;
     /**
-     * - Cell hints as will appear in the final puzzle;
-     * each member array contains a subset of values from 1 to 6
+     * - Cell hints as will appear in the final puzzle.
      */
-    hints: {
-        detective: number[];
-        worker: number[];
-        imposter: number[];
-    };
+    hints: CellHints;
     /**
-     * - Object describing the existing adjacent
-     * indexes of a cell. All possible adjacent cell indexes are included on a
-     * cell object in its initial state. During grid creation, when
-     * {@link Adjacency Adjacencies} are removed, these changes are reflected
-     * on this object by removing the relevant raw adjacent indexes. Note that
-     * these are only cell indexes which directly point to other cells in the
-     * grid, and should not be confused with {@link Adjacency }
+     * - Object describing the
+     * existing adjacent indexes of a cell.
      */
-    adjacentIndexes: {
-        all: number[];
-        required: number[];
-        optional: number[];
-        type: {
-            detective: number[];
-            worker: number[];
-            imposter: number[];
-            vacant: number[];
-        };
-    };
+    adjacentIndexes: CellAdjacentIndexes;
 };
 /**
  * Object containing all data for a cell required to generate a grid,
@@ -187,51 +296,21 @@ type GridCell = {
  * @summary Object containing all required data for a each grid cell
  *
  * @typedef {object} GridCell
- * @property {number} index - Cell index in grid ranged 0 to 35
- * @property {number} row - Row index of cell ranged 0 to 5
- * @property {number} column - Column index of cell ranged 0 to 5
- * @property {number} box - Box index of cell ranged 0 to 5
+ * @property {number} index - Cell index in grid ranged 0 to 35.
+ * @property {number} row - Row index of cell ranged 0 to 5.
+ * @property {number} column - Column index of cell ranged 0 to 5.
+ * @property {number} box - Box index of cell ranged 0 to 5.
  * @property {CellCandidate[]} candidates - Shuffled array of all possible cell
  *      values from 1 to 6, when generating grid, cell will be filled randomly
- *      with values from this array
- * @property {number} value - Completed grid cell value ranged 1 to 6 - value
+ *      with values from this array.
+ * @property {number} value - Completed grid cell value ranged 1 to 6. Value
  *      is initiated to 0 during grid creation and when brute force solving an
- *      incomplete grid
- * @property {CellType} type - Completed grid
- *      cell type - initiated to "VACANT" during grid creation and when brute
- *      force solving an incomplete grid
- *
- * @property {object} hints - Cell hints as will appear in the final puzzle;
- *      each member array contains a subset of values from 1 to 6
- * @property {number[]} hints.detective - Hint array length 1
- * @property {number[]} hints.worker - Hint array length 2
- * @property {number[]} hints.imposter - Hint array length 3
- *
- * @property {object} adjacentIndexes - Object describing the existing adjacent
- *      indexes of a cell. All possible adjacent cell indexes are included on a
- *      cell object in its initial state. During grid creation, when
- *      {@link Adjacency Adjacencies} are removed, these changes are reflected
- *      on this object by removing the relevant raw adjacent indexes. Note that
- *      these are only cell indexes which directly point to other cells in the
- *      grid, and should not be confused with {@link Adjacency}
- * @property {number[]} adjacentIndexes.all - All adjacent cell indexes
- * @property {number[]} adjacentIndexes.required - Adjacent cell indexes flagged
- *      as required for example between an imposter and a detective cell
- * @property {number[]} adjacentIndexes.optional - Adjacent cell indexes flagged
- *      as optional - these may be randomly pruned during grid creation in
- *      order to produce a unique grid with fewer adjacencies. Initially all
- *      adjacent indexes are considered to be optional
- *
- * @property {object} adjacentIndexes.type - Adjacent indexes filtered by type
- *      of adjacent cell
- * @property {number[]} adjacentIndexes.type.detective - Adjacent indexes of
- *      detective cells
- * @property {number[]} adjacentIndexes.type.worker - Adjacent indexes of
- *      imposter cells
- * @property {number[]} adjacentIndexes.type.imposter - Adjacent indexes of
- *      worker cells
- * @property {number[]} adjacentIndexes.type.vacant - Adjacent indexes of cells
- *      without a type
+ *      incomplete grid.
+ * @property {number} clientValue - Value of cell chosen by client.
+ * @property {CellType} type - Completed grid cell type.
+ * @property {CellHints} hints - Cell hints as will appear in the final puzzle.
+ * @property {CellAdjacentIndexes} adjacentIndexes - Object describing the
+ *      existing adjacent indexes of a cell.
  */
 /**
  * @ignore
@@ -239,9 +318,61 @@ type GridCell = {
  */
 declare let GridCell: GridCell;
 
+type GridTypeIndexes = {
+    detective: number[];
+    worker: number[];
+    imposter: number[];
+    vacant: number[];
+};
+/**
+ * @file GridTypeIndexes type declaration.
+ * @author James Reid
+ */
+/**
+ *
+ * @typedef {object} GridTypeIndexes
+ * @property {number[]} detective
+ * @property {number[]} worker
+ * @property {number[]} imposter
+ * @property {number[]} vacant
+ */
+/**
+ *
+ * @ignore
+ * @type {GridTypeIndexes}
+ */
+declare let GridTypeIndexes: GridTypeIndexes;
+
+type GridAdjacencyIds = {
+    required: Set<number>;
+    optional: Set<number>;
+    deleted: Set<number>;
+};
+/**
+ * @file GridAdjacencyIds type declaration.
+ * @author James Reid
+ */
+/**
+ *
+ * @typedef {object} GridAdjacencyIds
+ * @property {Set.<number>} required
+ * @property {Set.<number>} optional
+ * @property {Set.<number>} deleted
+ */
+/**
+ *
+ * @ignore
+ * @type {GridAdjacencyIds}
+ */
+declare let GridAdjacencyIds: GridAdjacencyIds;
+
 /**
  * @file Seeded random number generator.
  * @author James Reid
+ */
+/**
+ * Seeded prng implemented using BBS algorithm. For more information on this
+ * algorithm, see here (https://en.wikipedia.org/wiki/Blum_Blum_Shub).
  */
 declare class Random {
     /**
@@ -573,17 +704,8 @@ declare class BitBuffer {
 
 type Grid = {
     cells: GridCell[];
-    typeIndexes: {
-        detective: number[];
-        worker: number[];
-        imposter: number[];
-        vacant: number[];
-    };
-    adjacencyIDs: {
-        required: Set<number>;
-        optional: Set<number>;
-        deleted: Set<number>;
-    };
+    typeIndexes: GridTypeIndexes;
+    adjacencyIDs: GridAdjacencyIds;
     random: Random;
     isGenerating: boolean;
 };
@@ -591,18 +713,8 @@ type Grid = {
  *
  * @typedef {object} Grid
  * @property {GridCell[]} cells
- *
- * @property {object} typeIndexes
- * @property {number[]} typeIndexes.detective
- * @property {number[]} typeIndexes.worker
- * @property {number[]} typeIndexes.imposter
- * @property {number[]} typeIndexes.vacant
- *
- * @property {object} adjacencyIDs
- * @property {Set.<number>} adjacencyIDs.required
- * @property {Set.<number>} adjacencyIDs.optional
- * @property {Set.<number>} adjacencyIDs.deleted
- *
+ * @property {GridTypeIndexes} typeIndexes
+ * @property {GridAdjacencyIds} adjacencyIDs
  * @property {Random} random
  * @property {boolean} isGenerating
  */
@@ -613,14 +725,37 @@ type Grid = {
  */
 declare let Grid: Grid;
 
+/**
+ * Available grade strings for impostori puzzles.
+ */
+type ImpostoriGrade = "beginner" | "easy" | "medium" | "hard" | "expert";
+/**
+ * @file ImpostoriGrade type declaration.
+ * @author James Reid
+ */
+/**
+ * Available grade strings for impostori puzzles.
+ *
+ * @typedef {"beginner"|"easy"|"medium"|"hard"|"expert"} ImpostoriGrade
+ */
+/**
+ * @ignore
+ * @type {ImpostoriGrade}
+ */
+declare let ImpostoriGrade: ImpostoriGrade;
+
 type Impostori = {
     grid: Grid;
     seed: number;
-    version: string;
+    version: {
+        puzzle: string;
+        repository: string;
+    };
     rawEntropy: number;
-    correctedEntropy: number;
+    normalizedEntropy: number;
+    uniformEntropy: number;
     rating: number;
-    grade: string;
+    grade: ImpostoriGrade;
     serializedString: string;
 };
 /**
@@ -628,11 +763,14 @@ type Impostori = {
  * @typedef {object} Impostori
  * @property {Grid} grid
  * @property {number} seed
- * @property {string} version
+ * @property {object} version
+ * @property {string} version.puzzle
+ * @property {string} version.repository
  * @property {number} rawEntropy
- * @property {number} correctedEntropy
+ * @property {number} normalizedEntropy
+ * @property {number} uniformEntropy
  * @property {number} rating
- * @property {string} grade
+ * @property {ImpostoriGrade} grade
  * @property {string} serializedString
  */
 /**
@@ -724,7 +862,7 @@ declare function requireGridAdjacency(adjacency: Adjacency, grid: Grid): Grid;
  *
  * @see Adjacency
  * @param {...number} args - Takes either 2 adjacency cell indexes (ranged from
- *      0 to 35), or 1 adjacency id value (range 0001 to 3435)
+ *      0 to 35), or 1 adjacency id value (range 0 to 84)
  * @returns {Adjacency}
  */
 declare function getAdjacencyData(...args: number[]): Adjacency;
@@ -753,12 +891,33 @@ declare function generateGrid(random: Random): {
     rawEntropy: number;
 };
 
+declare const PUZZLE_VERSION: "1.0.0";
+type IMPOSTORI_GRADES = ImpostoriGrade;
+declare namespace IMPOSTORI_GRADES {
+    let beginner: ImpostoriGrade;
+    let easy: ImpostoriGrade;
+    let medium: ImpostoriGrade;
+    let hard: ImpostoriGrade;
+    let expert: ImpostoriGrade;
+}
 /**
  *
  * @param {number} [seed]
  * @returns {Impostori}
  */
 declare function generateImpostori(seed?: number | undefined): Impostori;
+/**
+ *
+ * @param {number} uniformEntropy
+ * @returns {number}
+ */
+declare function getRating(uniformEntropy: number): number;
+/**
+ *
+ * @param {number} rating
+ * @returns {ImpostoriGrade}
+ */
+declare function getGradeString(rating: number): ImpostoriGrade;
 
 /**
  *  - remove all adj from imposters (require the adjacency if grid invalid)
@@ -813,22 +972,42 @@ declare function fillGridHints(grid: Grid): Grid;
 declare function resetCell(cell: GridCell, hard?: boolean): GridCell;
 declare function softResetCell(cell: GridCell): GridCell;
 declare function hardResetCell(cell: GridCell): GridCell;
+/**
+ *
+ * @param {GridCell} cell
+ * @returns {GridCell}
+ */
+declare function sortCell(cell: GridCell): GridCell;
 
 /**
  *
- * @memberof module:reset
  * @param {Grid} grid
  * @returns {Grid}
  */
 declare function resetGrid(grid: Grid, hard?: boolean): Grid;
 declare function hardResetGrid(grid: Grid): Grid;
 declare function softResetGrid(grid: Grid): Grid;
+/**
+ *
+ * @param {Grid} grid
+ * @returns {Grid}
+ */
+declare function sortGrid(grid: Grid): Grid;
 
 /**
  *
  * @param {Grid} grid
  */
 declare function serializeAdjacencies(grid: Grid): BitBuffer;
+/**
+ *
+ * @param {BitBuffer} buffer
+ */
+declare function deserializeAdjacencies(buffer: BitBuffer): {
+    required: Set<any>;
+    optional: Set<any>;
+    deleted: Set<any>;
+};
 
 /**
  *
@@ -837,11 +1016,11 @@ declare function serializeAdjacencies(grid: Grid): BitBuffer;
 declare function serializeCell(cell: GridCell): BitBuffer;
 /**
  *
- * @param {number} index
  * @param {BitBuffer} buffer
+ * @param {number} index
  * @returns {GridCell}
  */
-declare function deserializeCell(index: number, buffer: BitBuffer): GridCell;
+declare function deserializeCell(buffer: BitBuffer, index: number): GridCell;
 
 /**
  *
@@ -849,18 +1028,37 @@ declare function deserializeCell(index: number, buffer: BitBuffer): GridCell;
  * @returns {BitBuffer}
  */
 declare function serializeGrid(grid: Grid): BitBuffer;
-declare function deserializeGrid(): void;
+/**
+ *
+ * @param {BitBuffer} buffer
+ * @param {number} seed
+ * @returns {Grid}
+ */
+declare function deserializeGrid(buffer: BitBuffer, seed: number): Grid;
 
 /**
  *
  * @param {Impostori} impostori
  */
-declare function serializeImpostori(impostori: Impostori): Promise<void>;
+declare function serializeImpostori(impostori: Impostori): string;
 /**
  *
- * @param {string} string
+ * @param {string} serializedString
  */
-declare function deserializeImpostori(string: string): void;
+declare function deserializeImpostori(serializedString: string): {
+    rating: number;
+    grade: ImpostoriGrade;
+    serializedString: string;
+    grid: Grid;
+    seed: number;
+    version: {
+        puzzle: string;
+        repository: string;
+    };
+    rawEntropy: number;
+    normalizedEntropy: number;
+    uniformEntropy: number;
+};
 
 /**
  *
@@ -972,4 +1170,4 @@ declare function propagateCellValue(updatedCell: GridCell, grid: Grid): Grid;
  */
 declare function validateGridValues(grid: Grid): boolean;
 
-export { CELL_TYPES, addCellAdjacency, addGridAdjacency, allContinuosTypeIndexes, completedGridTypes, continuosTypeIndexes, deserializeCell, deserializeGrid, deserializeImpostori, fillCellHints, fillCellType, fillCellValue, fillGridHints, fillGridTypes, fillGridValues, forkCellValue, generateEmptyCell, generateEmptyGrid, generateGrid, generateImpostori, getAdjacencyData, getAdjacentIndexes, getBox, getColumn, getRow, hardResetCell, hardResetGrid, printGrid, propagateCellType, propagateCellValue, pruneGridAdjacencies, removeCellAdjacency, removeGridAdjacency, removeTwins, requireCellAdjacency, requireGridAdjacency, resetCell, resetGrid, serializeAdjacencies, serializeCell, serializeGrid, serializeImpostori, softResetCell, softResetGrid, solveCell, solveGrid, validateGridTypes, validateGridValues };
+export { CELL_TYPES, IMPOSTORI_GRADES, PUZZLE_VERSION, addCellAdjacency, addGridAdjacency, allContinuosTypeIndexes, completedGridTypes, continuosTypeIndexes, deserializeAdjacencies, deserializeCell, deserializeGrid, deserializeImpostori, fillCellHints, fillCellType, fillCellValue, fillGridHints, fillGridTypes, fillGridValues, forkCellValue, generateEmptyCell, generateEmptyGrid, generateGrid, generateImpostori, getAdjacencyData, getAdjacentIndexes, getBox, getColumn, getGradeString, getRating, getRow, hardResetCell, hardResetGrid, printGrid, propagateCellType, propagateCellValue, pruneGridAdjacencies, removeCellAdjacency, removeGridAdjacency, removeTwins, requireCellAdjacency, requireGridAdjacency, resetCell, resetGrid, serializeAdjacencies, serializeCell, serializeGrid, serializeImpostori, softResetCell, softResetGrid, solveCell, solveGrid, sortCell, sortGrid, validateGridTypes, validateGridValues };

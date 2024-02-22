@@ -1,8 +1,6 @@
 /**
- * Object containing all data for a cell required to generate a grid,
- * solve a puzzle and to display a puzzle. This includes mainly data identifying
- * the position of the cell in the grid, data identifying the contents of the
- * cell, and data identifying adjacency relationships with neighboring cells.
+ * Completed grid cell type, initiated to "VACANT" during grid creation and when
+ * brute force solving an incomplete grid.
  */
 export type CellType = "detective" | "worker" | "imposter" | "vacant";
 /**
@@ -10,10 +8,8 @@ export type CellType = "detective" | "worker" | "imposter" | "vacant";
  * @author James Reid
  */
 /**
- * Object containing all data for a cell required to generate a grid,
- * solve a puzzle and to display a puzzle. This includes mainly data identifying
- * the position of the cell in the grid, data identifying the contents of the
- * cell, and data identifying adjacency relationships with neighboring cells.
+ * Completed grid cell type, initiated to "VACANT" during grid creation and when
+ * brute force solving an incomplete grid.
  *
  * @typedef {"detective"|"worker"|"imposter"|"vacant"} CellType
  */

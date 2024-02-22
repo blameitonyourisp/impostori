@@ -1,16 +1,7 @@
 export type Grid = {
     cells: GridCell[];
-    typeIndexes: {
-        detective: number[];
-        worker: number[];
-        imposter: number[];
-        vacant: number[];
-    };
-    adjacencyIDs: {
-        required: Set<number>;
-        optional: Set<number>;
-        deleted: Set<number>;
-    };
+    typeIndexes: GridTypeIndexes;
+    adjacencyIDs: GridAdjacencyIds;
     random: Random;
     isGenerating: boolean;
 };
@@ -18,18 +9,8 @@ export type Grid = {
  *
  * @typedef {object} Grid
  * @property {GridCell[]} cells
- *
- * @property {object} typeIndexes
- * @property {number[]} typeIndexes.detective
- * @property {number[]} typeIndexes.worker
- * @property {number[]} typeIndexes.imposter
- * @property {number[]} typeIndexes.vacant
- *
- * @property {object} adjacencyIDs
- * @property {Set.<number>} adjacencyIDs.required
- * @property {Set.<number>} adjacencyIDs.optional
- * @property {Set.<number>} adjacencyIDs.deleted
- *
+ * @property {GridTypeIndexes} typeIndexes
+ * @property {GridAdjacencyIds} adjacencyIDs
  * @property {Random} random
  * @property {boolean} isGenerating
  */
@@ -40,4 +21,6 @@ export type Grid = {
  */
 export let Grid: Grid;
 import { GridCell } from "./GridCell.js";
+import { GridTypeIndexes } from "./GridTypeIndexes.js";
+import { GridAdjacencyIds } from "./GridAdjacencyIds.js";
 import { Random } from "../utils/index.js";
