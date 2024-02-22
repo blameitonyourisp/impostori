@@ -20,6 +20,7 @@
 // @@no-body
 
 // @@exports
-export * from "./Data.js"
+export * from "./chi-squared.js"
+export * from "./normal.js"
 export * from "./Random.js"
 export * from "./Sample.js"
