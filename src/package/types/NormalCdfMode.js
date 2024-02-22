@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file TypedArrayConstructor type declaration.
+ * @file NormalCdfMode type declaration.
  * @author James Reid
  */
 
@@ -19,13 +19,15 @@
 
 // @@body
 /**
+ * Cumulative distribution function modes for calculating probability of a
+ * value within a given range occurring in a normally distributed sample.
  *
- * @typedef {Int8ArrayConstructor|Uint8ArrayConstructor|Uint8ClampedArrayConstructor|Int16ArrayConstructor|Uint16ArrayConstructor|Int32ArrayConstructor|Uint32ArrayConstructor|Float32ArrayConstructor|Float64ArrayConstructor} TypedArrayConstructor // @no-wrap
+ * @typedef {"above"|"below"|"between"|"outside"} NormalCdfMode
  */
 
 // @@exports
 /**
  * @ignore
- * @type {TypedArrayConstructor}
+ * @type {NormalCdfMode}
  */
-export let TypedArrayConstructor
+export let NormalCdfMode

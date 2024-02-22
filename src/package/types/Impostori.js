@@ -18,6 +18,7 @@
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
 import { Grid } from "./Grid.js"
+import { ImpostoriGrade } from "./ImpostoriGrade.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -26,11 +27,14 @@ import { Grid } from "./Grid.js"
  * @typedef {object} Impostori
  * @property {Grid} grid
  * @property {number} seed
- * @property {string} version
+ * @property {object} version
+ * @property {string} version.puzzle
+ * @property {string} version.repository
  * @property {number} rawEntropy
- * @property {number} correctedEntropy
+ * @property {number} normalizedEntropy
+ * @property {number} uniformEntropy
  * @property {number} rating
- * @property {string} grade
+ * @property {ImpostoriGrade} grade
  * @property {string} serializedString
  */
 

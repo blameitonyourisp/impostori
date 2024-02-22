@@ -18,16 +18,29 @@
 // @@imports-module
 import { generateGrid } from "./grid.js"
 
+// @@imports-package
+import { serializeImpostori } from "../serialization/index.js"
+
 // @@imports-utils
-import { Random, Resource, parsePackage } from "../../utils/index.js"
+import { Random, Resource, parsePackage, normalCdf } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { Impostori } from "../../types/index.js"
-import { serializeImpostori } from "../index.js"
+import { Impostori, ImpostoriGrade } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
+const PUZZLE_VERSION = "1.0.0"
+
+/** @enum {ImpostoriGrade} */
+const IMPOSTORI_GRADES = {
+    beginner: /** @type {ImpostoriGrade} */ ("beginner"),
+    easy: /** @type {ImpostoriGrade} */ ("easy"),
+    medium: /** @type {ImpostoriGrade} */ ("medium"),
+    hard: /** @type {ImpostoriGrade} */ ("hard"),
+    expert: /** @type {ImpostoriGrade} */ ("expert")
+}
+
 /**
  *
  * @param {number} [seed]
@@ -36,16 +49,23 @@ import { serializeImpostori } from "../index.js"
 const generateImpostori = seed => {
     const random = new Random(seed)
     const { grid, rawEntropy } = generateGrid(random)
-    const impostori = {
-        version: getVersion(),
+    const impostori = /** @type {Impostori} */ ({
+        version: {
+            puzzle: PUZZLE_VERSION,
+            repository: getVersion()
+        },
         seed: random.config.seed,
         grid,
-        rawEntropy,
-        correctedEntropy: 0,
-        rating: 0,
-        grade: "",
-        serializedString: ""
-    }
+        rawEntropy
+    })
+
+    impostori.normalizedEntropy = getNormalizedEntropy(impostori.rawEntropy)
+    impostori.uniformEntropy = getUniformEntropy(impostori.normalizedEntropy)
+
+    impostori.rating = getRating(impostori.uniformEntropy)
+    impostori.grade = getGradeString(impostori.rating)
+
+    // Reset prng
     impostori.grid.random = new Random(impostori.seed)
 
     return { ...impostori, serializedString: serializeImpostori(impostori) }
@@ -74,5 +94,57 @@ const getVersion = () => {
     return version
 }
 
+/**
+ *
+ * @param {number} rawEntropy
+ * @returns {number}
+ */
+const getNormalizedEntropy = rawEntropy => {
+    const normalizedEntropy = 512 + 256 * (Math.log(rawEntropy) - 6.94)
+    return Math.min(Math.max(Math.round(normalizedEntropy), 0), 1024)
+}
+
+/**
+ *
+ * @param {number} normalizedEntropy
+ * @returns {number}
+ */
+const getUniformEntropy = normalizedEntropy => {
+    const uniformEntropy = normalCdf({
+        upper: normalizedEntropy,
+        mean: 512,
+        stdDev: 187
+    })
+    return Math.round(uniformEntropy * 1024)
+}
+
+/**
+ *
+ * @param {number} uniformEntropy
+ * @returns {number}
+ */
+const getRating = uniformEntropy => {
+    return Math.ceil(uniformEntropy / 10.24)
+}
+
+/**
+ *
+ * @param {number} rating
+ * @returns {ImpostoriGrade}
+ */
+const getGradeString = rating => {
+    return rating <= 20 ? IMPOSTORI_GRADES.beginner
+        : rating <= 40 ? IMPOSTORI_GRADES.easy
+        : rating <= 60 ? IMPOSTORI_GRADES.medium
+        : rating <= 80 ? IMPOSTORI_GRADES.hard
+        : IMPOSTORI_GRADES.expert
+}
+
 // @@exports
-export { generateImpostori }
+export {
+    PUZZLE_VERSION,
+    IMPOSTORI_GRADES,
+    generateImpostori,
+    getRating,
+    getGradeString
+}

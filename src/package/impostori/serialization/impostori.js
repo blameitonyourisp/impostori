@@ -18,6 +18,9 @@
 // @@imports-module
 import { serializeGrid, deserializeGrid } from "./grid.js"
 
+// @@imports-package
+import { getGradeString, getRating } from "../generate/index.js"
+
 // @@imports-utils
 import { BitBuffer } from "../../utils/index.js"
 
@@ -33,15 +36,16 @@ import { Impostori } from "../../types/Impostori.js"
  */
 const serializeImpostori = impostori => {
     let buffer = new BitBuffer({ size: 128 })
-    buffer.writeString(impostori.version)
+    buffer.writeString(impostori.version.puzzle)
+    buffer.writeString(impostori.version.repository)
     buffer.writeAbsolute(impostori.seed)
 
     const grid = serializeGrid(impostori.grid)
     grid.copy({ target: buffer, sourceEnd: grid.writePointer })
 
     buffer.writeAbsolute(impostori.rawEntropy)
-    buffer.write(impostori.correctedEntropy, { size: 10 })
-    buffer.write(impostori.rating, { size: 10 })
+    buffer.write(impostori.normalizedEntropy, { size: 10 })
+    buffer.write(impostori.uniformEntropy, { size: 10 })
 
     const size = Math.ceil(buffer.writePointer / 8)
     buffer = buffer.copy({
@@ -54,25 +58,30 @@ const serializeImpostori = impostori => {
 
 /**
  *
- * @param {string} serializedImpostori
- * @returns {Impostori}
+ * @param {string} serializedString
  */
-const deserializeImpostori = (serializedImpostori) => {
-    const buffer = BitBuffer.from(serializedImpostori)
+const deserializeImpostori = serializedString => {
+    const buffer = BitBuffer.from(serializedString)
 
-    const version = buffer.readString() // compare to expected version in param
+    const version = {
+        puzzle: buffer.readString(),
+        repository: buffer.readString()
+    } // compare to expected version in param
     const seed = buffer.readAbsolute()
 
-    return {
+    const impostori = /** @type {Impostori} */ ({
         version,
         seed,
-        grid: deserializeGrid(buffer, seed),
+        grid: deserializeGrid(buffer, 0),
         rawEntropy: buffer.readAbsolute(),
-        correctedEntropy: buffer.read(10),
-        rating: buffer.read(10),
-        grade: "",
-        serializedString: serializedImpostori
-    }
+        normalizedEntropy: buffer.read(10),
+        uniformEntropy: buffer.read(10)
+    })
+
+    const rating = getRating(impostori.uniformEntropy)
+    const grade = getGradeString(rating)
+
+    return { ...impostori, rating, grade, serializedString }
 }
 
 // @@exports

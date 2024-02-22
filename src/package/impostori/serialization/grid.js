@@ -32,7 +32,7 @@ import { BitBuffer, Random } from "../../utils/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { Grid, GridCell } from "../../types/index.js"
+import { CellType, Grid, GridCell } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -66,12 +66,12 @@ const serializeGrid = grid => {
  * @returns {Grid}
  */
 const deserializeGrid = (buffer, seed) => {
-    const typeIndexes = {
+    const typeIndexes = /** @type {Object.<CellType, number[]>} */ ({
         detective: [],
         worker: [],
         imposter: [],
         vacant: []
-    }
+    })
 
     const cells = /** @type {GridCell[]} */ ([])
     for (let i = 0; i < 36; i++) {
