@@ -48,6 +48,26 @@ class Random {
 
     /**
      *
+     * @param {number} count
+     * @returns {number}
+     */
+    jump(count) {
+        for (let i = 0; i < count - 1; i++) { this.iterate() }
+        return this.iterate()
+    }
+
+    /**
+     *
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
+    jumpRandom(min = 10, max = 100) {
+        return this.jump(this.prng(min, max) - 1)
+    }
+
+    /**
+     *
      * @param {*} min
      * @param {*} max
      * @returns {number}
