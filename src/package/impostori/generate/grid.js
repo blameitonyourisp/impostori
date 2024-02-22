@@ -79,20 +79,35 @@ const generateEmptyGrid = random => {
  * @returns {{grid:Grid, rawEntropy:number}}
  */
 const generateGrid = random => {
+    // Set a limit for attempting filling of grid types before the generation is
+    // considered to be "stuck" and must be reset by iterating the prng. Attempt
+    // limit chosen is a number approximately 2 standard deviations *above* the
+    // mean number of fill attempts required to complete the types in a given
+    // grid.
+    let fillTypesCount = 0
+    const fillTypesLimit = 85
+
     let grid, typed
-    do {
+    GRID_LOOP: do {
         grid = pipe(generateEmptyGrid, fillGridValues, removeTwins)(random)
-        do { typed = fillGridTypes(grid) } while (!completedGridTypes(typed))
+        do {
+            typed = fillGridTypes(grid)
+            if (++fillTypesCount > fillTypesLimit) {
+                random.jumpRandom()
+                fillTypesCount = 0
+                continue GRID_LOOP
+            }
+        } while (!completedGridTypes(typed))
         grid = pipe(pruneGridAdjacencies, fillGridHints)(typed)
     } while (!validateGridTypes(grid))
 
     const solved = pipe(hardResetGrid, solveGrid)(grid)
-    const { rawEntropy } = solved
     if (solved.grids.length !== 1 || !gridsEqual(grid, solved.grids[0])) {
+        random.jumpRandom()
         return generateGrid(random)
     }
 
-    // grid = softResetGrid(grid)
+    const { rawEntropy } = solved
     grid = pipe(softResetGrid, sortGrid)(grid)
 
     return { grid, rawEntropy }
