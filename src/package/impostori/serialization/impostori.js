@@ -72,7 +72,7 @@ const deserializeImpostori = serializedString => {
     const impostori = /** @type {Impostori} */ ({
         version,
         seed,
-        grid: deserializeGrid(buffer, 0),
+        grid: deserializeGrid(buffer, seed),
         rawEntropy: buffer.readAbsolute(),
         normalizedEntropy: buffer.read(10),
         uniformEntropy: buffer.read(10)

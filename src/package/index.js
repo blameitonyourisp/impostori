@@ -21,19 +21,15 @@
 /**
  * Please find general todo tasks for repository in the comment block below:
  *
- * @todo include max retries to prevent hanging
  * @todo resolve progress queue to prevent the -1 case from causing generate
  * @todo change random "shuffle" to "permute"
  * @todo cause grid solve to fail if number of grids is too large and or prevent
  *      random dropout on adj pruning from being too high
  * @todo iteratively increase random dropout to target dropout, solving each
  *      time to prevent an impossible solve (?)
- * @todo refactor grid cell to cell
  * @todo move cell and grid adj files to another dir - name ?
  * @todo refactor print to generate module and update to display clearer
  * @todo refactor getAdjacencyData to just getAdjacency
- * @todo update adjacency function to return id 0 to 84
- * @todo replace "WORKER", "IMPOSTER" etc. with an object ref
  * @todo resolve gridEqual function in ./impostori/generate/grid
  * @todo move print function out of ./impostori/grid dir
  * @todo update types of all functions etc. to ensure no any type, and return
@@ -45,14 +41,10 @@
  *      deserializing process
  * @todo fix circular dependency warnings when building
  * @todo refactor Resource to not use __ prefix
- * @todo add types for GridTypeIndexes
- * @todo add types for GridAdjacencyIds
  * @todo refactor IDs to Ids
- * @todo implement QR code generation with this api
- *      (https://www.qrcode-monkey.com/qr-code-api-with-logo/), or use an
- *      equivalent npm package
+ * @todo implement QR code generation with the api below, or use a suitable
+ *      npm package (https://www.qrcode-monkey.com/qr-code-api-with-logo/)
  * @todo move twin and prune into adjacency folder
- * @todo add chi-squared math util
  */
 
 // @@exports
