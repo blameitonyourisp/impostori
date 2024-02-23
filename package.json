@@ -60,7 +60,7 @@
         "preversion": "npm run build:prod",
         "start": "npm run start:web",
         "start:docs": "npm run docs:jsdoc && http-server ./build/jsdoc & nodemon --watch src --exec 'npm run docs:jsdoc'",
-        "start:web": "rm -rf ./build/web && parcel ./src/web/pages/**/**/*.html --dist-dir ./build/web --cache-dir ./.cache/parcel-dev",
+        "start:web": "parcel ./src/web/pages/**/**/*.html --dist-dir ./build/web --cache-dir ./.cache/parcel-dev",
         "test": "npm run test:bin && npm run test:package && npm run test:web",
         "test:bin": "jest --config ./admin/config/jest.config.cjs --passWithNoTests",
         "test:package": "jest --config ./admin/config/jest.config.cjs --passWithNoTests",
@@ -73,8 +73,7 @@
         "watch:package": "nodemon --watch .src/package --exec 'npm run build:dev:package'"
     },
     "dependencies": {
-        "@pixi/app": "^7.2.4",
-        "pixi.js": "^7.2.4"
+        "pixi.js": "^7.4.0"
     },
     "devDependencies": {
         "@13ms/funky": "^1.0.1",
@@ -101,7 +100,9 @@
         "mustache": "^4.2.0",
         "nodemon": "^3.0.1",
         "parcel": "^2.9.3",
+        "path-browserify": "^1.0.1",
         "plop": "^4.0.0",
+        "process": "^0.11.10",
         "rollup": "^4.9.6",
         "rollup-plugin-dts": "^6.0.2",
         "rollup-plugin-postcss": "^4.0.2",
