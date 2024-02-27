@@ -45,6 +45,8 @@
  * @todo implement QR code generation with the api below, or use a suitable
  *      npm package (https://www.qrcode-monkey.com/qr-code-api-with-logo/)
  * @todo move twin and prune into adjacency folder
+ * @todo add grading documentation (see personal google drive for google sheets
+ *      on distribution fitting)
  */
 
 // @@exports
