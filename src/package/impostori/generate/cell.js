@@ -52,6 +52,7 @@ const generateEmptyCell = (index, random) => {
         candidates: random.shuffledIndexArray(6, true).map(value => {
             return { value, type: CELL_TYPES.vacant }
         }),
+        clientCandidates: [],
         // initialize rest of cell to null state or starting base state
         value: 0,
         clientValue: 0,

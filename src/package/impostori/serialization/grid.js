@@ -42,6 +42,8 @@ import { CellType, Grid, GridCell } from "../../types/index.js"
  * @returns {BitBuffer}
  */
 const serializeGrid = grid => {
+    grid = sortGrid(grid)
+
     let buffer = new BitBuffer({ size: 128 })
     for (const cell of grid.cells) {
         const cellBuffer = serializeCell(cell)

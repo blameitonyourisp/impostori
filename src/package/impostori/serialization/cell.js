@@ -46,9 +46,9 @@ const serializeCell = cell => {
         buffer.write(uint3, { size: 3 })
     }
 
-    if (cell.candidates.length !== 6) {
+    if (cell.clientCandidates.length && cell.clientCandidates.length !== 6) {
         buffer.write(1, { size: 1 })
-        const candidateValues = cell.candidates.map(({ value }) => value)
+        const candidateValues = cell.clientCandidates.map(({ value }) => value)
         let uint6 = 0
         for (let i = 0; i < 6; i++) {
             if (candidateValues.includes(i + 1)) { uint6 = uint6 | 1 << i }
@@ -80,6 +80,7 @@ const deserializeCell = (buffer, index) => {
         column: getColumn(index),
         box: getBox(index),
         candidates: [],
+        clientCandidates: [],
         value: buffer.read(3),
         clientValue: buffer.read(3),
         type: CELL_TYPES.vacant,
@@ -112,8 +113,9 @@ const deserializeCell = (buffer, index) => {
     let uint6 = parseInt("111111", 2)
     if (buffer.read(1)) { uint6 = buffer.read(6) }
     for (let i = 0; i < 6; i++) {
+        cell.candidates.push(getCandidate(cell, i + 1))
         if (uint6 << 31 - i >>> 31) {
-            cell.candidates.push(getCandidate(cell, i + 1))
+            cell.clientCandidates.push(getCandidate(cell, i + 1))
         }
     }
 
@@ -135,4 +137,4 @@ const getCandidate = (cell, value) => {
 }
 
 // @@exports
-export { serializeCell, deserializeCell }
+export { serializeCell, deserializeCell, getCandidate }

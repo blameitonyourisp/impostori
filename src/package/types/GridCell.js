@@ -44,6 +44,8 @@ import { CellType } from "./CellType.js"
  * @property {CellCandidate[]} candidates - Shuffled array of all possible cell
  *      values from 1 to 6, when generating grid, cell will be filled randomly
  *      with values from this array.
+ * @property {CellCandidate[]} clientCandidates - Valid candidates as selected
+ *      by the client.
  * @property {number} value - Completed grid cell value ranged 1 to 6. Value
  *      is initiated to 0 during grid creation and when brute force solving an
  *      incomplete grid.

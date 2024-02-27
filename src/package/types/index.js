@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Export type declarations.
+ * @file Export package type declarations.
  * @author James Reid
  */
 
