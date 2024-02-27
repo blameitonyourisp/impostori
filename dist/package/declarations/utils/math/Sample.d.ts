@@ -21,16 +21,29 @@ export class Sample {
      */
     constructor(data?: number[] | undefined);
     /**
+     *
      * @param {number[]} data
      */
     set data(data: number[]);
+    /**
+     *
+     * @returns {number[]}
+     */
     get data(): number[];
     /**
      *
      * @param {number[]} [data=[]]
      */
     extend(data?: number[] | undefined): void;
+    /**
+     *
+     * @param {number} factor
+     */
     removeOutliers(factor?: number): void;
+    /**
+     *
+     * @returns {SampleStatistics}
+     */
     get statistics(): SampleStatistics;
     #private;
 }

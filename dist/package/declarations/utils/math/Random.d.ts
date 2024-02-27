@@ -44,6 +44,19 @@ export class Random {
     iterate(): number;
     /**
      *
+     * @param {number} count
+     * @returns {number}
+     */
+    jump(count: number): number;
+    /**
+     *
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
+    jumpRandom(min?: number, max?: number): number;
+    /**
+     *
      * @param {*} min
      * @param {*} max
      * @returns {number}

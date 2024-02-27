@@ -6,6 +6,13 @@ export namespace NORMAL_CDF_MODES {
     let outside: NormalCdfMode;
 }
 /**
+ * Implements normal cumulative distribution function approximation using taylor
+ * series expansion. See the following links for information on the formula
+ * used:
+ *  - {@link https://en.wikipedia.org/wiki/Normal_distribution Normal distribution}
+ *  - {@link https://en.wikipedia.org/wiki/Cumulative_distribution_function Normal cdf}
+ *  - {@link https://math.stackexchange.com/questions/2223296/cdf-of-standard-normal/2223472#2223472 Taylor series expansion}
+ *  - {@link https://onlinestatbook.com/2/calculators/normal_dist.html Online calculator}
  *
  * @param {object} obj
  * @param {number} [obj.upper=Infinity]

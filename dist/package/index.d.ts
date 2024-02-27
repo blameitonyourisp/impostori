@@ -260,6 +260,11 @@ type GridCell = {
      */
     candidates: CellCandidate[];
     /**
+     * - Valid candidates as selected
+     * by the client.
+     */
+    clientCandidates: CellCandidate[];
+    /**
      * - Completed grid cell value ranged 1 to 6. Value
      * is initiated to 0 during grid creation and when brute force solving an
      * incomplete grid.
@@ -303,6 +308,8 @@ type GridCell = {
  * @property {CellCandidate[]} candidates - Shuffled array of all possible cell
  *      values from 1 to 6, when generating grid, cell will be filled randomly
  *      with values from this array.
+ * @property {CellCandidate[]} clientCandidates - Valid candidates as selected
+ *      by the client.
  * @property {number} value - Completed grid cell value ranged 1 to 6. Value
  *      is initiated to 0 during grid creation and when brute force solving an
  *      incomplete grid.
@@ -410,6 +417,19 @@ declare class Random {
      * @returns {number}
      */
     iterate(): number;
+    /**
+     *
+     * @param {number} count
+     * @returns {number}
+     */
+    jump(count: number): number;
+    /**
+     *
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
+    jumpRandom(min?: number, max?: number): number;
     /**
      *
      * @param {*} min
@@ -1021,6 +1041,13 @@ declare function serializeCell(cell: GridCell): BitBuffer;
  * @returns {GridCell}
  */
 declare function deserializeCell(buffer: BitBuffer, index: number): GridCell;
+/**
+ *
+ * @param {GridCell} cell
+ * @param {number} value
+ * @returns {CellCandidate}
+ */
+declare function getCandidate(cell: GridCell, value: number): CellCandidate;
 
 /**
  *
@@ -1170,4 +1197,4 @@ declare function propagateCellValue(updatedCell: GridCell, grid: Grid): Grid;
  */
 declare function validateGridValues(grid: Grid): boolean;
 
-export { CELL_TYPES, IMPOSTORI_GRADES, PUZZLE_VERSION, addCellAdjacency, addGridAdjacency, allContinuosTypeIndexes, completedGridTypes, continuosTypeIndexes, deserializeAdjacencies, deserializeCell, deserializeGrid, deserializeImpostori, fillCellHints, fillCellType, fillCellValue, fillGridHints, fillGridTypes, fillGridValues, forkCellValue, generateEmptyCell, generateEmptyGrid, generateGrid, generateImpostori, getAdjacencyData, getAdjacentIndexes, getBox, getColumn, getGradeString, getRating, getRow, hardResetCell, hardResetGrid, printGrid, propagateCellType, propagateCellValue, pruneGridAdjacencies, removeCellAdjacency, removeGridAdjacency, removeTwins, requireCellAdjacency, requireGridAdjacency, resetCell, resetGrid, serializeAdjacencies, serializeCell, serializeGrid, serializeImpostori, softResetCell, softResetGrid, solveCell, solveGrid, sortCell, sortGrid, validateGridTypes, validateGridValues };
+export { CELL_TYPES, IMPOSTORI_GRADES, PUZZLE_VERSION, addCellAdjacency, addGridAdjacency, allContinuosTypeIndexes, completedGridTypes, continuosTypeIndexes, deserializeAdjacencies, deserializeCell, deserializeGrid, deserializeImpostori, fillCellHints, fillCellType, fillCellValue, fillGridHints, fillGridTypes, fillGridValues, forkCellValue, generateEmptyCell, generateEmptyGrid, generateGrid, generateImpostori, getAdjacencyData, getAdjacentIndexes, getBox, getCandidate, getColumn, getGradeString, getRating, getRow, hardResetCell, hardResetGrid, printGrid, propagateCellType, propagateCellValue, pruneGridAdjacencies, removeCellAdjacency, removeGridAdjacency, removeTwins, requireCellAdjacency, requireGridAdjacency, resetCell, resetGrid, serializeAdjacencies, serializeCell, serializeGrid, serializeImpostori, softResetCell, softResetGrid, solveCell, solveGrid, sortCell, sortGrid, validateGridTypes, validateGridValues };
