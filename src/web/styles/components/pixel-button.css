@@ -1,0 +1,64 @@
+.pixel-button {
+    border-style: none;
+    background-color: transparent;
+}
+
+.pixel-button > div {
+    position: relative;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: var(--clr-slos8-200);
+    box-shadow:
+        0px -2px var(--clr-slos8-200),
+        2px 0px var(--clr-slos8-200),
+        0px 2px var(--clr-slos8-200),
+        -2px 0px var(--clr-slos8-200),
+        2px -2px var(--clr-slos8-800),
+        2px 2px var(--clr-slos8-800),
+        -2px 2px var(--clr-slos8-800),
+        -2px -2px var(--clr-slos8-800),
+        0px -4px var(--clr-slos8-800),
+        4px 0px var(--clr-slos8-800),
+        0px 4px var(--clr-slos8-800),
+        -4px 0px var(--clr-slos8-800), /* end */
+        6px 2px var(--clr-slos8-800),
+        2px 6px var(--clr-slos8-800),
+        4px 4px var(--clr-slos8-800);
+}
+
+.pixel-button:hover > div {
+    background-color: var(--clr-slos8-300);
+    box-shadow:
+        0px -2px var(--clr-slos8-300),
+        2px 0px var(--clr-slos8-300),
+        0px 2px var(--clr-slos8-300),
+        -2px 0px var(--clr-slos8-300),
+        2px -2px var(--clr-slos8-800),
+        2px 2px var(--clr-slos8-800),
+        -2px 2px var(--clr-slos8-800),
+        -2px -2px var(--clr-slos8-800),
+        0px -4px var(--clr-slos8-800),
+        4px 0px var(--clr-slos8-800),
+        0px 4px var(--clr-slos8-800),
+        -4px 0px var(--clr-slos8-800),
+        6px 2px var(--clr-slos8-800),
+        2px 6px var(--clr-slos8-800),
+        4px 4px var(--clr-slos8-800);
+}
+
+.pixel-button:active > div {
+    margin: 2px -2px -2px 2px;
+    box-shadow:
+        0px -2px var(--clr-slos8-300),
+        2px 0px var(--clr-slos8-300),
+        0px 2px var(--clr-slos8-300),
+        -2px 0px var(--clr-slos8-300),
+        2px -2px var(--clr-slos8-800),
+        2px 2px var(--clr-slos8-800),
+        -2px 2px var(--clr-slos8-800),
+        -2px -2px var(--clr-slos8-800),
+        0px -4px var(--clr-slos8-800),
+        4px 0px var(--clr-slos8-800),
+        0px 4px var(--clr-slos8-800),
+        -4px 0px var(--clr-slos8-800);
+}

@@ -5,10 +5,16 @@
 
 /* Reusable component styling imports. */
 @import url("./components/card.css");
+@import url("./components/pixel-button.css");
 
 /* Global styles. */
 body {
-    background-color: var(--clr-neutral-200);
-    color: var(--clr-neutral-800);
-    font-family: var(--ff-primary);
+    background-color: var(--clr-slos8-100);
+    color: var(--clr-slos8-800);
+    font-family: var(--ff-impixel);
+    overflow: hidden;
+}
+
+.pixi-app {
+    position: absolute;
 }
