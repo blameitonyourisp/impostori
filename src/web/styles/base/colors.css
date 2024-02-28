@@ -1,5 +1,15 @@
 /* https://realtimecolors.com/?colors=212121-e0e0e0-779966-b9c69f-6f4db3 */
 :root {
+    /* slos8 palette: https://lospec.com/palette-list/slso8 */
+    --clr-slos8-100: #ffecd6;
+    --clr-slos8-200: #ffd4a3;
+    --clr-slos8-300: #ffaa5e;
+    --clr-slos8-400: #d08159;
+    --clr-slos8-500: #8d697a;
+    --clr-slos8-600: #544e68;
+    --clr-slos8-700: #203c56;
+    --clr-slos8-800: #0d2b45;
+
     /* https://coolors.co/f0e2db-e6ddcb-dbdbbd-b9c69f-779966-415841-2e3831-242927-191a1a */
     --clr-primary-100: hsl(20, 41%, 90%); /* #f0e2db */
     --clr-primary-200: hsl(40, 35%, 85%); /* #e6ddcb */
