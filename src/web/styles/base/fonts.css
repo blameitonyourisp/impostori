@@ -1,3 +1,10 @@
+/* Import custom pixel font. */
+@font-face {
+    font-family: "Impixel", monospace;
+    src: url("../../../../admin/assets/fonts/Impixel.ttf");
+}
+
 :root {
+    --ff-impixel: "Impixel", monospace;
     --ff-primary: "Courier New", Courier, monospace;
 }
