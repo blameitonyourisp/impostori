@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file <INSERT_FILE_DESCRIPTION_HERE>
+ * @file Method to render interactive puzzle grid.
  * @author James Reid
  */
 
@@ -23,11 +23,16 @@ import { getCellPlatform } from "./platform.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GameData } from "../types/index.js"
+import { GameData } from "../../types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
-const render = data => {
+/**
+ *
+ * @param {GameData} data
+ * @returns
+ */
+const renderPuzzle = data => {
     if (!data.spritesheet) { return }
 
     const container = new Container()
@@ -44,7 +49,6 @@ const render = data => {
         scale: 3,
         isGrid: false
     })
-    // selectedPlatform.setTransform(0, 600)
     selectedPlatform.y = 600
     container.addChild(selectedPlatform)
 
@@ -62,4 +66,4 @@ const render = data => {
 }
 
 // @@exports
-export { render }
+export { renderPuzzle }

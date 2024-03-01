@@ -22,7 +22,7 @@ import { Application, Spritesheet, SCALE_MODES, BaseTexture } from "pixi.js"
 import { deserializeImpostori } from "../../package/index.js"
 
 // @@imports-submodule
-import { render } from "./render/game.js"
+import { render } from "./puzzle/render/game.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
@@ -80,6 +80,8 @@ fetch(request)
     })
     .then(spritesheet => spritesheet.parse())
     .then(spritesheet => data.spritesheet = spritesheet)
+    // .then(() => renderTutorial(data, app))
+    // .then(() => renderPuzzle(data, app))
     .then(() => render(data))
 
 // @@no-exports

@@ -5,6 +5,6 @@
 }
 
 :root {
-    --ff-impixel: "Impixel", monospace;
+    --ff-impixel: "Impixel", "Courier New", monospace;
     --ff-primary: "Courier New", Courier, monospace;
 }

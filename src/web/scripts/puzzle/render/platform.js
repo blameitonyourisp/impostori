@@ -19,13 +19,13 @@
 import { Container, Point, Polygon, Sprite } from "pixi.js"
 
 // @@imports-module
+import { renderPuzzle } from "./puzzle.js"
 import { getCellTiles } from "./tile.js"
-import { render } from "./game.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GameData } from "../types/index.js"
-import { GridCell } from "../../../package/types/index.js"
+import { GameData } from "../../types/index.js"
+import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -107,7 +107,7 @@ const getCellPlatform = (cell, data, {
         container.cursor = "pointer"
         container.on("pointerdown", () => {
             data.selectedCell = cell
-            render(data)
+            renderPuzzle(data)
         })
 
         for (const index of cell.adjacentIndexes.all) {

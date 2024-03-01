@@ -18,15 +18,17 @@
 // @@imports-dependencies
 import { Container, Sprite } from "pixi.js"
 
+// @@imports-package
+import { serializeImpostori } from "../../../../package/index.js"
+
 // @@imports-module
-import { render } from "./game.js"
-import { serializeImpostori } from "../../../package/index.js"
+import { renderPuzzle } from "./puzzle.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GameData } from "../types/index.js"
-import { GridCell } from "../../../package/types/index.js"
-import { getCandidate } from "../../../package/index.js"
+import { GameData } from "../../types/index.js"
+import { GridCell } from "../../../../package/types/index.js"
+import { getCandidate } from "../../../../package/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -95,7 +97,7 @@ const getCellTiles = (cell, data, isGrid = true) => {
                     cell.clientValue = cell.clientCandidates[0].value // stuck in selected state
                 }
                 data.impostori.serializedString = serializeImpostori(data.impostori)
-                render(data)
+                renderPuzzle(data)
             })
         }
     }
