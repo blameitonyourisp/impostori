@@ -1,2 +1,0 @@
-User-Agent: *
-Sitemap: https://blameitonyourisp.com/sitemap.xml

@@ -15,6 +15,10 @@ body {
     overflow: hidden;
 }
 
-.pixi-app {
-    position: absolute;
+.impostori-puzzle {
+    display: none;
+}
+
+.impostori-tutorial {
+    
 }
