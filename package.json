@@ -73,6 +73,7 @@
         "watch:package": "nodemon --watch .src/package --exec 'npm run build:dev:package'"
     },
     "dependencies": {
+        "@blameitonyourisp/boutique": "^0.0.1",
         "pixi.js": "^7.4.0"
     },
     "devDependencies": {
