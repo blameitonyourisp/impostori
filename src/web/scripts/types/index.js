@@ -20,5 +20,5 @@
 // @@no-body
 
 // @@exports
-export * from "./GameData.js"
+export * from "./AppData.js"
 export * from "./LoadedSpritesheet.js"

@@ -1,5 +1,6 @@
 // add check for if puzzle valid
 
+import { LoadingContainer } from "./components/index.js"
 import { setHoverable } from "./hoverable.js"
 
 // add test and commit/revert buttons
@@ -17,6 +18,7 @@ import { setHoverable } from "./hoverable.js"
 // make tutorial and app modules which are responsible for generating their own
 // app instances
 
+customElements.define("loading-container", LoadingContainer)
 setHoverable()
 
 // document.getElementsByClassName("pixel-button")[0].addEventListener("click pointerup", () => alert("Clicked"))
