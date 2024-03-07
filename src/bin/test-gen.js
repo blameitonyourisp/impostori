@@ -41,7 +41,7 @@ const banner = `
 console.log(banner)
 
 const count = 1
-const subCount = 10
+const subCount = 1000
 
 const manager = new CLIManager()
 const progress = new ProgressWidget({

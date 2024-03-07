@@ -35,7 +35,7 @@ class ImpostoriPackager {
      * @param {string} destinationPath
      * @param {number} puzzlesPerGrade
      */
-    constructor(sourcePath, destinationPath, puzzlesPerGrade = 10) {
+    constructor(sourcePath, destinationPath, puzzlesPerGrade = 1) {
         this.sourcePath = sourcePath
         this.destinationPath = destinationPath
         this.puzzlesPerGrade = puzzlesPerGrade
@@ -69,6 +69,7 @@ class ImpostoriPackager {
                     if (this.completedSets === this.puzzlesPerGrade) {
                         this.saveSet()
                     }
+                    break
                 }
                 if (!saved) {
                     /** @type {Map.<ImpostoriGrade,string>} */
@@ -100,7 +101,7 @@ class ImpostoriPackager {
 }
 
 const sourcePath = "./build/samples"
-const destinationPath = "./admin/assets/impostori"
+const destinationPath = "./build/sets"
 const packager = new ImpostoriPackager(sourcePath, destinationPath)
 packager.package()
 
