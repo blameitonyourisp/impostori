@@ -1,0 +1,7 @@
+[data-loaded="true"] .loading {
+    display: none;
+}
+
+[data-loaded="false"] :not(.loading) {
+    display: none;
+}

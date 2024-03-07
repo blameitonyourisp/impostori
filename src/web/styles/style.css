@@ -5,6 +5,7 @@
 
 /* Reusable component styling imports. */
 @import url("./components/card.css");
+@import url("./components/loading-container.css");
 @import url("./components/pixel-button.css");
 
 /* Global styles. */
@@ -13,12 +14,4 @@ body {
     color: var(--clr-slos8-800);
     font-family: var(--ff-impixel);
     overflow: hidden;
-}
-
-.impostori-puzzle {
-    display: none;
-}
-
-.impostori-tutorial {
-    
 }
