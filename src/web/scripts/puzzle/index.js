@@ -18,7 +18,13 @@
 // @@no-imports
 
 // @@body
-const runPuzzle = () => {}
+/**
+ *
+ * @param {LoadingContainer} root
+ */
+const runPuzzle = root => {
+    console.log("PUZZLE")
+}
 
 // @@exports
 export { runPuzzle }

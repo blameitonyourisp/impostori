@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file <INSERT_FILE_DESCRIPTION_HERE>
+ * @file Load pixi spritesheet from json data and spritesheet image.
  * @author James Reid
  */
 
@@ -18,17 +18,7 @@
 // @@imports-dependencies
 import { Spritesheet, SCALE_MODES, BaseTexture } from "pixi.js"
 
-// @@imports-types
-/* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GameData } from "../types/index.js"
-/* eslint-enable no-unused-vars -- Close disable-enable pair. */
-
 // @@body
-const data = /** @type {GameData} */ ({})
-
-//
-BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST
-
 //
 const spritesheetJsonUrl = new URL(
     "../../../admin/assets/spritesheets/3-bit-small/spritesheet.json",
@@ -39,20 +29,29 @@ const spritesheetImageUrl = new URL(
     import.meta.url
 )
 
+/**
+ *
+ * @param {URL} jsonUrl
+ * @param {URL} imageUrl
+ */
 const loadSpritesheet = (jsonUrl, imageUrl) => {
-    const request = new Request(spritesheetJsonUrl.href)
-    fetch(request)
-        .then(response => response.json())
-        .then(spritesheetData => {
-            spritesheetData.meta.image = spritesheetImageUrl.href
-            return new Spritesheet(
-                BaseTexture.from(spritesheetData.meta.image),
-                spritesheetData
-            )
-        })
-        .then(spritesheet => spritesheet.parse())
-        .then(spritesheet => data.spritesheet = spritesheet)
+    return new Promise((resolve, reject) => {
+        const request = new Request(jsonUrl.href)
+        fetch(request)
+            .then(response => response.json())
+            .then(spritesheetData => {
+                spritesheetData.meta.image = imageUrl.href
+                BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST
+                return new Spritesheet(
+                    BaseTexture.from(spritesheetData.meta.image),
+                    spritesheetData
+                )
+            })
+            .then(spritesheet => spritesheet.parse())
+            .then(spritesheet => resolve(spritesheet))
+            .catch(error => reject(error))
+    })
 }
 
 // @@exports
-export { loadSpritesheet }
+export { loadSpritesheet, spritesheetJsonUrl, spritesheetImageUrl }

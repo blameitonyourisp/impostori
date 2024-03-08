@@ -23,12 +23,31 @@ import { AppData } from "../types/index.js"
 
 // @@body
 /**
- *
+ * 
  * @param {LoadingContainer} root
+ * @param {AppData} state
  */
-const runTutorial = root => {
-    console.log("TUTORIAL")
+const runSelector = (root, state, shallowRedaction) => {
+    console.log("SELECTOR")
+    const { dailyPuzzles } = state
+
+    for (const key in dailyPuzzles) {
+        const button = document.createElement("button")
+        button.classList.add("pixel-button")
+        button.addEventListener("click", () => {
+            shallowRedaction({ serializedPuzzle: dailyPuzzles[key][0] })
+            root.loading = true
+        })
+
+        const buttonText = document.createElement("div")
+        buttonText.innerText = key.toUpperCase()
+        button.appendChild(buttonText)
+
+        root.appendChild(button)
+    }
+
+    root.loading = false
 }
 
 // @@exports
-export { runTutorial }
+export { runSelector }
