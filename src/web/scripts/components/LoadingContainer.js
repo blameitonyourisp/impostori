@@ -15,26 +15,30 @@
 
 // @ts-check
 
-// @@no-imports
+// @@imports-dependencies
+import { Boutique } from "@blameitonyourisp/boutique"
 
 // @@body
 class LoadingContainer extends HTMLElement {
-    #loaded = this.dataset.loaded === "true" ? true : false
+    #loading = this.dataset.loading === "false" ? false : true
+    #store = new Boutique({})
 
-    constructor() {
-        super()
+    constructor() { super() }
 
-        if (this.dataset.loaded?.match(/^true$|^false$/)) { return }
-        this.dataset.loaded = false.toString()
+    connectedCallback() {
+        if (this.dataset.loading?.match(/^true$|^false$/)) { return }
+        this.dataset.loading = false.toString()
     }
 
-    toggleLoaded() { this.loaded = !this.loaded }
+    load() {}
 
-    get loaded() { return this.#loaded }
+    unload() {}
 
-    set loaded(bool) {
-        this.dataset.loaded = bool.toString()
-        this.#loaded = bool
+    get loading() { return this.#loading }
+
+    set loading(bool) {
+        this.dataset.loading = bool.toString()
+        this.#loading = bool
     }
 }
 
