@@ -1,6 +1,7 @@
 .pixel-button {
     border-style: none;
     background-color: transparent;
+    margin-top: 2rem;
 }
 
 .pixel-button > div {

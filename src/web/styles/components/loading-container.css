@@ -1,7 +1,7 @@
-[data-loaded="true"] .loading {
+[data-loading="true"] :not(.loading) {
     display: none;
 }
 
-[data-loaded="false"] :not(.loading) {
+[data-loading="false"] .loading {
     display: none;
 }
