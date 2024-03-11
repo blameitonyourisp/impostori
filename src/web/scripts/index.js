@@ -28,7 +28,7 @@ import {
 } from "./load-spritesheet.js"
 
 // @@imports-submodule
-import { LoadingContainer } from "./components/index.js"
+import { StatefulLoadingContainer } from "./components/index.js"
 import { runTutorial } from "./tutorial/index.js"
 
 // @@imports-types
@@ -87,10 +87,11 @@ import { runPuzzle } from "./puzzle/index.js"
  */
 
 // Declare custom web components, and run miscellaneous setup functions.
-customElements.define("loading-container", LoadingContainer)
+customElements.define("stateful-loading-container", StatefulLoadingContainer)
 setHoverable()
 
-const root = /** @type {LoadingContainer} */ (document.getElementById("root"))
+const root = /** @type {StatefulLoadingContainer} */
+    (document.getElementById("root"))
 
 // Declare store object.
 const store = new Boutique({})

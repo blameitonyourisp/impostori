@@ -19,7 +19,7 @@
 import { Boutique } from "@blameitonyourisp/boutique"
 
 // @@body
-class LoadingContainer extends HTMLElement {
+class StatefulLoadingContainer extends HTMLElement {
     #loading = this.dataset.loading === "false" ? false : true
     #store = new Boutique({})
 
@@ -34,6 +34,8 @@ class LoadingContainer extends HTMLElement {
 
     unload() {}
 
+    redact() {}
+
     get loading() { return this.#loading }
 
     set loading(bool) {
@@ -43,4 +45,4 @@ class LoadingContainer extends HTMLElement {
 }
 
 // @@exports
-export { LoadingContainer }
+export { StatefulLoadingContainer }
