@@ -22,3 +22,9 @@ body {
     margin: auto;
     padding: 0 2rem;
 }
+
+#root div.content {
+    display: flex;
+    flex-direction: column;
+    /* padding: 0 2rem; */
+}

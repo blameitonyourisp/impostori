@@ -9,18 +9,20 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file <INSERT_FILE_DESCRIPTION_HERE>
+ * @file Run puzzle page.
  * @author James Reid
  */
 
 // @ts-check
 
-// @@no-imports
+// @@imports-types
+/* eslint-disable no-unused-vars -- Types only used in comments. */
+import { StatefulLoadingContainer } from "../components/index.js"
+/* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
- *
- * @param {LoadingContainer} root
+ * @param {StatefulLoadingContainer} root
  */
 const runPuzzle = root => {
     console.log("PUZZLE")

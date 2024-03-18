@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file <INSERT_FILE_DESCRIPTION_HERE>
+ * @file Run tutorial page.
  * @author James Reid
  */
 
@@ -17,14 +17,12 @@
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { LoadingContainer } from "../components/index.js"
-import { AppData } from "../types/index.js"
+import { StatefulLoadingContainer } from "../components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
- *
- * @param {LoadingContainer} root
+ * @param {StatefulLoadingContainer} root
  */
 const runTutorial = root => {
     console.log("TUTORIAL")

@@ -9,33 +9,30 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file <INSERT_FILE_DESCRIPTION_HERE>
+ * @file Run selector page.
  * @author James Reid
  */
 
 // @ts-check
 
-// @@imports-types
-/* eslint-disable no-unused-vars -- Types only used in comments. */
-import { LoadingContainer } from "../components/index.js"
-import { AppData } from "../types/index.js"
-/* eslint-enable no-unused-vars -- Close disable-enable pair. */
+// @@imports-package
+import { StatefulLoadingContainer } from "../components/index.js"
 
 // @@body
 /**
- * 
- * @param {LoadingContainer} root
- * @param {AppData} state
+ * @param {StatefulLoadingContainer} root
  */
-const runSelector = (root, state, shallowRedaction) => {
-    console.log("SELECTOR")
-    const { dailyPuzzles } = state
+const runSelector = root => {
+    root.unload()
 
+    const { dailyPuzzles } = root.state
+
+    const container = StatefulLoadingContainer.contentContainer()
     for (const key in dailyPuzzles) {
         const button = document.createElement("button")
         button.classList.add("pixel-button")
         button.addEventListener("click", () => {
-            shallowRedaction({ serializedPuzzle: dailyPuzzles[key][0] })
+            root.redact({ serializedPuzzle: dailyPuzzles[key][0] })
             root.loading = true
         })
 
@@ -43,10 +40,10 @@ const runSelector = (root, state, shallowRedaction) => {
         buttonText.innerText = key.toUpperCase()
         button.appendChild(buttonText)
 
-        root.appendChild(button)
+        container.appendChild(button)
     }
 
-    root.loading = false
+    root.load(container)
 }
 
 // @@exports

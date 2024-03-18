@@ -15,9 +15,6 @@
 
 // @ts-check
 
-// @@imports-dependencies
-import { Boutique } from "@blameitonyourisp/boutique"
-
 // @@imports-module
 import { setHoverable } from "./hoverable.js"
 import { loadPuzzles } from "./load-puzzles.js"
@@ -29,14 +26,9 @@ import {
 
 // @@imports-submodule
 import { StatefulLoadingContainer } from "./components/index.js"
-import { runTutorial } from "./tutorial/index.js"
-
-// @@imports-types
-/* eslint-disable no-unused-vars -- Types only used in comments. */
-import { AppData } from "./types/index.js"
 import { runSelector } from "./selector/index.js"
+import { runTutorial } from "./tutorial/index.js"
 import { runPuzzle } from "./puzzle/index.js"
-/* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
@@ -51,6 +43,8 @@ import { runPuzzle } from "./puzzle/index.js"
  * @todo Add buttons to remove all candidates in a cell by type.
  * @todo Refactor _Puzzle to _Impostori method and state naming etc.
  * @todo Add state to loading container with redact method etc.
+ * @todo Fix cyclical object bug on Boutique proxy to object feature (add
+ *      tracker to detect cyclical object and resolve them).
  */
 
 /**
@@ -93,37 +87,26 @@ setHoverable()
 const root = /** @type {StatefulLoadingContainer} */
     (document.getElementById("root"))
 
-// Declare store object.
-const store = new Boutique({})
-
-const shallowRedaction = store.createRedaction((state, detail) => {
-    Object.assign(state, detail)
-})
-
-const selectorListener = store.createListener(state => {
+const selectorListener = root.createListener(state => {
     const { dailyPuzzles } = state
-    // return () => { if (dailyPuzzles) { runSelector(root) } }
-
-    return () => {
-        runSelector(root, /** @type {AppData} */ (state), shallowRedaction)
-    }
+    return () => { if (dailyPuzzles) { runSelector(root) } }
 })
-store.addListener(selectorListener)
+root.addListener(selectorListener)
 
-const tutorialListener = store.createListener(state => {
+const tutorialListener = root.createListener(state => {
     const { spritesheet, serializedPuzzle } = state
     return () => { if (spritesheet && serializedPuzzle) { runTutorial(root) } }
 })
-store.addListener(tutorialListener)
+root.addListener(tutorialListener)
 
-const puzzleListener = store.createListener(state => {
+const puzzleListener = root.createListener(state => {
     const { tutorialComplete } = state
     return () => { if (tutorialComplete) { runPuzzle(root) } }
 })
-store.addListener(puzzleListener)
+root.addListener(puzzleListener)
 
 loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
-    .then(spritesheet => { shallowRedaction({ spritesheet }) })
+    .then(spritesheet => { root.redact({ spritesheet }) })
     .catch(error => console.error(error))
 
 loadPuzzles()
@@ -131,7 +114,7 @@ loadPuzzles()
         const key = typeof data === "string"
             ? "serializedPuzzle"
             : "dailyPuzzles"
-        shallowRedaction({ [key]: data })
+        root.redact({ [key]: data })
     })
     .catch(error => console.error(error))
 
