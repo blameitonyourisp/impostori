@@ -33,7 +33,8 @@ const runSelector = root => {
         button.classList.add("pixel-button")
         button.addEventListener("click", () => {
             root.redact({ serializedPuzzle: dailyPuzzles[key][0] })
-            root.loading = true
+            root.unload()
+            // root.loading = true
         })
 
         const buttonText = document.createElement("div")

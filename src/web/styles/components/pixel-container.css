@@ -1,0 +1,20 @@
+.pixel-container {
+    position: relative;
+    box-sizing: border-box;
+    padding: 4px;
+    background-color: var(--clr-slos8-200);
+    color: var(--clr-slos8-200);
+    box-shadow:
+        0px -2px,
+        2px 0px,
+        0px 2px,
+        -2px 0px,
+        2px -2px var(--clr-slos8-800),
+        2px 2px var(--clr-slos8-800),
+        -2px 2px var(--clr-slos8-800),
+        -2px -2px var(--clr-slos8-800),
+        0px -4px var(--clr-slos8-800),
+        4px 0px var(--clr-slos8-800),
+        0px 4px var(--clr-slos8-800),
+        -4px 0px var(--clr-slos8-800)
+}

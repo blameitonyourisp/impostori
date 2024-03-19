@@ -15,16 +15,19 @@
 
 // @ts-check
 
-// @@imports-types
-/* eslint-disable no-unused-vars -- Types only used in comments. */
+// @@imports-package
 import { StatefulLoadingContainer } from "../components/index.js"
-/* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
  * @param {StatefulLoadingContainer} root
  */
 const runTutorial = root => {
+    root.unload()
+
+    const container = StatefulLoadingContainer.contentContainer()
+
+    root.load(container)
     console.log("TUTORIAL")
 }
 

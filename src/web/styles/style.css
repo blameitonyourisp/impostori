@@ -7,6 +7,7 @@
 @import url("./components/card.css");
 @import url("./components/loading-container.css");
 @import url("./components/pixel-button.css");
+@import url("./components/pixel-container.css");
 
 /* Global styles. */
 body {
@@ -17,14 +18,64 @@ body {
 }
 
 #root {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     margin: auto;
-    padding: 0 2rem;
+    padding: 2rem 2rem;
+    justify-content: center;
+    align-items: center;
 }
 
 #root div.content {
     display: flex;
     flex-direction: column;
+    width: 100%;
     /* padding: 0 2rem; */
+}
+
+.loading {
+    display: flex;
+    flex-direction: column;
+}
+
+.loading > p {
+    position: relative;
+    font-size: 1.25rem;
+    margin: auto;
+    padding: 1rem;
+}
+
+.loading-bar {
+    height: 20px;
+    width: 150%;
+    position: relative;
+    right: 25%;
+}
+
+.loading-bounce {
+    background-color: var(--clr-slos8-300);
+    color: var(--clr-slos8-300);
+    height: 100%;
+    width: 32px;
+    position: relative;
+    animation-duration: 1s;
+    animation-name: changewidth;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes changewidth {
+    from {
+        left: 0;
+    }
+
+    50% {
+        width: 40px;
+    }
+
+    to {
+        left: calc(100% - 32px);
+    }
 }

@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Implement basic loading container web component.
+ * @file Implement basic stateful loading container web component.
  * @author James Reid
  */
 
@@ -33,10 +33,15 @@ class StatefulLoadingContainer extends HTMLElement {
         this.dataset.loading = false.toString()
 
         const loadingContainer = document.createElement("div")
-        loadingContainer.classList.add("loading")
+        loadingContainer.classList.add("loading", "loading-container")
         const loadingText = document.createElement("p")
-        loadingText.innerText = this.dataset.text || "Loading"
-        loadingContainer.appendChild(loadingText)
+        loadingText.innerText = this.dataset.text || "Loading..."
+        const loadingBar = document.createElement("div")
+        loadingBar.classList.add("pixel-container", "loading-bar")
+        const loadingBounce = document.createElement("div")
+        loadingBounce.classList.add("pixel-container", "loading-bounce")
+        loadingBar.appendChild(loadingBounce)
+        loadingContainer.append(loadingText, loadingBar)
 
         const contentContainer = document.createElement("div")
         contentContainer.classList.add("content")
@@ -50,15 +55,31 @@ class StatefulLoadingContainer extends HTMLElement {
      * @param {HTMLElement} [newContent]
      */
     load(newContent) {
+        if (this.loading) {
+            this.loading = false
+        }
+        // else {}
+
         if (newContent) {
             const oldContent = this.getElementsByClassName("content")[0]
             if (oldContent) { oldContent.replaceWith(newContent) }
             else { this.appendChild(newContent) }
         }
-        this.loading = false
     }
 
-    unload() { this.loading = true }
+    unload() {
+        if (this.loading) { return }
+
+        const keyframes = [{ opacity: 1 }, { opacity: 0 }]
+        const options = { easing: "ease-out", duration: 500 }
+
+        this.getElementsByClassName("content")[0]?.animate(keyframes, options)
+            .addEventListener("finish", () => {
+                const container = this.getElementsByClassName("loading")[0]
+                container.animate(keyframes, { ...options, direction: "reverse" })
+                this.loading = true
+            })
+    }
 
     /**
      * @param {any} detail
@@ -71,6 +92,10 @@ class StatefulLoadingContainer extends HTMLElement {
         this.dataset.loading = bool.toString()
         this.#loading = bool
     }
+
+    // get loadingContainer() {}
+
+    // get contentContainer() {}
 
     get createRedaction() {
         return this.#store.createRedaction.bind(this.#store)
