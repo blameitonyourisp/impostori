@@ -25,7 +25,7 @@ import {
 } from "./load-spritesheet.js"
 
 // @@imports-submodule
-import { StatefulLoadingContainer } from "./components/index.js"
+import { PixelButton, StatefulLoadingContainer } from "./components/index.js"
 import { runSelector } from "./selector/index.js"
 import { runTutorial } from "./tutorial/index.js"
 import { runPuzzle } from "./puzzle/index.js"
@@ -81,6 +81,7 @@ import { runPuzzle } from "./puzzle/index.js"
  */
 
 // Declare custom web components, and run miscellaneous setup functions.
+customElements.define("pixel-button", PixelButton, { extends: "button" })
 customElements.define("stateful-loading-container", StatefulLoadingContainer)
 setHoverable()
 

@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-package
-import { StatefulLoadingContainer } from "../components/index.js"
+import { PixelButton, StatefulLoadingContainer } from "../components/index.js"
 
 // @@body
 /**
@@ -29,18 +29,11 @@ const runSelector = root => {
 
     const container = StatefulLoadingContainer.contentContainer()
     for (const key in dailyPuzzles) {
-        const button = document.createElement("button")
-        button.classList.add("pixel-button")
+        const button = new PixelButton(key.toUpperCase())
         button.addEventListener("click", () => {
             root.redact({ serializedPuzzle: dailyPuzzles[key][0] })
             root.unload()
-            // root.loading = true
         })
-
-        const buttonText = document.createElement("div")
-        buttonText.innerText = key.toUpperCase()
-        button.appendChild(buttonText)
-
         container.appendChild(button)
     }
 
