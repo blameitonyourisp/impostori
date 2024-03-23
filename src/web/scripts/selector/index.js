@@ -23,16 +23,15 @@ import { PixelButton, StatefulLoadingContainer } from "../components/index.js"
  * @param {StatefulLoadingContainer} root
  */
 const runSelector = root => {
-    root.unload()
-
     const { dailyPuzzles } = root.state
 
     const container = StatefulLoadingContainer.contentContainer()
     for (const key in dailyPuzzles) {
         const button = new PixelButton(key.toUpperCase())
         button.addEventListener("click", () => {
+            history.replaceState({ page: "home" }, "")
+            history.pushState({}, "")
             root.redact({ serializedPuzzle: dailyPuzzles[key][0] })
-            root.unload()
         })
         container.appendChild(button)
     }

@@ -52,6 +52,9 @@ import { runSelector } from "./selector/index.js"
  * @todo Change popstate listener to directly execute a function passed in the
  *      history state object.
  * @todo Add data to resolve object on load/unload methods in loading container.
+ * @todo Remove direct calls to re-render puzzle by relying on state events
+ *      instead.
+ * @todo Add type declaration for "complete" root state.
  */
 
 /**

@@ -11,19 +11,31 @@
 
 /* Global styles. */
 body {
-    background-color: var(--clr-slos8-100);
+    /* background-color: var(--clr-slos8-100); */
+    /* background-color: var(--clr-neutral-200); */
     color: var(--clr-slos8-800);
     font-family: var(--ff-impixel);
-    overflow: hidden;
+    /* overflow: hidden; */
+    height: calc(100svh - 8px);
+    display: flex;
+    flex-direction: column;
 }
 
 #root {
-    height: 100vh;
+    box-sizing: border-box;
+    background-color: var(--clr-slos8-100);
+    color: var(--clr-slos8-100);
+    /* height: calc(90% - 16px); */
+    width: calc(100% - 16px);
     display: flex;
     flex-direction: column;
     margin: auto;
-    padding: 2rem 2rem;
+    /* padding: 2rem 2rem; */
+    /* align-self: flex-start; */
+    justify-self: flex-end;
+    flex-grow: 1;
     justify-content: center;
+    align-self: flex-start;
     align-items: center;
 }
 
@@ -44,6 +56,7 @@ body {
     font-size: 1.25rem;
     margin: auto;
     padding: 1rem;
+    color: var(--clr-slos8-800);
 }
 
 .loading-bar {
@@ -78,4 +91,30 @@ body {
     to {
         left: calc(100% - 32px);
     }
+}
+
+nav.pixel-container {
+    color: var(--clr-slos8-100);
+    background-color: var(--clr-slos8-100);
+    width: calc(100% - 16px);
+    margin: 8px auto 12px;
+    /* margin: 2rem; */
+    padding: 0.5rem 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+nav > button.pixel-button + button {
+    margin: 0 !important;
+    margin-left: 0.5rem !important;
+    /* color: white; */
+}
+
+nav > button p {
+    font-size: 0.75rem;
+}
+
+nav > button div {
+    padding: 5px !important;
 }

@@ -23,12 +23,11 @@ import { StatefulLoadingContainer } from "../components/index.js"
  * @param {StatefulLoadingContainer} root
  */
 const runTutorial = root => {
-    root.unload()
-
     const container = StatefulLoadingContainer.contentContainer()
 
     root.load(container)
-    console.log("TUTORIAL")
+
+    root.redact({ tutorialComplete: true })
 }
 
 // @@exports

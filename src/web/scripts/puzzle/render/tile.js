@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file <INSERT_FILE_DESCRIPTION_HERE>
+ * @file Method to render individual number tiles on grid platforms.
  * @author James Reid
  */
 
@@ -26,20 +26,22 @@ import { renderPuzzle } from "./puzzle.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GameData } from "../../types/index.js"
+import { StatefulLoadingContainer } from "../../components/index.js"
 import { GridCell } from "../../../../package/types/index.js"
-import { getCandidate } from "../../../../package/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
  *
  * @param {GridCell} cell
- * @param {GameData} data
+ * @param {StatefulLoadingContainer} root
  * @param {boolean} isGrid
  * @returns {Container[]}
  */
-const getCellTiles = (cell, data, isGrid = true) => {
+const getCellTiles = (cell, root, isGrid = true) => {
+    const { spritesheet } = root.state
+    // cell = { ...cell }
+
     const hints = [
         ...cell.hints.detective,
         ...cell.hints.worker,
@@ -54,24 +56,24 @@ const getCellTiles = (cell, data, isGrid = true) => {
         const tileKey = cell.clientValue
             ? value === cell.clientValue ? "tile-3" : "tile-1"
             : candidateValues.includes(value) ? "tile-2" : "tile-1"
-        const tile = new Sprite(data.spritesheet[tileKey])
+        const tile = new Sprite(spritesheet[tileKey])
         tile.setTransform(2, 0)
 
-        const digit = new Sprite(data.spritesheet[`digit-${value}`])
+        const digit = new Sprite(spritesheet[`digit-${value}`])
         digit.setTransform(5, 2)
 
         container.addChild(tile, digit)
 
-        const type = cell
-            .candidates
-            .find((candidate => value === candidate.value))
-            ?.type
+        // const type = cell
+        //     .candidates
+        //     .find((candidate => value === candidate.value))
+        //     ?.type
         if (index === 0) {
-            const typeDot = new Sprite(data.spritesheet["dot-type-5"])
+            const typeDot = new Sprite(spritesheet["dot-type-5"])
             container.addChild(typeDot)
         }
         else if ([3, 4, 5].includes(index)) {
-            const typeDot = new Sprite(data.spritesheet["dot-type-4"])
+            const typeDot = new Sprite(spritesheet["dot-type-4"])
             typeDot.setTransform(0, 11)
             container.addChild(typeDot)
         }
@@ -96,8 +98,8 @@ const getCellTiles = (cell, data, isGrid = true) => {
                 if (cell.clientCandidates.length === 1) {
                     cell.clientValue = cell.clientCandidates[0].value // stuck in selected state
                 }
-                data.impostori.serializedString = serializeImpostori(data.impostori)
-                renderPuzzle(data)
+                // data.impostori.serializedString = serializeImpostori(data.impostori)
+                renderPuzzle(root)
             })
         }
     }

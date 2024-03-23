@@ -23,21 +23,19 @@ import { getCellPlatform } from "./platform.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { GameData } from "../../types/index.js"
+import { StatefulLoadingContainer } from "../../components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
- *
- * @param {GameData} data
+ * @param {StatefulLoadingContainer} root
  * @returns
  */
-const renderPuzzle = data => {
-    if (!data.spritesheet) { return }
-
+const renderPuzzle = root => {
+    const { app, width, height, puzzle, selectedCell } = root.state
     const container = new Container()
-    for (const cell of data.impostori.grid.cells) {
-        const platform = getCellPlatform(cell, data)
+    for (const cell of puzzle.grid.cells) {
+        const platform = getCellPlatform(cell, root)
         platform.setTransform(
             69 * (cell.index % 6),
             82 * Math.floor(cell.index / 6) + 41 * (cell.index % 6)
@@ -45,24 +43,23 @@ const renderPuzzle = data => {
         container.addChild(platform)
     }
 
-    const selectedPlatform = getCellPlatform(data.selectedCell, data, {
+    const selectedPlatform = getCellPlatform(selectedCell, root, {
         scale: 3,
         isGrid: false
     })
-    selectedPlatform.y = 600
+    selectedPlatform.y = 575
     container.addChild(selectedPlatform)
 
-    if (window.innerWidth < container.width ||
-    window.innerHeight < container.height) {
+    if (width < container.width || height < container.height) {
         const scale = Math.min(
-            window.innerWidth / container.width,
-            window.innerHeight / container.height
+            width / container.width,
+            height / container.height
         )
         container.setTransform(0, 0, scale, scale)
     }
-    container.x = Math.round((data.app.screen.width - container.width) / 2)
-    container.y = Math.round((data.app.screen.height - container.height) / 2)
-    data.app.stage.addChild(container)
+    container.x = Math.round((width - container.width) / 2)
+    container.y = Math.round((height - container.height) / 2)
+    app.stage.addChild(container)
 }
 
 // @@exports
