@@ -25,12 +25,18 @@ class StatefulLoadingContainer extends HTMLElement {
     #shallowRedaction = this.#store.createRedaction((state, detail) => {
         Object.assign(state, detail)
     })
+    #animation = {
+        keyframes: [{ opacity: 1 }, { opacity: 0 }],
+        options: { easing: "ease-out", duration: 300 },
+        reverse: { direction: /** @type {PlaybackDirection} */ ("reverse") }
+    }
 
     constructor() { super() }
 
     connectedCallback() {
-        if (this.dataset.loading?.match(/^true$|^false$/)) { return }
-        this.dataset.loading = false.toString()
+        if (!this.dataset.loading?.match(/^true$|^false$/)) {
+            this.dataset.loading = true.toString()
+        }
 
         const loadingContainer = document.createElement("div")
         loadingContainer.classList.add("loading", "loading-container")
@@ -52,33 +58,47 @@ class StatefulLoadingContainer extends HTMLElement {
 
     /**
      *
-     * @param {HTMLElement} [newContent]
+     * @param {HTMLElement} newContent
      */
     load(newContent) {
-        if (this.loading) {
-            this.loading = false
-        }
-        // else {}
+        return new Promise(resolve => {
+            const { keyframes, options, reverse } = this.#animation
 
-        if (newContent) {
-            const oldContent = this.getElementsByClassName("content")[0]
-            if (oldContent) { oldContent.replaceWith(newContent) }
-            else { this.appendChild(newContent) }
-        }
+            const replaceContent = () => {
+                this.contentContainer.replaceWith(newContent)
+                this.contentContainer
+                    .animate(keyframes, { ...options, ...reverse })
+                    .addEventListener("finish", () => { resolve({}) })
+            }
+
+            if (this.loading) {
+                this.loadingContainer.animate(keyframes, options)
+                    .addEventListener("finish", () => {
+                        this.loading = false
+                        replaceContent()
+                    })
+            }
+            else {
+                this.contentContainer.animate(keyframes, options)
+                    .addEventListener("finish", replaceContent)
+            }
+        })
     }
 
     unload() {
-        if (this.loading) { return }
+        return new Promise(resolve => {
+            if (this.loading) { resolve({}) }
 
-        const keyframes = [{ opacity: 1 }, { opacity: 0 }]
-        const options = { easing: "ease-out", duration: 500 }
+            const { keyframes, options, reverse } = this.#animation
 
-        this.getElementsByClassName("content")[0]?.animate(keyframes, options)
-            .addEventListener("finish", () => {
-                const container = this.getElementsByClassName("loading")[0]
-                container.animate(keyframes, { ...options, direction: "reverse" })
-                this.loading = true
-            })
+            this.contentContainer.animate(keyframes, options)
+                .addEventListener("finish", () => {
+                    this.loading = true
+                    this.loadingContainer
+                        .animate(keyframes, { ...options, ...reverse })
+                        .addEventListener("finish", () => { resolve({}) })
+                })
+        })
     }
 
     /**
@@ -93,9 +113,13 @@ class StatefulLoadingContainer extends HTMLElement {
         this.#loading = bool
     }
 
-    // get loadingContainer() {}
+    get loadingContainer() {
+        return this.getElementsByClassName("loading")[0]
+    }
 
-    // get contentContainer() {}
+    get contentContainer() {
+        return this.getElementsByClassName("content")[0]
+    }
 
     get createRedaction() {
         return this.#store.createRedaction.bind(this.#store)
