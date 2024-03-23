@@ -17,21 +17,14 @@
 
 // @@imports-module
 import { setHoverable } from "./hoverable.js"
-import { loadPuzzles } from "./load-puzzles.js"
-import {
-    loadSpritesheet,
-    spritesheetImageUrl,
-    spritesheetJsonUrl
-} from "./load-spritesheet.js"
 
 // @@imports-submodule
 import { PixelButton, StatefulLoadingContainer } from "./components/index.js"
 import { runSelector } from "./selector/index.js"
-import { runTutorial } from "./tutorial/index.js"
-import { runPuzzle } from "./puzzle/index.js"
 
 // @@body
 /**
+ * @todo Add completed puzzle site to itch.io.
  * @todo Add "test" and "commit"/"revert" buttons for testing a hypothesis about
  *      a candidate/cell.
  * @todo Add puzzle "reset" button.
@@ -45,6 +38,20 @@ import { runPuzzle } from "./puzzle/index.js"
  * @todo Add state to loading container with redact method etc.
  * @todo Fix cyclical object bug on Boutique proxy to object feature (add
  *      tracker to detect cyclical object and resolve them).
+ * @todo Add multiple radii to pixel container borders (add "pixel-radius-x"
+ *      class styles).
+ * @todo Update unload method to return a promise, then only render next page
+ *      after unload is done. Promisify load method too on container.
+ * @todo Include separate scripts, one to render the loading container, then one
+ *      which loads pixi and starts the spritesheet import etc.
+ * @todo Add bookmark and undo features to allow users to test and rollback.
+ * @todo Add zoom ability to grid portion of pixi container.
+ * @todo Remove root from stateful loading container (just target the container
+ *      instead in css etc.).
+ * @todo Add root div to html to which nav and loading container are appended?
+ * @todo Change popstate listener to directly execute a function passed in the
+ *      history state object.
+ * @todo Add data to resolve object on load/unload methods in loading container.
  */
 
 /**
@@ -85,38 +92,29 @@ customElements.define("pixel-button", PixelButton, { extends: "button" })
 customElements.define("stateful-loading-container", StatefulLoadingContainer)
 setHoverable()
 
-const root = /** @type {StatefulLoadingContainer} */
-    (document.getElementById("root"))
+const nav = document.createElement("nav")
+nav.classList.add("pixel-container")
+const signIn = new PixelButton("Sign In")
+const signUp = new PixelButton("Sign Up")
+nav.append(signIn, signUp)
 
-const selectorListener = root.createListener(state => {
-    const { dailyPuzzles } = state
-    return () => { if (dailyPuzzles) { runSelector(root) } }
+const root = new StatefulLoadingContainer()
+root.id = "root"
+root.classList.add("pixel-container")
+
+document.body.append(nav, root)
+
+window.addEventListener("popstate", event => {
+    if (event && event.state) {
+        const { page } = event.state
+        switch (page) {
+            case "home":
+                runSelector(root)
+                break
+            default:
+                runSelector(root)
+        }
+    }
 })
-root.addListener(selectorListener)
-
-const tutorialListener = root.createListener(state => {
-    const { spritesheet, serializedPuzzle } = state
-    return () => { if (spritesheet && serializedPuzzle) { runTutorial(root) } }
-})
-root.addListener(tutorialListener)
-
-const puzzleListener = root.createListener(state => {
-    const { tutorialComplete } = state
-    return () => { if (tutorialComplete) { runPuzzle(root) } }
-})
-root.addListener(puzzleListener)
-
-loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
-    .then(spritesheet => { root.redact({ spritesheet }) })
-    .catch(error => console.error(error))
-
-loadPuzzles()
-    .then(data => {
-        const key = typeof data === "string"
-            ? "serializedPuzzle"
-            : "dailyPuzzles"
-        root.redact({ [key]: data })
-    })
-    .catch(error => console.error(error))
 
 // @@no-exports
