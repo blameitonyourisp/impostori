@@ -74,6 +74,7 @@
     },
     "dependencies": {
         "@blameitonyourisp/boutique": "^0.0.2",
+        "@ungap/custom-elements": "^1.3.0",
         "pixi.js": "^7.4.0"
     },
     "devDependencies": {

@@ -15,6 +15,9 @@
 
 // @ts-check
 
+// @@imports-dependencies
+import "@ungap/custom-elements"
+
 // @@imports-module
 import { setHoverable } from "./hoverable.js"
 
