@@ -36,7 +36,8 @@ import { runSelector } from "./selector/index.js"
  * @todo Add "share" button to share puzzle in current solve state.
  * @todo Add puzzle grade and rating to top nav.
  * @todo Add number of cells found/completed by type indicator.
- * @todo Add buttons to remove all candidates in a cell by type.
+ * @todo Add buttons to remove all candidates in a cell by type (also add to
+ *      spritesheet to reflect type choice in shading of platform frame?).
  * @todo Refactor _Puzzle to _Impostori method and state naming etc.
  * @todo Add state to loading container with redact method etc.
  * @todo Fix cyclical object bug on Boutique proxy to object feature (add
@@ -58,6 +59,14 @@ import { runSelector } from "./selector/index.js"
  * @todo Remove direct calls to re-render puzzle by relying on state events
  *      instead.
  * @todo Add type declaration for "complete" root state.
+ * @todo Add checking on selected puzzle to see that it is a valid puzzle.
+ * @todo Update "package" imports from impostori package to be "dependency"
+ *      imports instead.
+ * @todo Review custom web components usage with respect to lack of safari
+ *      webkit implementation. If keeping web components, review choice of
+ *      polyfill:
+ *          - https://www.npmjs.com/package/@ungap/custom-elements
+ *          - https://www.webcomponents.org/polyfills
  */
 
 /**

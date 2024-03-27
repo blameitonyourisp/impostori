@@ -33,6 +33,7 @@ import { StatefulLoadingContainer } from "../../components/index.js"
  */
 const renderPuzzle = root => {
     const { app, width, height, puzzle, selectedCell } = root.state
+
     const container = new Container()
     for (const cell of puzzle.grid.cells) {
         const platform = getCellPlatform(cell, root)
@@ -59,7 +60,9 @@ const renderPuzzle = root => {
     }
     container.x = Math.round((width - container.width) / 2)
     container.y = Math.round((height - container.height) / 2)
+
     app.stage.addChild(container)
+    while (app.stage.children.length > 1) { app.stage.removeChildAt(0) }
 }
 
 // @@exports

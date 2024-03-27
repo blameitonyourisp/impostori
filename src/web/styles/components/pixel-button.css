@@ -1,6 +1,9 @@
 .pixel-button {
     border-style: none;
     background-color: transparent;
+    max-width: 500px;
+    width: 100%;
+    /* width: clamp(200px, 100%, 500px); */
 }
 
 .pixel-button + .pixel-button {

@@ -31,7 +31,7 @@ const runSelector = root => {
         button.addEventListener("click", () => {
             history.replaceState({ page: "home" }, "")
             history.pushState({}, "")
-            root.redact({ serializedPuzzle: dailyPuzzles[key][0] })
+            root.redact({ selectedPuzzle: dailyPuzzles[key][0] })
         })
         container.appendChild(button)
     }

@@ -17,9 +17,8 @@
 
 // @@imports-dependencies
 import { Application } from "pixi.js"
-
-// @@imports-package
-import { deserializeImpostori } from "../../../package/index.js"
+// import { proxyToObject } from "@blameitonyourisp/boutique"
+import { serializeImpostori } from "../../../package/index.js"
 
 // @@imports-module
 import { StatefulLoadingContainer } from "../components/index.js"
@@ -28,19 +27,46 @@ import { StatefulLoadingContainer } from "../components/index.js"
 import { renderPuzzle } from "./render/index.js"
 
 // @@body
+const proxyToObject = proxy => {
+    // Return call to array function if passed proxy is an array proxy.
+    if (proxy instanceof Array) { return proxyToArray(proxy) }
+
+    // Reconstruct original object from nested proxy.
+    const object = /** @type {KeyedObject} */ ({})
+    for (const key in proxy) {
+        typeof proxy[key] === "object" ? object[key] = proxyToObject(proxy[key])
+            : object[key] = proxy[key]
+    }
+
+    return object
+}
+
+/**
+ *
+ * @param {any[]} proxy
+ * @returns {any[]}
+ */
+const proxyToArray = proxy => {
+    // Reconstruct original object from nested proxy.
+    const array = /** @type {any[]} */ ([])
+    proxy.forEach(entry => {
+        typeof entry === "object" ? array.push(proxyToObject(entry))
+            : array.push(entry)
+    })
+
+    return array
+}
+
 /**
  * @param {StatefulLoadingContainer} root
  */
 const runPuzzle = root => {
-    const impostori = deserializeImpostori(root.state.serializedPuzzle)
     const content = StatefulLoadingContainer.contentContainer()
 
-    //
     let { width, height } = root.getBoundingClientRect()
     width -= 8
     height -= 8
 
-    //
     const app = new Application({
         width: width,
         height: height,
@@ -50,25 +76,45 @@ const runPuzzle = root => {
     })
     content.append(/** @type {any} */ (app.view))
 
-    const data = {}
-    data.impostori = impostori
-    data.permutedIndexArray = data.impostori.grid.random.shuffledIndexArray(36)
-    data.selectedCell = data.impostori.grid.cells[0]
-    data.spritesheet = root.state.spritesheet
-    data.app = app
-
-    const puzzle = deserializeImpostori(root.state.serializedPuzzle)
+    const { puzzle } = root.state
     root.redact({
         app,
         width,
         height,
-        puzzle,
         permutedIndexArray: puzzle.grid.random.shuffledIndexArray(36),
-        selectedCell: puzzle.grid.cells[0]
+        selectedCell: puzzle.grid.cells[0],
     })
     renderPuzzle(root)
 
+    const renderListener = root.createListener(state => {
+        const { selectedCell } = state
+        return () => {
+            const tileRedaction = root.createRedaction((state, detail) => {
+                const cell = proxyToObject(selectedCell)
+                state.puzzle.grid.cells.splice(cell.index, 1, cell)
+                state.serializedPuzzle = serializeImpostori(puzzle)
+                return detail
+            })
+            tileRedaction({ running: true })
+
+            renderPuzzle(root)
+        }
+    })
+    root.addListener(renderListener)
+
     root.load(content)
+
+    const observer = new MutationObserver(event => {
+        if (event[0].removedNodes) {
+            for (const node of event[0].removedNodes) {
+                if (node === content) {
+                    root.removeListener(renderListener)
+                    observer.disconnect()
+                }
+            }
+        }
+    })
+    observer.observe(root, { childList: true })
 }
 
 // @@exports

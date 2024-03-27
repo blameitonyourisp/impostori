@@ -19,7 +19,6 @@
 import { Container, Point, Polygon, Sprite } from "pixi.js"
 
 // @@imports-module
-import { renderPuzzle } from "./puzzle.js"
 import { getCellTiles } from "./tile.js"
 
 // @@imports-types
@@ -106,10 +105,7 @@ const getCellPlatform = (cell, root, {
     if (isGrid) {
         container.eventMode = "static"
         container.cursor = "pointer"
-        container.on("pointerdown", () => {
-            root.redact({ selectedCell: cell })
-            renderPuzzle(root)
-        })
+        container.on("pointerdown", () => root.redact({ selectedCell: cell }))
 
         for (const index of cell.adjacentIndexes.all) {
             if (cell.index < index) { continue }

@@ -17,12 +17,7 @@
 
 // @@imports-dependencies
 import { Container, Sprite } from "pixi.js"
-
-// @@imports-package
-import { serializeImpostori } from "../../../../package/index.js"
-
-// @@imports-module
-import { renderPuzzle } from "./puzzle.js"
+import { getCandidate } from "../../../../package/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
@@ -40,7 +35,6 @@ import { GridCell } from "../../../../package/types/index.js"
  */
 const getCellTiles = (cell, root, isGrid = true) => {
     const { spritesheet } = root.state
-    // cell = { ...cell }
 
     const hints = [
         ...cell.hints.detective,
@@ -49,7 +43,7 @@ const getCellTiles = (cell, root, isGrid = true) => {
     ]
 
     const tiles = /** @type {Container[]} */ ([])
-    for (const [index, value] of hints.entries()) {
+    for (const value of hints) {
         const container = new Container()
 
         const candidateValues = cell.clientCandidates.map(({ value }) => value)
@@ -64,15 +58,13 @@ const getCellTiles = (cell, root, isGrid = true) => {
 
         container.addChild(tile, digit)
 
-        // const type = cell
-        //     .candidates
-        //     .find((candidate => value === candidate.value))
-        //     ?.type
-        if (index === 0) {
+        const type = cell.candidates
+            .find((candidate => value === candidate.value))?.type
+        if (type === "detective") {
             const typeDot = new Sprite(spritesheet["dot-type-5"])
             container.addChild(typeDot)
         }
-        else if ([3, 4, 5].includes(index)) {
+        else if (type === "imposter") {
             const typeDot = new Sprite(spritesheet["dot-type-4"])
             typeDot.setTransform(0, 11)
             container.addChild(typeDot)
@@ -80,26 +72,38 @@ const getCellTiles = (cell, root, isGrid = true) => {
 
         tiles.push(container)
 
-
         if (!isGrid) {
             container.eventMode = "static"
             container.cursor = "pointer"
             container.on("pointerdown", () => {
+                cell = { ...cell }
+                // const updatedCell = { ...cell }
+                // updatedCell.clientValue = 2
+
                 if (cell.clientValue) {
-                    if (value === cell.clientValue) { cell.clientValue = 0 }
+                    if (value === cell.clientValue) {
+                        cell.clientValue = 0
+                    }
+                    if (cell.clientCandidates.length === 1) {
+                        cell.clientCandidates = cell.candidates
+                    }
                 }
                 else if (!candidateValues.includes(value)) {
                     cell.clientValue = value
+                    // updatedCell.clientCandidates = [...cell.clientCandidates]
                     cell.clientCandidates.push(getCandidate(cell, value))
                 }
                 else {
-                    cell.clientCandidates = cell.clientCandidates.filter(candidate => candidate.value !== value)
+                    cell.clientCandidates = cell
+                        .clientCandidates
+                        .filter(candidate => candidate.value !== value)
                 }
                 if (cell.clientCandidates.length === 1) {
-                    cell.clientValue = cell.clientCandidates[0].value // stuck in selected state
+                    // stuck in selected state
+                    cell.clientValue = cell.clientCandidates[0].value
                 }
-                // data.impostori.serializedString = serializeImpostori(data.impostori)
-                renderPuzzle(root)
+
+                root.redact({ selectedCell: cell })
             })
         }
     }

@@ -15,6 +15,9 @@
 
 // @ts-check
 
+// @@imports-dependencies
+import { deserializeImpostori } from "../../package/index.js"
+
 // @@imports-module
 import { loadPuzzles } from "./load-puzzles.js"
 import {
@@ -43,15 +46,30 @@ const selectorListener = root.createListener(state => {
 })
 root.addListener(selectorListener)
 
+const selectedPuzzleListener = root.createListener(state => {
+    const { selectedPuzzle } = state
+    return () => {
+        root.redact({
+            serializedPuzzle: selectedPuzzle,
+            puzzle: deserializeImpostori(selectedPuzzle)
+        })
+    }
+})
+root.addListener(selectedPuzzleListener)
+
 const tutorialListener = root.createListener(state => {
-    const { spritesheet, serializedPuzzle } = state
-    return () => { if (spritesheet && serializedPuzzle) { runTutorial(root) } }
+    const { spritesheet, puzzle, tutorialComplete } = state
+    return () => {
+        if (spritesheet && puzzle && !tutorialComplete) { runTutorial(root) }
+    }
 })
 root.addListener(tutorialListener)
 
-const puzzleListener = root.createListener(state => {
-    const { tutorialComplete } = state
-    return () => { if (tutorialComplete) { runPuzzle(root) } }
+const puzzleListener = root.createListener((state, detail) => {
+    const { puzzle, tutorialComplete } = state
+    return () => {
+        if (puzzle && tutorialComplete && !detail?.running) { runPuzzle(root) }
+    }
 })
 root.addListener(puzzleListener)
 
@@ -62,7 +80,7 @@ loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
 loadPuzzles()
     .then(data => {
         const key = typeof data === "string"
-            ? "serializedPuzzle"
+            ? "selectedPuzzle"
             : "dailyPuzzles"
         root.redact({ [key]: data })
     })
