@@ -33,6 +33,7 @@ const runSelector = root => {
             history.pushState({}, "")
             root.redact({ selectedPuzzle: dailyPuzzles[key][0] })
         })
+
         container.appendChild(button)
     }
 

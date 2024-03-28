@@ -11,6 +11,9 @@
 }
 
 .pixel-button > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     position: relative;
     box-sizing: border-box;
     padding: 10px;
@@ -37,6 +40,7 @@
 .pixel-button > div > p {
     color: var(--clr-slos8-800);
     margin: 0;
+    align-self: center;
 }
 
 body.hoverable .pixel-button:hover > div {
@@ -77,4 +81,9 @@ body.hoverable .pixel-button:hover > div {
         0px 4px var(--clr-slos8-800),
         -4px 0px var(--clr-slos8-800) !important;
     margin: 2px -2px -2px 2px;
+}
+
+.pixel-button svg {
+    position: absolute;
+    right: 0.5em;
 }

@@ -15,19 +15,30 @@
 
 // @ts-check
 
-// @@no-imports
+// @@imports-dependencies
+import { createElement } from "lucide"
 
 // @@body
 class PixelButton extends HTMLButtonElement {
     #text
+    #icon
+    #stroke
+    #height
 
     /**
      * @param {string} text
+     * @param {object} [obj]
+     * @param {import("lucide").IconNode} [obj.icon]
+     * @param {string} [obj.stroke]
+     * @param {string} [obj.height]
      */
-    constructor(text) {
+    constructor(text, { icon, stroke = "#0d2b45", height = "1em" } = {}) {
         super()
 
         this.#text = text
+        this.#icon = icon
+        this.#stroke = stroke
+        this.#height = height
     }
 
     connectedCallback() {
@@ -37,6 +48,14 @@ class PixelButton extends HTMLButtonElement {
         innerContainer.appendChild(buttonText)
         this.appendChild(innerContainer)
         this.classList.add("pixel-button")
+
+        if (this.#icon) {
+            const icon = createElement(this.#icon)
+            icon.setAttribute("stroke", this.#stroke)
+            icon.setAttribute("height", this.#height)
+            icon.classList.add("my-icon-class")
+            innerContainer.appendChild(icon)
+        }
     }
 }
 

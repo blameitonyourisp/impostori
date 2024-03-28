@@ -27,6 +27,11 @@ import { runSelector } from "./selector/index.js"
 
 // @@body
 /**
+ * @todo Submit completed site for review to the following sites, youtube
+ *      creators etc.:
+ *      - [aliensrock](https://www.youtube.com/@Aliensrock)
+ *      - [cracking the cryptic](https://www.youtube.com/@CrackingTheCryptic)
+ *      - [reddit puzzles](https://www.reddit.com/r/puzzles/)
  * @todo Add completed puzzle site to itch.io.
  * @todo Add "test" and "commit"/"revert" buttons for testing a hypothesis about
  *      a candidate/cell.
@@ -65,8 +70,10 @@ import { runSelector } from "./selector/index.js"
  * @todo Review custom web components usage with respect to lack of safari
  *      webkit implementation. If keeping web components, review choice of
  *      polyfill:
- *          - https://www.npmjs.com/package/@ungap/custom-elements
- *          - https://www.webcomponents.org/polyfills
+ *      - https://www.npmjs.com/package/@ungap/custom-elements
+ *      - https://www.webcomponents.org/polyfills
+ * @todo Look into creating own, bespoke pixel icon set in aseprite or
+ *      vectornator specifically for this game (after a brief search online).
  */
 
 /**
