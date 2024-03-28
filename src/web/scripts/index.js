@@ -74,6 +74,8 @@ import { runSelector } from "./selector/index.js"
  *      - https://www.webcomponents.org/polyfills
  * @todo Look into creating own, bespoke pixel icon set in aseprite or
  *      vectornator specifically for this game (after a brief search online).
+ * @todo Consider removing Boutique as dependency and transitioning to vanilla
+ *      custom events instead.
  */
 
 /**

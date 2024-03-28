@@ -41,8 +41,8 @@ const root = /** @type {StatefulLoadingContainer} */
     (document.getElementById("root"))
 
 const selectorListener = root.createListener(state => {
-    const { dailyPuzzles } = state
-    return () => { if (dailyPuzzles) { runSelector(root) } }
+    const { spritesheet, dailyPuzzles } = state
+    return () => { if (spritesheet && dailyPuzzles) { runSelector(root) } }
 })
 root.addListener(selectorListener)
 
@@ -58,10 +58,8 @@ const selectedPuzzleListener = root.createListener(state => {
 root.addListener(selectedPuzzleListener)
 
 const tutorialListener = root.createListener(state => {
-    const { spritesheet, puzzle, tutorialComplete } = state
-    return () => {
-        if (spritesheet && puzzle && !tutorialComplete) { runTutorial(root) }
-    }
+    const { puzzle, tutorialComplete } = state
+    return () => { if (puzzle && !tutorialComplete) { runTutorial(root) } }
 })
 root.addListener(tutorialListener)
 

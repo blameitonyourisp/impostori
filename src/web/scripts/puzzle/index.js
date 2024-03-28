@@ -27,36 +27,6 @@ import { StatefulLoadingContainer } from "../components/index.js"
 import { renderPuzzle } from "./render/index.js"
 
 // @@body
-const proxyToObject = proxy => {
-    // Return call to array function if passed proxy is an array proxy.
-    if (proxy instanceof Array) { return proxyToArray(proxy) }
-
-    // Reconstruct original object from nested proxy.
-    const object = /** @type {KeyedObject} */ ({})
-    for (const key in proxy) {
-        typeof proxy[key] === "object" ? object[key] = proxyToObject(proxy[key])
-            : object[key] = proxy[key]
-    }
-
-    return object
-}
-
-/**
- *
- * @param {any[]} proxy
- * @returns {any[]}
- */
-const proxyToArray = proxy => {
-    // Reconstruct original object from nested proxy.
-    const array = /** @type {any[]} */ ([])
-    proxy.forEach(entry => {
-        typeof entry === "object" ? array.push(proxyToObject(entry))
-            : array.push(entry)
-    })
-
-    return array
-}
-
 /**
  * @param {StatefulLoadingContainer} root
  */
@@ -87,12 +57,14 @@ const runPuzzle = root => {
     renderPuzzle(root)
 
     const renderListener = root.createListener(state => {
+        /* eslint-disable-next-line no-unused-vars -- Boutique state tracer. */
         const { selectedCell } = state
+
         return () => {
             const tileRedaction = root.createRedaction((state, detail) => {
-                const cell = proxyToObject(selectedCell)
+                const cell = root.state.selectedCell
                 state.puzzle.grid.cells.splice(cell.index, 1, cell)
-                state.serializedPuzzle = serializeImpostori(puzzle)
+                state.serializedPuzzle = serializeImpostori(root.state.puzzle)
                 return detail
             })
             tileRedaction({ running: true })
