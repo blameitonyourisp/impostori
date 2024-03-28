@@ -75,7 +75,8 @@ import { runSelector } from "./selector/index.js"
  * @todo Look into creating own, bespoke pixel icon set in aseprite or
  *      vectornator specifically for this game (after a brief search online).
  * @todo Consider removing Boutique as dependency and transitioning to vanilla
- *      custom events instead.
+ *      custom events instead. Move event strings into global object.
+ * @todo Move puzzle checking to separate file/folder.
  */
 
 /**

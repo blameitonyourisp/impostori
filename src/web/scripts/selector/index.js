@@ -23,7 +23,11 @@ import { PixelButton, StatefulLoadingContainer } from "../components/index.js"
  * @param {StatefulLoadingContainer} root
  */
 const runSelector = root => {
+    const event = new Event("impostori-puzzle-selected")
+
     const { dailyPuzzles } = root.state
+    if (dailyPuzzles.url) { return root.dispatchEvent(event) }
+    delete dailyPuzzles.url
 
     const container = StatefulLoadingContainer.contentContainer()
     for (const key in dailyPuzzles) {
@@ -31,7 +35,8 @@ const runSelector = root => {
         button.addEventListener("click", () => {
             history.replaceState({ page: "home" }, "")
             history.pushState({}, "")
-            root.redact({ selectedPuzzle: dailyPuzzles[key][0] })
+            root.state.selectedPuzzle = dailyPuzzles[key][0]
+            root.dispatchEvent(event)
         })
 
         container.appendChild(button)

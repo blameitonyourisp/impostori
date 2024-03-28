@@ -103,7 +103,12 @@ const getCellTiles = (cell, root, isGrid = true) => {
                     cell.clientValue = cell.clientCandidates[0].value
                 }
 
-                root.redact({ selectedCell: cell })
+                root.state.selectedCell = cell
+                const event = new CustomEvent(
+                    "impostori-selected-cell-updated",
+                    { detail: { tileUpdated: true } }
+                )
+                root.dispatchEvent(event)
             })
         }
     }

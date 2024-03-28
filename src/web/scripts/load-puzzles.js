@@ -29,8 +29,6 @@ const loadPuzzles = ({
     return new Promise((resolve, reject) => {
         // Check for puzzle in url params, and resolve if found.
         const urlParams = new URLSearchParams(window.location.search)
-        const serializedImpostori = urlParams.get("puzzle")
-        if (serializedImpostori) { resolve(serializedImpostori) }
 
         // Otherwise fetch daily puzzles object.
         const day = Math.floor(Date.now() / MS_IN_DAY % daysBeforeWrap)
@@ -41,7 +39,10 @@ const loadPuzzles = ({
         const request = new Request(url.href)
         fetch(request)
             .then(response => response.json())
-            .then(data => resolve(data))
+            .then(data => resolve({
+                ...data,
+                url: urlParams.get("puzzle")
+            }))
             .catch(error => reject(error))
     })
 }

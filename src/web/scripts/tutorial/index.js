@@ -23,11 +23,12 @@ import { StatefulLoadingContainer } from "../components/index.js"
  * @param {StatefulLoadingContainer} root
  */
 const runTutorial = root => {
-    const container = StatefulLoadingContainer.contentContainer()
+    // const container = StatefulLoadingContainer.contentContainer()
 
-    root.load(container)
+    // root.load(container)
 
-    root.redact({ tutorialComplete: true })
+    const event = new Event("impostori-tutorial-complete")
+    root.dispatchEvent(event)
 }
 
 // @@exports
