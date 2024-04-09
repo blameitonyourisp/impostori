@@ -18,12 +18,19 @@
 // @@imports-package
 import { PixelButton, StatefulLoadingContainer } from "../components/index.js"
 
+// @@imports-package
+import { IMPOSTORI_EVENTS } from "../events.js"
+
 // @@body
+const {
+    puzzleSelected
+} = IMPOSTORI_EVENTS
+
 /**
  * @param {StatefulLoadingContainer} root
  */
 const runSelector = root => {
-    const event = new Event("impostori-puzzle-selected")
+    const event = new Event(puzzleSelected)
 
     const { dailyPuzzles } = root.state
     if (dailyPuzzles.url) { return root.dispatchEvent(event) }

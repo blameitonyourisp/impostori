@@ -18,6 +18,9 @@
 // @@imports-dependencies
 import { Container, Point, Polygon, Sprite } from "pixi.js"
 
+// @@imports-package
+import { IMPOSTORI_EVENTS } from "../../events.js"
+
 // @@imports-module
 import { getCellTiles } from "./tile.js"
 
@@ -28,6 +31,10 @@ import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
+const {
+    selectedCellUpdated
+} = IMPOSTORI_EVENTS
+
 //
 const PLATFORM_POLYGON = [
     [21, 2],
@@ -107,7 +114,7 @@ const getCellPlatform = (cell, root, {
         container.cursor = "pointer"
         container.on("pointerdown", () => {
             root.state.selectedCell = cell
-            const event = new Event("impostori-selected-cell-updated")
+            const event = new Event(selectedCellUpdated)
             root.dispatchEvent(event)
         })
 

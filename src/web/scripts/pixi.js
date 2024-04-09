@@ -19,6 +19,7 @@
 import { deserializeImpostori } from "../../package/index.js"
 
 // @@imports-module
+import { IMPOSTORI_EVENTS } from "./events.js"
 import { loadPuzzles } from "./load-puzzles.js"
 import {
     loadSpritesheet,
@@ -37,33 +38,40 @@ import { StatefulLoadingContainer } from "./components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
+const {
+    resourceLoaded,
+    puzzleSelected,
+    puzzleVerified,
+    tutorialComplete
+} = IMPOSTORI_EVENTS
+
 const root = /** @type {StatefulLoadingContainer} */
     (document.getElementById("root"))
 
-root.addEventListener("impostori-resource-loaded", () => {
+root.addEventListener(resourceLoaded, () => {
     const { spritesheet, dailyPuzzles } = root.state
     if (spritesheet && dailyPuzzles) { runSelector(root) }
 })
 
-root.addEventListener("impostori-puzzle-selected", () => {
+root.addEventListener(puzzleSelected, () => {
     const { selectedPuzzle } = root.state
     root.state = {
         ...root.state,
         serializedPuzzle: selectedPuzzle,
         puzzle: deserializeImpostori(selectedPuzzle)
     }
-    const event = new Event("impostori-puzzle-verified")
+    const event = new Event(puzzleVerified)
     root.dispatchEvent(event)
 })
 
-root.addEventListener("impostori-puzzle-verified", () => { runTutorial(root) })
+root.addEventListener(puzzleVerified, () => { runTutorial(root) })
 
-root.addEventListener("impostori-tutorial-complete", () => { runPuzzle(root) })
+root.addEventListener(tutorialComplete, () => { runPuzzle(root) })
 
 loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
     .then(spritesheet => {
         root.state.spritesheet = spritesheet
-        const event = new Event("impostori-resource-loaded")
+        const event = new Event(resourceLoaded)
         root.dispatchEvent(event)
     })
     .catch(error => console.error(error))
@@ -71,7 +79,7 @@ loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
 loadPuzzles()
     .then(data => {
         root.state.dailyPuzzles = data
-        const event = new Event("impostori-resource-loaded")
+        const event = new Event(resourceLoaded)
         root.dispatchEvent(event)
     })
     .catch(error => console.error(error))

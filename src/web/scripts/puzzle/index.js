@@ -20,6 +20,9 @@ import { Application } from "pixi.js"
 // import { proxyToObject } from "@blameitonyourisp/boutique"
 import { serializeImpostori } from "../../../package/index.js"
 
+// @@imports-package
+import { IMPOSTORI_EVENTS } from "../events.js"
+
 // @@imports-module
 import { StatefulLoadingContainer } from "../components/index.js"
 
@@ -27,6 +30,8 @@ import { StatefulLoadingContainer } from "../components/index.js"
 import { renderPuzzle } from "./render/index.js"
 
 // @@body
+const { selectedCellUpdated } = IMPOSTORI_EVENTS
+
 /**
  * @param {StatefulLoadingContainer} root
  */
@@ -61,13 +66,14 @@ const runPuzzle = root => {
         const { selectedCell } = root.state
 
         if (event?.detail?.tileUpdated) {
-            root.state.puzzle.grid.cells.splice(selectedCell.index, 1, selectedCell) // @no-wrap
+            const { index } = selectedCell
+            root.state.puzzle.grid.cells.splice(index, 1, selectedCell)
             root.state.serializedPuzzle = serializeImpostori(root.state.puzzle)
         }
 
         renderPuzzle(root)
     }
-    root.addEventListener("impostori-selected-cell-updated", listener)
+    root.addEventListener(selectedCellUpdated, listener)
 
     root.load(content)
 
@@ -75,7 +81,7 @@ const runPuzzle = root => {
         if (event[0].removedNodes) {
             for (const node of event[0].removedNodes) {
                 if (node === content) {
-                    root.removeEventListener("impostori-selected-cell-updated", listener)
+                    root.removeEventListener(selectedCellUpdated, listener)
                     observer.disconnect()
                 }
             }
