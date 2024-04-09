@@ -67,15 +67,12 @@ import { runSelector } from "./selector/index.js"
  * @todo Add checking on selected puzzle to see that it is a valid puzzle.
  * @todo Update "package" imports from impostori package to be "dependency"
  *      imports instead.
- * @todo Review custom web components usage with respect to lack of safari
- *      webkit implementation. If keeping web components, review choice of
- *      polyfill:
- *      - https://www.npmjs.com/package/@ungap/custom-elements
- *      - https://www.webcomponents.org/polyfills
  * @todo Look into creating own, bespoke pixel icon set in aseprite or
  *      vectornator specifically for this game (after a brief search online).
- * @todo Consider removing Boutique as dependency and transitioning to vanilla
- *      custom events instead.
+ * @todo Move puzzle checking to separate file/folder.
+ * @todo Move loaders, hoverable and events into state module folder.
+ * @todo Consider changing IMPOSTORI_EVENTS export into individual const exports
+ *      of each required event string.
  */
 
 /**

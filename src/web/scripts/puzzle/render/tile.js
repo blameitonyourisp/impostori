@@ -19,6 +19,9 @@
 import { Container, Sprite } from "pixi.js"
 import { getCandidate } from "../../../../package/index.js"
 
+// @@imports-package
+import { IMPOSTORI_EVENTS } from "../../events.js"
+
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
 import { StatefulLoadingContainer } from "../../components/index.js"
@@ -26,6 +29,10 @@ import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
+const {
+    selectedCellUpdated
+} = IMPOSTORI_EVENTS
+
 /**
  *
  * @param {GridCell} cell
@@ -103,7 +110,12 @@ const getCellTiles = (cell, root, isGrid = true) => {
                     cell.clientValue = cell.clientCandidates[0].value
                 }
 
-                root.redact({ selectedCell: cell })
+                root.state.selectedCell = cell
+                const event = new CustomEvent(
+                    selectedCellUpdated,
+                    { detail: { tileUpdated: true } }
+                )
+                root.dispatchEvent(event)
             })
         }
     }

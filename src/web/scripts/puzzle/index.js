@@ -20,6 +20,9 @@ import { Application } from "pixi.js"
 // import { proxyToObject } from "@blameitonyourisp/boutique"
 import { serializeImpostori } from "../../../package/index.js"
 
+// @@imports-package
+import { IMPOSTORI_EVENTS } from "../events.js"
+
 // @@imports-module
 import { StatefulLoadingContainer } from "../components/index.js"
 
@@ -27,6 +30,8 @@ import { StatefulLoadingContainer } from "../components/index.js"
 import { renderPuzzle } from "./render/index.js"
 
 // @@body
+const { selectedCellUpdated } = IMPOSTORI_EVENTS
+
 /**
  * @param {StatefulLoadingContainer} root
  */
@@ -47,32 +52,28 @@ const runPuzzle = root => {
     content.append(/** @type {any} */ (app.view))
 
     const { puzzle } = root.state
-    root.redact({
+    root.state = {
+        ...root.state,
         app,
         width,
         height,
         permutedIndexArray: puzzle.grid.random.shuffledIndexArray(36),
         selectedCell: puzzle.grid.cells[0],
-    })
+    }
     renderPuzzle(root)
 
-    const renderListener = root.createListener(state => {
-        /* eslint-disable-next-line no-unused-vars -- Boutique state tracer. */
-        const { selectedCell } = state
+    const listener = (/** @type {any} */ event) => {
+        const { selectedCell } = root.state
 
-        return () => {
-            const tileRedaction = root.createRedaction((state, detail) => {
-                const cell = root.state.selectedCell
-                state.puzzle.grid.cells.splice(cell.index, 1, cell)
-                state.serializedPuzzle = serializeImpostori(root.state.puzzle)
-                return detail
-            })
-            tileRedaction({ running: true })
-
-            renderPuzzle(root)
+        if (event?.detail?.tileUpdated) {
+            const { index } = selectedCell
+            root.state.puzzle.grid.cells.splice(index, 1, selectedCell)
+            root.state.serializedPuzzle = serializeImpostori(root.state.puzzle)
         }
-    })
-    root.addListener(renderListener)
+
+        renderPuzzle(root)
+    }
+    root.addEventListener(selectedCellUpdated, listener)
 
     root.load(content)
 
@@ -80,7 +81,7 @@ const runPuzzle = root => {
         if (event[0].removedNodes) {
             for (const node of event[0].removedNodes) {
                 if (node === content) {
-                    root.removeListener(renderListener)
+                    root.removeEventListener(selectedCellUpdated, listener)
                     observer.disconnect()
                 }
             }

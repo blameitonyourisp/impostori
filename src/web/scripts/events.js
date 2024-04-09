@@ -9,34 +9,22 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Run tutorial page.
+ * @file Global custom event strings for impostori game events.
  * @author James Reid
  */
 
 // @ts-check
 
-// @@imports-package
-import { StatefulLoadingContainer } from "../components/index.js"
-
-// @@imports-package
-import { IMPOSTORI_EVENTS } from "../events.js"
+// @@no-imports
 
 // @@body
-const {
-    tutorialComplete
-} = IMPOSTORI_EVENTS
-
-/**
- * @param {StatefulLoadingContainer} root
- */
-const runTutorial = root => {
-    // const container = StatefulLoadingContainer.contentContainer()
-
-    // root.load(container)
-
-    const event = new Event(tutorialComplete)
-    root.dispatchEvent(event)
+const IMPOSTORI_EVENTS = {
+    resourceLoaded: "impostori-resource-loaded",
+    puzzleSelected: "impostori-puzzle-selected",
+    puzzleVerified: "impostori-puzzle-verified",
+    tutorialComplete: "impostori-tutorial-complete",
+    selectedCellUpdated: "impostori-selected-cell-updated"
 }
 
 // @@exports
-export { runTutorial }
+export { IMPOSTORI_EVENTS }

@@ -15,23 +15,25 @@
 
 // @ts-check
 
-// @@imports-dependencies
-import { Boutique } from "@blameitonyourisp/boutique"
+// @@no-imports
 
 // @@body
 class StatefulLoadingContainer extends HTMLElement {
     #loading = this.dataset.loading === "false" ? false : true
-    #store = new Boutique({})
-    #shallowRedaction = this.#store.createRedaction((state, detail) => {
-        Object.assign(state, detail)
-    })
     #animation = {
         keyframes: [{ opacity: 1 }, { opacity: 0 }],
         options: { easing: "ease-out", duration: 300 },
         reverse: { direction: /** @type {PlaybackDirection} */ ("reverse") }
     }
 
-    constructor() { super() }
+    /**
+     * @param {any} [state]
+     */
+    constructor(state = {}) {
+        super()
+
+        this.state = state
+    }
 
     connectedCallback() {
         if (!this.dataset.loading?.match(/^true$|^false$/)) {
@@ -101,11 +103,6 @@ class StatefulLoadingContainer extends HTMLElement {
         })
     }
 
-    /**
-     * @param {any} detail
-     */
-    redact(detail) { this.#shallowRedaction(detail) }
-
     get loading() { return this.#loading }
 
     set loading(bool) {
@@ -120,24 +117,6 @@ class StatefulLoadingContainer extends HTMLElement {
     get contentContainer() {
         return this.getElementsByClassName("content")[0]
     }
-
-    get createRedaction() {
-        return this.#store.createRedaction.bind(this.#store)
-    }
-
-    get createListener() {
-        return this.#store.createListener.bind(this.#store)
-    }
-
-    get addListener() {
-        return this.#store.addListener.bind(this.#store)
-    }
-
-    get removeListener() {
-        return this.#store.removeListener.bind(this.#store)
-    }
-
-    get state() { return this.#store.state }
 
     static contentContainer() {
         const container = document.createElement("div")

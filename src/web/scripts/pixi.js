@@ -19,6 +19,7 @@
 import { deserializeImpostori } from "../../package/index.js"
 
 // @@imports-module
+import { IMPOSTORI_EVENTS } from "./events.js"
 import { loadPuzzles } from "./load-puzzles.js"
 import {
     loadSpritesheet,
@@ -37,50 +38,49 @@ import { StatefulLoadingContainer } from "./components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
+const {
+    resourceLoaded,
+    puzzleSelected,
+    puzzleVerified,
+    tutorialComplete
+} = IMPOSTORI_EVENTS
+
 const root = /** @type {StatefulLoadingContainer} */
     (document.getElementById("root"))
 
-const selectorListener = root.createListener(state => {
-    const { spritesheet, dailyPuzzles } = state
-    return () => { if (spritesheet && dailyPuzzles) { runSelector(root) } }
+root.addEventListener(resourceLoaded, () => {
+    const { spritesheet, dailyPuzzles } = root.state
+    if (spritesheet && dailyPuzzles) { runSelector(root) }
 })
-root.addListener(selectorListener)
 
-const selectedPuzzleListener = root.createListener(state => {
-    const { selectedPuzzle } = state
-    return () => {
-        root.redact({
-            serializedPuzzle: selectedPuzzle,
-            puzzle: deserializeImpostori(selectedPuzzle)
-        })
+root.addEventListener(puzzleSelected, () => {
+    const { selectedPuzzle } = root.state
+    root.state = {
+        ...root.state,
+        serializedPuzzle: selectedPuzzle,
+        puzzle: deserializeImpostori(selectedPuzzle)
     }
+    const event = new Event(puzzleVerified)
+    root.dispatchEvent(event)
 })
-root.addListener(selectedPuzzleListener)
 
-const tutorialListener = root.createListener(state => {
-    const { puzzle, tutorialComplete } = state
-    return () => { if (puzzle && !tutorialComplete) { runTutorial(root) } }
-})
-root.addListener(tutorialListener)
+root.addEventListener(puzzleVerified, () => { runTutorial(root) })
 
-const puzzleListener = root.createListener((state, detail) => {
-    const { puzzle, tutorialComplete } = state
-    return () => {
-        if (puzzle && tutorialComplete && !detail?.running) { runPuzzle(root) }
-    }
-})
-root.addListener(puzzleListener)
+root.addEventListener(tutorialComplete, () => { runPuzzle(root) })
 
 loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
-    .then(spritesheet => { root.redact({ spritesheet }) })
+    .then(spritesheet => {
+        root.state.spritesheet = spritesheet
+        const event = new Event(resourceLoaded)
+        root.dispatchEvent(event)
+    })
     .catch(error => console.error(error))
 
 loadPuzzles()
     .then(data => {
-        const key = typeof data === "string"
-            ? "selectedPuzzle"
-            : "dailyPuzzles"
-        root.redact({ [key]: data })
+        root.state.dailyPuzzles = data
+        const event = new Event(resourceLoaded)
+        root.dispatchEvent(event)
     })
     .catch(error => console.error(error))
 
