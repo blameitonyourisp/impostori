@@ -32,6 +32,12 @@ import {
 import { runSelector } from "./selector/index.js"
 import { runTutorial } from "./tutorial/index.js"
 import { runPuzzle } from "./puzzle/index.js"
+import {
+    loadPuzzles,
+    loadSpritesheet,
+    spritesheetImageUrl,
+    spritesheetJsonUrl
+} from "./loaders/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
