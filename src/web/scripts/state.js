@@ -9,7 +9,7 @@
 //      - <https://spdx.org/licenses/MIT>
 
 /**
- * @file Export custom web components.
+ * @file Global state object module.
  * @author James Reid
  */
 
@@ -17,8 +17,8 @@
 
 // @@no-imports
 
-// @@no-body
+// @@body
+const state = /** @type {any} */ ({})
 
 // @@exports
-export * from "./PixelButton.js"
-export * from "./LoadingContainer.js"
+export { state }

@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-package
-import { PixelButton, StatefulLoadingContainer } from "../components/index.js"
+import { PixelButton, LoadingContainer } from "../components/index.js"
 
 // @@imports-package
 import { IMPOSTORI_EVENTS } from "../events.js"
@@ -27,22 +27,23 @@ const {
 } = IMPOSTORI_EVENTS
 
 /**
- * @param {StatefulLoadingContainer} root
+ * @param {LoadingContainer} root
+ * @param {any} state
  */
-const runSelector = root => {
+const runSelector = (root, state) => {
     const event = new Event(puzzleSelected)
 
-    const { dailyPuzzles } = root.state
+    const { dailyPuzzles } = state
     if (dailyPuzzles.url) { return root.dispatchEvent(event) }
     delete dailyPuzzles.url
 
-    const container = StatefulLoadingContainer.contentContainer()
+    const container = LoadingContainer.contentContainer()
     for (const key in dailyPuzzles) {
         const button = new PixelButton(key.toUpperCase())
         button.addEventListener("click", () => {
-            history.replaceState({ page: "home" }, "")
+            history.replaceState({ page: "IMPOSTORI_SELECTOR" }, "")
             history.pushState({}, "")
-            root.state.selectedPuzzle = dailyPuzzles[key][0]
+            Object.assign(state, { selectedPuzzle: dailyPuzzles[key][0] })
             root.dispatchEvent(event)
         })
 

@@ -18,7 +18,7 @@
 // @@no-imports
 
 // @@body
-class StatefulLoadingContainer extends HTMLElement {
+class LoadingContainer extends HTMLElement {
     #loading = this.dataset.loading === "false" ? false : true
     #animation = {
         keyframes: [{ opacity: 1 }, { opacity: 0 }],
@@ -26,13 +26,8 @@ class StatefulLoadingContainer extends HTMLElement {
         reverse: { direction: /** @type {PlaybackDirection} */ ("reverse") }
     }
 
-    /**
-     * @param {any} [state]
-     */
-    constructor(state = {}) {
+    constructor() {
         super()
-
-        this.state = state
     }
 
     connectedCallback() {
@@ -127,4 +122,4 @@ class StatefulLoadingContainer extends HTMLElement {
 }
 
 // @@exports
-export { StatefulLoadingContainer }
+export { LoadingContainer }

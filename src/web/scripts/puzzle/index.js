@@ -24,7 +24,7 @@ import { serializeImpostori } from "../../../package/index.js"
 import { IMPOSTORI_EVENTS } from "../events.js"
 
 // @@imports-module
-import { StatefulLoadingContainer } from "../components/index.js"
+import { LoadingContainer } from "../components/index.js"
 
 // @@imports-submodule
 import { renderPuzzle } from "./render/index.js"
@@ -33,10 +33,11 @@ import { renderPuzzle } from "./render/index.js"
 const { selectedCellUpdated } = IMPOSTORI_EVENTS
 
 /**
- * @param {StatefulLoadingContainer} root
+ * @param {LoadingContainer} root
+ * @param {any} state
  */
-const runPuzzle = root => {
-    const content = StatefulLoadingContainer.contentContainer()
+const runPuzzle = (root, state) => {
+    const content = LoadingContainer.contentContainer()
 
     let { width, height } = root.getBoundingClientRect()
     width -= 8
@@ -51,27 +52,25 @@ const runPuzzle = root => {
     })
     content.append(/** @type {any} */ (app.view))
 
-    const { puzzle } = root.state
-    root.state = {
-        ...root.state,
+    const { puzzle } = state
+    Object.assign(state, {
         app,
         width,
         height,
         permutedIndexArray: puzzle.grid.random.shuffledIndexArray(36),
         selectedCell: puzzle.grid.cells[0],
-    }
-    renderPuzzle(root)
+    })
+    renderPuzzle(root, state)
 
     const listener = (/** @type {any} */ event) => {
-        const { selectedCell } = root.state
+        const { selectedCell } = state
 
         if (event?.detail?.tileUpdated) {
-            const { index } = selectedCell
-            root.state.puzzle.grid.cells.splice(index, 1, selectedCell)
-            root.state.serializedPuzzle = serializeImpostori(root.state.puzzle)
+            state.puzzle.grid.cells.splice(selectedCell.index, 1, selectedCell)
+            state.serializedPuzzle = serializeImpostori(state.puzzle)
         }
 
-        renderPuzzle(root)
+        renderPuzzle(root, state)
     }
     root.addEventListener(selectedCellUpdated, listener)
 

@@ -23,20 +23,21 @@ import { getCellPlatform } from "./platform.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { StatefulLoadingContainer } from "../../components/index.js"
+import { LoadingContainer } from "../../components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
 /**
- * @param {StatefulLoadingContainer} root
+ * @param {LoadingContainer} root
+ * @param {any} state
  * @returns
  */
-const renderPuzzle = root => {
-    const { app, width, height, puzzle, selectedCell } = root.state
+const renderPuzzle = (root, state) => {
+    const { app, width, height, puzzle, selectedCell } = state
 
     const container = new Container()
     for (const cell of puzzle.grid.cells) {
-        const platform = getCellPlatform(cell, root)
+        const platform = getCellPlatform(cell, root, state)
         platform.setTransform(
             69 * (cell.index % 6),
             82 * Math.floor(cell.index / 6) + 41 * (cell.index % 6)
@@ -44,7 +45,7 @@ const renderPuzzle = root => {
         container.addChild(platform)
     }
 
-    const selectedPlatform = getCellPlatform(selectedCell, root, {
+    const selectedPlatform = getCellPlatform(selectedCell, root, state, {
         scale: 3,
         isGrid: false
     })

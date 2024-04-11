@@ -16,7 +16,7 @@
 // @ts-check
 
 // @@imports-package
-import { StatefulLoadingContainer } from "../components/index.js"
+import { LoadingContainer } from "../components/index.js"
 
 // @@imports-package
 import { IMPOSTORI_EVENTS } from "../events.js"
@@ -27,9 +27,10 @@ const {
 } = IMPOSTORI_EVENTS
 
 /**
- * @param {StatefulLoadingContainer} root
+ * @param {LoadingContainer} root
+ * @param {any} state
  */
-const runTutorial = root => {
+const runTutorial = (root, state) => {
     // const container = StatefulLoadingContainer.contentContainer()
 
     // root.load(container)

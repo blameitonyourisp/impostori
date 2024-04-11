@@ -20,9 +20,10 @@ import "@ungap/custom-elements"
 
 // @@imports-module
 import { setHoverable } from "./hoverable.js"
+import { state } from "./state.js"
 
 // @@imports-submodule
-import { PixelButton, StatefulLoadingContainer } from "./components/index.js"
+import { PixelButton, LoadingContainer } from "./components/index.js"
 import { runSelector } from "./selector/index.js"
 
 // @@body
@@ -73,6 +74,7 @@ import { runSelector } from "./selector/index.js"
  * @todo Move loaders, hoverable and events into state module folder.
  * @todo Consider changing IMPOSTORI_EVENTS export into individual const exports
  *      of each required event string.
+ * @todo change all state updates to use objects assign.
  */
 
 /**
@@ -110,16 +112,16 @@ import { runSelector } from "./selector/index.js"
 
 // Declare custom web components, and run miscellaneous setup functions.
 customElements.define("pixel-button", PixelButton, { extends: "button" })
-customElements.define("stateful-loading-container", StatefulLoadingContainer)
+customElements.define("stateful-loading-container", LoadingContainer)
 setHoverable()
 
 const nav = document.createElement("nav")
 nav.classList.add("pixel-container")
-const signIn = new PixelButton("Sign In")
-const signUp = new PixelButton("Sign Up")
-nav.append(signIn, signUp)
+// const signIn = new PixelButton("Sign In")
+// const signUp = new PixelButton("Sign Up")
+// nav.append(signIn, signUp)
 
-const root = new StatefulLoadingContainer()
+const root = new LoadingContainer()
 root.id = "root"
 root.classList.add("pixel-container")
 
@@ -129,11 +131,11 @@ window.addEventListener("popstate", event => {
     if (event && event.state) {
         const { page } = event.state
         switch (page) {
-            case "home":
-                runSelector(root)
+            case "IMPOSTORI_SELECTOR":
+                runSelector(root, state)
                 break
             default:
-                runSelector(root)
+                runSelector(root, state)
         }
     }
 })

@@ -26,7 +26,7 @@ import { getCellTiles } from "./tile.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { StatefulLoadingContainer } from "../../components/index.js"
+import { LoadingContainer } from "../../components/index.js"
 import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
@@ -68,17 +68,18 @@ const CENTER_DOT_LOCATION = [34, 31]
 /**
  *
  * @param {GridCell} cell
- * @param {StatefulLoadingContainer} root
+ * @param {LoadingContainer} root
+ * @param {any} state
  * @param {object} obj
  * @param {boolean} [obj.isGrid]
  * @param {number} [obj.scale]
  * @returns {Container}
  */
-const getCellPlatform = (cell, root, {
+const getCellPlatform = (cell, root, state, {
     isGrid = true,
     scale = 1
 } = {}) => {
-    const { permutedIndexArray, selectedCell, spritesheet } = root.state
+    const { permutedIndexArray, selectedCell, spritesheet } = state
 
     const container = new Container()
     container.setTransform(0, 0, scale, scale)
@@ -93,7 +94,7 @@ const getCellPlatform = (cell, root, {
     const platform = new Sprite(spritesheet[platformKey])
     container.addChild(platform)
 
-    const tiles = getCellTiles(cell, root, isGrid)
+    const tiles = getCellTiles(cell, root, state, isGrid)
     for (const [index, tile] of tiles.entries()) {
         tile.setTransform(...TILE_LOCATIONS[index])
         container.addChild(tile)
@@ -113,7 +114,7 @@ const getCellPlatform = (cell, root, {
         container.eventMode = "static"
         container.cursor = "pointer"
         container.on("pointerdown", () => {
-            root.state.selectedCell = cell
+            Object.assign(state, { selectedCell: cell })
             const event = new Event(selectedCellUpdated)
             root.dispatchEvent(event)
         })

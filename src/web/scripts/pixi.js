@@ -20,6 +20,7 @@ import { deserializeImpostori } from "../../package/index.js"
 
 // @@imports-module
 import { IMPOSTORI_EVENTS } from "./events.js"
+import { state } from "./state.js"
 import { loadPuzzles } from "./load-puzzles.js"
 import {
     loadSpritesheet,
@@ -34,7 +35,7 @@ import { runPuzzle } from "./puzzle/index.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { StatefulLoadingContainer } from "./components/index.js"
+import { LoadingContainer } from "./components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
@@ -45,32 +46,30 @@ const {
     tutorialComplete
 } = IMPOSTORI_EVENTS
 
-const root = /** @type {StatefulLoadingContainer} */
-    (document.getElementById("root"))
+const root = /** @type {LoadingContainer} */ (document.getElementById("root"))
 
 root.addEventListener(resourceLoaded, () => {
-    const { spritesheet, dailyPuzzles } = root.state
-    if (spritesheet && dailyPuzzles) { runSelector(root) }
+    const { spritesheet, dailyPuzzles } = state
+    if (spritesheet && dailyPuzzles) { runSelector(root, state) }
 })
 
 root.addEventListener(puzzleSelected, () => {
-    const { selectedPuzzle } = root.state
-    root.state = {
-        ...root.state,
+    const { selectedPuzzle } = state
+    Object.assign(state, {
         serializedPuzzle: selectedPuzzle,
         puzzle: deserializeImpostori(selectedPuzzle)
-    }
+    })
     const event = new Event(puzzleVerified)
     root.dispatchEvent(event)
 })
 
-root.addEventListener(puzzleVerified, () => { runTutorial(root) })
+root.addEventListener(puzzleVerified, () => { runTutorial(root, state) })
 
-root.addEventListener(tutorialComplete, () => { runPuzzle(root) })
+root.addEventListener(tutorialComplete, () => { runPuzzle(root, state) })
 
 loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
     .then(spritesheet => {
-        root.state.spritesheet = spritesheet
+        state.spritesheet = spritesheet
         const event = new Event(resourceLoaded)
         root.dispatchEvent(event)
     })
@@ -78,7 +77,7 @@ loadSpritesheet(spritesheetJsonUrl, spritesheetImageUrl)
 
 loadPuzzles()
     .then(data => {
-        root.state.dailyPuzzles = data
+        state.dailyPuzzles = data
         const event = new Event(resourceLoaded)
         root.dispatchEvent(event)
     })

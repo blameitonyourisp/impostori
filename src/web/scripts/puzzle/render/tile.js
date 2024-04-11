@@ -24,7 +24,7 @@ import { IMPOSTORI_EVENTS } from "../../events.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
-import { StatefulLoadingContainer } from "../../components/index.js"
+import { LoadingContainer } from "../../components/index.js"
 import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
@@ -36,12 +36,13 @@ const {
 /**
  *
  * @param {GridCell} cell
- * @param {StatefulLoadingContainer} root
+ * @param {LoadingContainer} root
+ * @param {any} state
  * @param {boolean} isGrid
  * @returns {Container[]}
  */
-const getCellTiles = (cell, root, isGrid = true) => {
-    const { spritesheet } = root.state
+const getCellTiles = (cell, root, state, isGrid = true) => {
+    const { spritesheet } = state
 
     const hints = [
         ...cell.hints.detective,
@@ -110,7 +111,7 @@ const getCellTiles = (cell, root, isGrid = true) => {
                     cell.clientValue = cell.clientCandidates[0].value
                 }
 
-                root.state.selectedCell = cell
+                Object.assign(state, { selectedCell: cell })
                 const event = new CustomEvent(
                     selectedCellUpdated,
                     { detail: { tileUpdated: true } }
