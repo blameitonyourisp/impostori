@@ -21,11 +21,11 @@ import { Spritesheet, SCALE_MODES, BaseTexture } from "pixi.js"
 // @@body
 //
 const spritesheetJsonUrl = new URL(
-    "../../../admin/assets/spritesheets/3-bit-small/spritesheet.json",
+    "../../../../admin/assets/spritesheets/3-bit-small/spritesheet.json",
     import.meta.url
 )
 const spritesheetImageUrl = new URL(
-    "../../../admin/assets/spritesheets/3-bit-small/spritesheet.png",
+    "../../../../admin/assets/spritesheets/3-bit-small/spritesheet.png",
     import.meta.url
 )
 
