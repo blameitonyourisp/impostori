@@ -24,7 +24,10 @@ import { runTutorial } from "./tutorial/index.js"
 import { runPuzzle } from "./puzzle/index.js"
 import {
     state,
-    IMPOSTORI_EVENTS
+    resourceLoaded,
+    puzzleSelected,
+    puzzleVerified,
+    tutorialComplete
 } from "./state/index.js"
 import {
     loadPuzzles,
@@ -39,13 +42,6 @@ import { LoadingContainer } from "./components/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
-const {
-    resourceLoaded,
-    puzzleSelected,
-    puzzleVerified,
-    tutorialComplete
-} = IMPOSTORI_EVENTS
-
 const root = /** @type {LoadingContainer} */ (document.getElementById("root"))
 
 root.addEventListener(resourceLoaded, () => {

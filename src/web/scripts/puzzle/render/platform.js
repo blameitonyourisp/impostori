@@ -19,7 +19,7 @@
 import { Container, Point, Polygon, Sprite } from "pixi.js"
 
 // @@imports-package
-import { IMPOSTORI_EVENTS } from "../../state/events.js"
+import { selectedCellUpdated } from "../../state/events.js"
 
 // @@imports-module
 import { getCellTiles } from "./tile.js"
@@ -31,10 +31,6 @@ import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
-const {
-    selectedCellUpdated
-} = IMPOSTORI_EVENTS
-
 //
 const PLATFORM_POLYGON = [
     [21, 2],

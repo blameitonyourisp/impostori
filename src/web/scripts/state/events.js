@@ -18,13 +18,17 @@
 // @@no-imports
 
 // @@body
-const IMPOSTORI_EVENTS = {
-    resourceLoaded: "impostori-resource-loaded",
-    puzzleSelected: "impostori-puzzle-selected",
-    puzzleVerified: "impostori-puzzle-verified",
-    tutorialComplete: "impostori-tutorial-complete",
-    selectedCellUpdated: "impostori-selected-cell-updated"
-}
+const resourceLoaded = "impostori-resource-loaded"
+const puzzleSelected = "impostori-puzzle-selected"
+const puzzleVerified = "impostori-puzzle-verified"
+const tutorialComplete = "impostori-tutorial-complete"
+const selectedCellUpdated = "impostori-selected-cell-updated"
 
 // @@exports
-export { IMPOSTORI_EVENTS }
+export {
+    resourceLoaded,
+    puzzleSelected,
+    puzzleVerified,
+    tutorialComplete,
+    selectedCellUpdated
+}

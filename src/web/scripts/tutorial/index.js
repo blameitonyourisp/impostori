@@ -17,15 +17,9 @@
 
 // @@imports-package
 import { LoadingContainer } from "../components/index.js"
-import {
-    IMPOSTORI_EVENTS
-} from "../state/index.js"
+import { tutorialComplete } from "../state/index.js"
 
 // @@body
-const {
-    tutorialComplete
-} = IMPOSTORI_EVENTS
-
 /**
  * @param {LoadingContainer} root
  * @param {any} state

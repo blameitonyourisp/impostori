@@ -20,7 +20,7 @@ import { Container, Sprite } from "pixi.js"
 import { getCandidate } from "../../../../package/index.js"
 
 // @@imports-package
-import { IMPOSTORI_EVENTS } from "../../state/events.js"
+import { selectedCellUpdated } from "../../state/events.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */
@@ -29,10 +29,6 @@ import { GridCell } from "../../../../package/types/index.js"
 /* eslint-enable no-unused-vars -- Close disable-enable pair. */
 
 // @@body
-const {
-    selectedCellUpdated
-} = IMPOSTORI_EVENTS
-
 /**
  *
  * @param {GridCell} cell

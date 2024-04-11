@@ -17,15 +17,9 @@
 
 // @@imports-package
 import { PixelButton, LoadingContainer } from "../components/index.js"
-import {
-    IMPOSTORI_EVENTS
-} from "../state/index.js"
+import { puzzleSelected } from "../state/index.js"
 
 // @@body
-const {
-    puzzleSelected
-} = IMPOSTORI_EVENTS
-
 /**
  * @param {LoadingContainer} root
  * @param {any} state

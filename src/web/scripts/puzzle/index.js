@@ -21,16 +21,12 @@ import { serializeImpostori } from "../../../package/index.js"
 
 // @@imports-package
 import { LoadingContainer } from "../components/index.js"
-import {
-    IMPOSTORI_EVENTS
-} from "../state/index.js"
+import { selectedCellUpdated } from "../state/index.js"
 
 // @@imports-submodule
 import { renderPuzzle } from "./render/index.js"
 
 // @@body
-const { selectedCellUpdated } = IMPOSTORI_EVENTS
-
 /**
  * @param {LoadingContainer} root
  * @param {any} state
