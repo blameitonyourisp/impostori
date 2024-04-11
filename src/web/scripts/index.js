@@ -20,7 +20,7 @@ import "@ungap/custom-elements"
 
 // @@imports-module
 import { setHoverable } from "./hoverable.js"
-import { state } from "./state.js"
+import { state } from "./state/state.js"
 
 // @@imports-submodule
 import { PixelButton, LoadingContainer } from "./components/index.js"

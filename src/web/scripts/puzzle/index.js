@@ -17,14 +17,13 @@
 
 // @@imports-dependencies
 import { Application } from "pixi.js"
-// import { proxyToObject } from "@blameitonyourisp/boutique"
 import { serializeImpostori } from "../../../package/index.js"
 
 // @@imports-package
-import { IMPOSTORI_EVENTS } from "../events.js"
-
-// @@imports-module
 import { LoadingContainer } from "../components/index.js"
+import {
+    IMPOSTORI_EVENTS
+} from "../state/index.js"
 
 // @@imports-submodule
 import { renderPuzzle } from "./render/index.js"

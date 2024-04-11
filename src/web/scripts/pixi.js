@@ -18,20 +18,14 @@
 // @@imports-dependencies
 import { deserializeImpostori } from "../../package/index.js"
 
-// @@imports-module
-import { IMPOSTORI_EVENTS } from "./events.js"
-import { state } from "./state.js"
-import { loadPuzzles } from "./load-puzzles.js"
-import {
-    loadSpritesheet,
-    spritesheetImageUrl,
-    spritesheetJsonUrl
-} from "./load-spritesheet.js"
-
 // @@imports-submodule
 import { runSelector } from "./selector/index.js"
 import { runTutorial } from "./tutorial/index.js"
 import { runPuzzle } from "./puzzle/index.js"
+import {
+    state,
+    IMPOSTORI_EVENTS
+} from "./state/index.js"
 import {
     loadPuzzles,
     loadSpritesheet,

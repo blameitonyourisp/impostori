@@ -20,7 +20,7 @@ import { Container, Sprite } from "pixi.js"
 import { getCandidate } from "../../../../package/index.js"
 
 // @@imports-package
-import { IMPOSTORI_EVENTS } from "../../events.js"
+import { IMPOSTORI_EVENTS } from "../../state/events.js"
 
 // @@imports-types
 /* eslint-disable no-unused-vars -- Types only used in comments. */

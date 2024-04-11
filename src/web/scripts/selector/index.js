@@ -17,9 +17,9 @@
 
 // @@imports-package
 import { PixelButton, LoadingContainer } from "../components/index.js"
-
-// @@imports-package
-import { IMPOSTORI_EVENTS } from "../events.js"
+import {
+    IMPOSTORI_EVENTS
+} from "../state/index.js"
 
 // @@body
 const {

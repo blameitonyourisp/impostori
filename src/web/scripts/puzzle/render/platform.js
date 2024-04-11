@@ -19,7 +19,7 @@
 import { Container, Point, Polygon, Sprite } from "pixi.js"
 
 // @@imports-package
-import { IMPOSTORI_EVENTS } from "../../events.js"
+import { IMPOSTORI_EVENTS } from "../../state/events.js"
 
 // @@imports-module
 import { getCellTiles } from "./tile.js"
